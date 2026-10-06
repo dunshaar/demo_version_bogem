@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#111110">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="Репертуар Богемы. Выберите песни для группы или трио и подготовьте пожелания к вашему выступлению.">
+  <title>Репертуар Богемы</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="repertoire.css">
+  <link rel="stylesheet" href="../forms.css">
+  <script src="repertoire.js" defer></script>
+  <script src="../forms.js" defer></script>
+</head>
+<body class="repertoire-page">
+  <a class="rep-skip" href="#songs">К списку песен</a>
+  <header class="wrap rep-header">
+    <a class="rep-back" href="../index.html"><span aria-hidden="true">←</span> На сайт Богемы</a>
+    <a class="rep-wordmark" href="../index.html" aria-label="Богема, главная"><img src="../assets/logo.svg" width="150" height="62" alt="Богема, кавер-группа"></a>
+  </header>
+  <main>
+    <section class="wrap rep-intro" aria-labelledby="page-title">
+      <span class="eyebrow">Ваша музыкальная программа</span>
+      <h1 id="page-title">Репертуар</h1>
+      <p class="rep-lead">Отметьте любимые песни и то, что лучше не играть<br>Остальное оставьте на усмотрение группы</p>
+      <div class="rep-guide" aria-label="Как выбрать песни">
+        <p><strong>Хочу</strong><span>Очень нравится<br>Выбирайте с запасом</span></p>
+        <p><strong>Можно</strong><span>Группа выберет по настроению вечера</span></p>
+        <p><strong>Не надо</strong><span>Не играть даже по просьбе гостей</span></p>
+      </div>
+      <p class="rep-small">Повтор одной песни в нескольких разделах учитывается один раз. Отметки сохраняются только пока открыта эта страница; после обновления они сбросятся.</p>
+    </section>
+
+    <div class="rep-selection-bar">
+      <div class="wrap rep-selection-inner">
+        <div class="rep-counts" aria-label="Отметки по всему выбранному составу">
+          <span><b id="count-want">0</b> Хочу</span><span><b id="count-maybe">—</b> Можно</span><span><b id="count-skip">0</b> Не надо</span>
+        </div>
+        <a class="button rep-request-link" href="#request">К заявке <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+
+    <section class="wrap rep-catalog" id="songs" aria-labelledby="list-title">
+      <div class="rep-list-top">
+        <div><span class="eyebrow">Выберите состав</span><h2 class="rep-sr-only" id="list-title">Песни и ваши пожелания</h2>
+          <div class="rep-tabs" role="tablist" aria-label="Репертуар состава">
+            <button id="tab-group" type="button" role="tab" aria-selected="true" aria-controls="songs-panel" disabled>Группа</button>
+            <button id="tab-trio" type="button" role="tab" aria-selected="false" aria-controls="songs-panel" tabindex="-1" disabled>Трио</button>
+          </div>
+        </div>
+        <button type="button" class="rep-text-button" id="reset-open" disabled>Сбросить отметки</button>
+      </div>
+      <p id="catalog-error" class="rep-error" role="alert" hidden>Не удалось загрузить список песен. Обновите страницу или <a href="../index.html#contact">свяжитесь с группой</a>.</p>
+      <noscript><p class="rep-error">Для выбора песен нужен JavaScript. <a href="../assets/repertoire.docx" download>Скачать общий репертуар DOCX</a> или <a href="../index.html#contact">связаться с группой</a>.</p></noscript>
+      <div id="songs-panel" role="tabpanel" aria-labelledby="tab-group">
+        <ol id="song-list" class="rep-song-list" aria-label="Песни выбранного состава"></ol>
+      </div>
+      <div class="rep-export"><div><h2>Возьмите список с собой</h2><p>TXT содержит все песни выбранного состава и ваши отметки. Скачивание ничего не отправляет группе.</p></div><button type="button" class="button rep-download" id="download-list" disabled>Скачать TXT <span aria-hidden="true">↓</span></button><p id="export-status" class="rep-small" role="status"></p></div>
+    </section>
+
+    <section id="request" class="wrap repertoire-request"><div class="request-copy"><span class="eyebrow">Ваша программа</span><h2>Обсудим выступление</h2><p>Оставьте контакты и приложите выбранные песни к заявке</p></div><div data-request-form data-source="repertoire"></div></section>
+  </main>
+  <footer class="wrap rep-footer"><a href="../index.html">← На сайт Богемы</a><span>Богема, 2026</span></footer>
+  <dialog id="reset-dialog" class="rep-reset-dialog" aria-labelledby="reset-title" aria-describedby="reset-copy"><h2 id="reset-title">Сбросить отметки?</h2><p id="reset-copy">Все песни выбранного состава снова станут «Можно». Отметки другого состава останутся.</p><form method="dialog"><button type="submit" class="button rep-cancel" value="cancel" autofocus>Оставить выбор</button><button type="submit" class="button rep-confirm" value="reset">Сбросить</button></form></dialog>
+</body>
+</html>

@@ -1,0 +1,17 @@
+.bp-player{width:100%;background:#080808;position:relative}
+.bp-player video{display:block;width:100%;max-height:55svh;cursor:pointer}
+.bp-controls{padding:12px 15px 4px;background:#171715}
+.bp-controls button{display:grid;place-items:center;min-width:40px;min-height:40px;padding:9px;border:0;border-radius:3px;color:var(--ink);background:transparent}
+.bp-controls button:hover{background:#ffffff12}.bp-controls svg{width:21px;height:21px;pointer-events:none}
+.bp-controls [hidden]{display:none!important}
+.bp-seek{--progress:0%;display:block;width:100%;height:24px;margin:0;cursor:pointer;appearance:none;-webkit-appearance:none;background:transparent;touch-action:pan-y}
+.bp-seek::-webkit-slider-runnable-track{height:4px;border-radius:3px;background:linear-gradient(to right,var(--gold) 0 var(--progress),#66645c var(--progress) 100%)}
+.bp-seek::-moz-range-track{height:4px;border-radius:3px;background:#66645c}.bp-seek::-moz-range-progress{height:4px;background:var(--gold)}
+.bp-seek::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--ink);margin-top:-5px;box-shadow:0 0 0 3px #1115}
+.bp-seek::-moz-range-thumb{width:14px;height:14px;border:0;border-radius:50%;background:var(--ink)}
+.bp-seek:disabled{opacity:.35;cursor:wait}.bp-bottom{display:flex;align-items:center;gap:8px}.bp-time{font-size:12px;font-variant-numeric:tabular-nums;white-space:nowrap;color:#dedbd2}.bp-spacer{flex:1}
+.bp-volume{width:78px;min-width:0;height:25px;accent-color:var(--gold);cursor:pointer;margin-inline:0 8px}
+.bp-status{min-height:20px;line-height:1.5;font-size:11px;color:var(--muted);margin:0 5px;padding-bottom:4px}
+.bp-player:fullscreen{display:flex;flex-direction:column;justify-content:center;background:#000;padding:15px;gap:0}
+.bp-player:fullscreen video{max-height:calc(100dvh - 130px);flex:1;min-height:0;object-fit:contain}.bp-player:fullscreen .bp-controls{width:100%;max-width:1400px;margin-inline:auto;flex-shrink:0}
+@media(max-width:600px){.bp-player video{max-height:53svh}.bp-controls{padding:8px 8px 2px}.bp-bottom{gap:3px}.bp-controls button{min-width:36px;min-height:38px;padding:8px}.bp-controls svg{width:19px;height:19px}.bp-time{font-size:11px}.bp-volume{display:none}.bp-status{font-size:10px;min-height:17px}.bp-player:fullscreen{padding:6px}.bp-player:fullscreen video{max-height:calc(100dvh - 112px)}}

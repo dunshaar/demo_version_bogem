@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light"><meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#111110">
+  <title>Кавер-группа Богема</title>
+  <meta name="description" content="Кавер-группа Богема. Живой звук, яркий вокал и опытные музыканты. Посмотрите промо, выберите состав и песни для вашего мероприятия.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="forms.css">
+  <link rel="stylesheet" href="player.css">
+  <script src="player.js" defer></script><script src="app.js" defer></script><script src="forms.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">К содержанию</a>
+<header class="site-header">
+  <div class="scroll-progress" aria-hidden="true"></div>
+  <a class="brand" href="#" aria-label="Богема, наверх"><img src="assets/logo.svg" width="150" height="48" alt="Богема, кавер-группа"></a>
+  <nav class="site-nav" aria-label="Разделы сайта"><a href="#promo">Промо</a><a href="#about">О группе</a><a href="#formats">Составы</a><a href="#repertoire">Репертуар</a></nav>
+  <a class="header-cta" href="#contact">Обсудить выступление <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.5"/></svg></a>
+  <button type="button" class="menu-button" aria-label="Открыть меню" aria-controls="menu-dialog" aria-haspopup="dialog"><span></span><span></span></button>
+</header>
+<main id="main">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-image"><img src="assets/hero.webp" width="2000" height="1165" alt="Кавер-группа Богема" fetchpriority="high"></div>
+    <div class="hero-top wrap"><span class="eyebrow">Кавер-группа Богема</span><span class="hero-mark" aria-hidden="true">МУЗЫКА / ЛЮДИ / НАСТРОЕНИЕ</span></div>
+    <div class="hero-bottom wrap">
+      <h1 id="hero-title">Стильный саундтрек<br><em>к вашему празднику</em></h1>
+      <ul class="hero-features"><li>Живой звук</li><li>Яркий вокал</li><li>Опытные музыканты</li></ul>
+      <a href="#promo" class="hero-next"><span>Почувствуйте наше звучание</span><span aria-hidden="true">↓</span></a>
+    </div>
+  </section>
+
+  <section id="promo" class="wrap section promo-section" aria-label="Промо группы Богема">
+    <div class="section-heading" data-reveal><div><span class="eyebrow">01 / Промо</span><h2>Богема <em>в движении</em></h2></div><p>Звук, сцена и настроение выступления<br>Включите звук и познакомьтесь с нами</p></div>
+    <button class="promo-cover" type="button" data-video="promo" aria-label="Смотреть промо группы Богема" data-reveal>
+      <img src="assets/poster-promo.jpg" width="3840" height="2160" loading="lazy" alt="Кавер-группа Богема на сцене">
+      <span class="promo-play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 11 7-11 7Z" fill="currentColor"/></svg></span><span class="promo-caption">Смотреть промо</span><span class="video-duration">03:26</span>
+    </button>
+  </section>
+
+  <section id="about" class="wrap section about-section" aria-labelledby="about-title">
+    <div class="about-heading" data-reveal>
+      <div class="about-copy"><span class="eyebrow">02 / Знакомство</span><h2 id="about-title">5 музыкантов<br>2 вокалиста<br><em>1 драйв</em></h2></div>
+      <p class="about-statement">Всё ради того, чтобы вы отложили телефон и забыли обо всём, наслаждаясь праздником</p>
+    </div>
+    <div class="live-gallery" aria-label="Живые выступления Богемы">
+      <button class="live-card live-card-featured" type="button" data-video="live-2025" aria-label="Смотреть видео Большая сцена" data-reveal>
+        <span class="live-card-media"><img src="assets/poster-live-2025.jpg" width="1280" height="720" loading="lazy" alt="Богема на концертной сцене"><span class="live-card-play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 11 7-11 7Z" fill="currentColor"/></svg></span><span class="live-card-duration">01:28</span></span>
+        <span class="live-card-caption"><span class="live-card-label">01 / На сцене</span><strong>Большая сцена</strong><span class="live-card-description">Два вокалиста и живая группа<br>Музыка, которая собирает всех у сцены</span><span class="live-card-action">Смотреть выступление <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.5"/></svg></span></span>
+      </button>
+      <button class="live-card live-card-portrait" type="button" data-video="trio-live" aria-label="Смотреть видео Трое в одном ритме" data-reveal>
+        <span class="live-card-media"><img src="assets/poster-trio-live.jpg" width="720" height="1280" loading="lazy" alt="Трио Богемы с гитарой, басом и барабанами"><span class="live-card-play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 11 7-11 7Z" fill="currentColor"/></svg></span><span class="live-card-duration">01:00</span></span>
+        <span class="live-card-caption"><span class="live-card-label">02 / Вблизи</span><strong>Трое в одном ритме</strong><span class="live-card-description">Вокал, электрогитара, бас и барабаны<br>Камерное выступление с живым характером</span><span class="live-card-action">Смотреть выступление <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.5"/></svg></span></span>
+      </button>
+      <button class="live-card live-card-portrait" type="button" data-video="summer-rain" aria-label="Смотреть видео Голос и гитара" data-reveal>
+        <span class="live-card-media"><img src="assets/poster-summer-rain.jpg" width="720" height="1280" loading="lazy" alt="Вокалист Богемы с акустической гитарой"><span class="live-card-play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 11 7-11 7Z" fill="currentColor"/></svg></span><span class="live-card-duration">00:59</span></span>
+        <span class="live-card-caption"><span class="live-card-label">03 / Акустика</span><strong>Голос и гитара</strong><span class="live-card-description">«Летний дождь» под акустическую гитару<br>Тёплый звук и спокойное настроение</span><span class="live-card-action">Смотреть выступление <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.5"/></svg></span></span>
+      </button>
+    </div>
+  </section>
+
+  <section id="formats" class="wrap section formats-section">
+    <div class="section-heading" data-reveal><div><span class="eyebrow">03 / Варианты состава</span><h2>Найдите <em>своё звучание</em></h2></div><p>Сравните составы и выберите тот,<br>что подходит вашему мероприятию</p></div>
+    <div class="lineups"><article class="lineup-card lineup-solo" data-reveal>
+  <div class="lineup-photo"><img src="assets/formats-solo.webp" alt="Вокалист с гитарой и микрофоном" loading="lazy"><span class="lineup-number">01</span></div>
+  <div class="lineup-info"><h3>Вокалист-гитарист</h3><p>мужской вокал, гитара</p><a href="#contact" data-lineup="Вокалист-гитарист" class="text-link">Обсудить состав <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.5"/></svg></a></div>
+</article>
+<article class="lineup-card lineup-trio" data-reveal>
+  <div class="lineup-photo"><img src="assets/formats-trio.webp" alt="Два вокалиста Богемы с гитарой и микрофоном" loading="lazy"><span class="lineup-number">02</span></div>
+  <div class="lineup-info"><h3>Трио</h3><p>мужской и женский вокал, гитара, барабаны</p><a href="#contact" data-lineup="Трио" class="text-link">Обсудить состав <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.5"/></svg></a></div>
+</article>
+<article class="lineup-card lineup-optimal" data-reveal>
+  <div class="lineup-photo"><img src="assets/formats-optimal.webp" alt="Ударник Богемы за барабанной установкой" loading="lazy"><span class="lineup-number">03</span></div>
+  <div class="lineup-info"><h3>Оптимальный состав</h3><p>мужской и женский вокал, гитара, бас, барабаны</p><a href="#contact" data-lineup="Оптимальный состав" class="text-link">Обсудить состав <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.5"/></svg></a></div>
+</article>
+<article class="lineup-card lineup-full" data-reveal>
+  <div class="lineup-photo"><img src="assets/formats-full.webp" alt="Музыканты Богемы с гитарой и саксофоном" loading="lazy"><span class="lineup-number">04</span></div>
+  <div class="lineup-info"><h3>Полный состав</h3><p>мужской и женский вокал, гитара, саксофон, бас, барабаны</p><a href="#contact" data-lineup="Полный состав" class="text-link">Обсудить состав <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.5"/></svg></a></div>
+</article>
+<article class="lineup-card lineup-extended" data-reveal>
+  <div class="lineup-photo"><img src="assets/formats-extended.webp" alt="Саксофонист Богемы" loading="lazy"><span class="lineup-number">05</span></div>
+  <div class="lineup-info"><h3>Расширенный состав</h3><p>мужской и женский вокал, гитара, саксофон, клавишные, бас, барабаны</p><a href="#contact" data-lineup="Расширенный состав" class="text-link">Обсудить состав <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.5"/></svg></a></div>
+</article></div>
+  </section>
+
+  <section id="repertoire" class="repertoire-teaser">
+    <div class="wrap section repertoire-grid">
+      <div class="repertoire-copy" data-reveal><span class="eyebrow">04 / Репертуар</span><h2>Ваш вечер<br><em>Ваши песни</em></h2><p>Посмотрите репертуар группы и трио</p></div>
+      <div class="repertoire-options" data-reveal>
+        <a href="repertoire/?lineup=group" class="repertoire-option"><span class="option-top"><small>01 / Группа</small><span class="option-arrow"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.5"/></svg></span></span><strong>От любимой поп-музыки<br>до рока и джаза</strong><span class="option-bottom">Открыть репертуар и выбрать песни</span></a>
+        <a href="repertoire/?lineup=trio" class="repertoire-option"><span class="option-top"><small>02 / Трио</small><span class="option-arrow"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.5"/></svg></span></span><strong>Отдельная подборка<br>для камерного состава</strong><span class="option-bottom">Посмотреть репертуар трио</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section id="details" class="wrap section details-section">
+    <div class="details-intro" data-reveal><span class="eyebrow">05 / Организация</span><h2>Музыка и детали<br><em>вашего вечера</em></h2><div class="timing-number">90<span>минут музыки</span></div><p class="timing-source"><strong>Время выступления:</strong> 90 минут (3 блока по 30 мин, 2 блока по 45 мин или в любом другом формате)</p><p class="timing-note">Готовы учесть Ваши особые пожелания по таймингу, чтобы выступление группы лучше вписалось в программу мероприятия</p></div>
+    <div class="equipment" data-reveal>
+      <div class="equipment-item"><span class="equipment-no">01</span><div><h3>Бэклайн</h3><p>При необходимости, готовы задействовать свой базовый набор звукового оборудования <strong>БЕЗ доплаты</strong></p></div></div>
+      <div class="equipment-item"><span class="equipment-no">02</span><div><h3>Свой звукорежиссёр</h3><p>Работаем со своим <strong>звукорежиссёром</strong></p></div></div>
+      <div class="equipment-item"><span class="equipment-no">03</span><div><h3>Дополнительное оборудование</h3><p>В случае необходимости дополнительного оборудования, технический райдер можем посчитать от наших партнеров</p></div></div>
+      <img class="equipment-photo" src="assets/celebration.webp" alt="Музыканты Богемы с бенгальскими огнями" width="1400" height="879" loading="lazy">
+    </div>
+  </section>
+
+  <section id="contact" class="wrap section contact-section">
+    <div class="contact-copy" data-reveal><span class="eyebrow">06 / Контакты</span><h2>Расскажите<br><em>о вашем событии</em></h2><p class="contact-invitation">Свяжитесь с нами, чтобы забронировать Вашу дату</p><a class="contact-phone" href="tel:+79006363727">+7 (900) 636-37-27</a><div class="contact-manager"><span class="contact-avatar"><img src="assets/contact-alexey.webp" width="1000" height="667" alt="Алексей Слобухо, руководитель группы Богема" loading="lazy"></span><p class="contact-person">Алексей Слобухо<span>руководитель группы</span></p></div><div class="contact-links"><a href="https://t.me/DonSe6astian" target="_blank" rel="noopener noreferrer">Telegram ↗</a><a href="mailto:bogemaband@inbox.ru">bogemaband@inbox.ru ↗</a><a href="https://www.instagram.com/bogema_cover/" target="_blank" rel="noopener noreferrer">bogema_cover ↗</a></div></div>
+    <div data-request-form data-source="home"></div>
+    <noscript><p>Для формы нужен JavaScript. Позвоните <a href="tel:+79006363727">+7 (900) 636-37-27</a> или напишите на <a href="mailto:bogemaband@inbox.ru">bogemaband@inbox.ru</a>.</p></noscript>
+  </section>
+</main>
+<footer class="site-footer wrap"><div class="footer-quote">Мы играем музыку, под которую хочется<br>жить, любить и элегантно сорить деньгами</div><div class="footer-bottom"><a class="brand" href="#" aria-label="Богема, наверх"><img src="assets/logo.svg" alt="Богема" width="150" height="48" loading="lazy"></a><span>© Богема, 2026</span><a href="#" class="footer-up">Наверх ↑</a></div></footer>
+<dialog id="menu-dialog" class="menu-dialog" aria-label="Навигация"><button class="close-button" type="button" data-close aria-label="Закрыть меню"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="1.5"/></svg></button><span class="eyebrow">БОГЕМА / КАВЕР-ГРУППА</span><nav><a href="#promo">Промо</a><a href="#about">О группе</a><a href="#formats">Составы</a><a href="repertoire/">Репертуар</a><a href="#contact">Контакты</a></nav><a class="menu-phone" href="tel:+79006363727">+7 (900) 636-37-27</a></dialog>
+<dialog id="video-dialog" class="video-dialog" aria-labelledby="video-title"><div class="modal-head"><h2 id="video-title" hidden>Промо</h2><button class="close-button" type="button" data-close aria-label="Закрыть видео"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="1.5"/></svg></button></div><div class="bp-player"><video controls controlslist="nodownload noplaybackrate noremoteplayback" disablepictureinpicture disableremoteplayback playsinline preload="none"></video>
+<div class="bp-controls" hidden>
+<input class="bp-seek" type="range" min="0" max="1" value="0" step="0.1" disabled aria-label="Перемотка видео">
+<div class="bp-bottom">
+<button class="bp-play" type="button" aria-label="Воспроизвести" title="Воспроизвести"><svg class="bp-icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 4 14 8-14 8Z" fill="currentColor"/></svg><svg class="bp-icon-pause" viewBox="0 0 24 24" aria-hidden="true" hidden><path d="M7 5v14M17 5v14" stroke="currentColor" stroke-width="4"/></svg></button>
+<span class="bp-time">0:00 / 0:00</span><span class="bp-spacer"></span>
+<button class="bp-mute" type="button" aria-label="Выключить звук" aria-pressed="false" title="Выключить звук"><svg class="bp-icon-sound" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m11 4-6 5H2v6h3l6 5V4ZM15 8a6 6 0 0 1 0 8m3-12a11 11 0 0 1 0 16" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><svg class="bp-icon-muted" viewBox="0 0 24 24" fill="none" aria-hidden="true" hidden><path d="m11 4-6 5H2v6h3l6 5V4Zm5 5 6 6m0-6-6 6" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg></button>
+<input class="bp-volume" type="range" min="0" max="1" value="1" step="0.05" aria-label="Громкость">
+<button class="bp-fullscreen" type="button" aria-label="На весь экран" title="На весь экран"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 3H3v6m12-6h6v6M3 15v6h6m12-6v6h-6" stroke="currentColor" stroke-width="1.8"/></svg></button>
+</div><p class="bp-status" role="status" aria-live="polite"></p></div></div><p class="video-error" id="video-error" role="status" hidden>Видео не загрузилось. Попробуйте открыть его ещё раз.</p></dialog>
+</body></html>
