@@ -1,0 +1,195 @@
+{
+  "download_date": "2026-10-06",
+  "css_source_url": "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400..600;1,400..500&family=Manrope:wght@400..700&display=swap",
+  "assets": [
+    {
+      "file": "cormorant-italic-cyrillic.woff2",
+      "family": "Cormorant Garamond",
+      "style": "italic",
+      "css_weights": "400 500",
+      "subset": "cyrillic",
+      "unicode_range": "U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116",
+      "source_url": "https://fonts.gstatic.com/s/cormorantgaramond/v21/co3ZmX5slCNuHLi8bLeY9MK7whWMhyjYrEtMmSq17w.woff2",
+      "bytes": 21300,
+      "sha256": "cb13c04533ee98c94e49a053b9f4d39bf616fd7ba6360d71aead92a78dc571f7",
+      "validation": {
+        "brotli_and_tables_valid": true,
+        "variable_axes": [
+          {
+            "tag": "wght",
+            "min": 300,
+            "default": 300,
+            "max": 700
+          }
+        ],
+        "required_sample_glyphs_present": true,
+        "names": {
+          "0": "Copyright 2015 The Cormorant Project Authors (github.com/CatharsisFonts/Cormorant)",
+          "1": "Cormorant Garamond Light",
+          "2": "Italic",
+          "14": "https://openfontlicense.org"
+        },
+        "checked_font_style": "italic"
+      }
+    },
+    {
+      "file": "cormorant-italic-latin.woff2",
+      "family": "Cormorant Garamond",
+      "style": "italic",
+      "css_weights": "400 500",
+      "subset": "latin",
+      "unicode_range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+      "source_url": "https://fonts.gstatic.com/s/cormorantgaramond/v21/co3ZmX5slCNuHLi8bLeY9MK7whWMhyjYrEtImSo.woff2",
+      "bytes": 39260,
+      "sha256": "6f2f5c3b1abc3d0bb035a927f66a90ca873f94fc31c4966c8d024142c2036e55",
+      "validation": {
+        "brotli_and_tables_valid": true,
+        "variable_axes": [
+          {
+            "tag": "wght",
+            "min": 300,
+            "default": 300,
+            "max": 700
+          }
+        ],
+        "required_sample_glyphs_present": true,
+        "names": {
+          "0": "Copyright 2015 The Cormorant Project Authors (github.com/CatharsisFonts/Cormorant)",
+          "1": "Cormorant Garamond Light",
+          "2": "Italic",
+          "14": "https://openfontlicense.org"
+        },
+        "checked_font_style": "italic"
+      }
+    },
+    {
+      "file": "cormorant-roman-cyrillic.woff2",
+      "family": "Cormorant Garamond",
+      "style": "normal",
+      "css_weights": "400 600",
+      "subset": "cyrillic",
+      "unicode_range": "U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116",
+      "source_url": "https://fonts.gstatic.com/s/cormorantgaramond/v21/co3bmX5slCNuHLi8bLeY9MK7whWMhyjYrXtKgS4.woff2",
+      "bytes": 21168,
+      "sha256": "017fab69b4be8ffc08ca312823327989ade6dc3d948f0afa125e12ec2e5e7ca1",
+      "validation": {
+        "brotli_and_tables_valid": true,
+        "variable_axes": [
+          {
+            "tag": "wght",
+            "min": 300,
+            "default": 300,
+            "max": 700
+          }
+        ],
+        "required_sample_glyphs_present": true,
+        "names": {
+          "0": "Copyright 2015 The Cormorant Project Authors (github.com/CatharsisFonts/Cormorant)",
+          "1": "Cormorant Garamond Light",
+          "2": "Regular",
+          "14": "https://openfontlicense.org"
+        },
+        "checked_font_style": "normal"
+      }
+    },
+    {
+      "file": "cormorant-roman-latin.woff2",
+      "family": "Cormorant Garamond",
+      "style": "normal",
+      "css_weights": "400 600",
+      "subset": "latin",
+      "unicode_range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+      "source_url": "https://fonts.gstatic.com/s/cormorantgaramond/v21/co3bmX5slCNuHLi8bLeY9MK7whWMhyjYqXtK.woff2",
+      "bytes": 37640,
+      "sha256": "d80df8ff5aecd299a61549f9e29ab1ed0b9b05f4ea71d50fe978e07d5240b235",
+      "validation": {
+        "brotli_and_tables_valid": true,
+        "variable_axes": [
+          {
+            "tag": "wght",
+            "min": 300,
+            "default": 300,
+            "max": 700
+          }
+        ],
+        "required_sample_glyphs_present": true,
+        "names": {
+          "0": "Copyright 2015 The Cormorant Project Authors (github.com/CatharsisFonts/Cormorant)",
+          "1": "Cormorant Garamond Light",
+          "2": "Regular",
+          "14": "https://openfontlicense.org"
+        },
+        "checked_font_style": "normal"
+      }
+    },
+    {
+      "file": "manrope-cyrillic.woff2",
+      "family": "Manrope",
+      "style": "normal",
+      "css_weights": "400 700",
+      "subset": "cyrillic",
+      "unicode_range": "U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116",
+      "source_url": "https://fonts.gstatic.com/s/manrope/v20/xn7gYHE41ni1AdIRggOxSuXd.woff2",
+      "bytes": 14500,
+      "sha256": "c268b459a9329e59fecf39a17618efd44c71735532048d60b12aab76a8c14914",
+      "validation": {
+        "brotli_and_tables_valid": true,
+        "variable_axes": [
+          {
+            "tag": "wght",
+            "min": 200,
+            "default": 200,
+            "max": 800
+          }
+        ],
+        "required_sample_glyphs_present": true,
+        "names": {
+          "0": "Copyright 2019 The Manrope Project Authors (https://github.com/sharanda/manrope)",
+          "1": "Manrope ExtraLight",
+          "2": "Regular",
+          "14": "http://scripts.sil.org/OFL"
+        },
+        "checked_font_style": "normal"
+      }
+    },
+    {
+      "file": "manrope-latin.woff2",
+      "family": "Manrope",
+      "style": "normal",
+      "css_weights": "400 700",
+      "subset": "latin",
+      "unicode_range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+      "source_url": "https://fonts.gstatic.com/s/manrope/v20/xn7gYHE41ni1AdIRggexSg.woff2",
+      "bytes": 24836,
+      "sha256": "a30ddcd349703aff7464c34bef3fffdff405ee50c113440d7c8693c02d210972",
+      "validation": {
+        "brotli_and_tables_valid": true,
+        "variable_axes": [
+          {
+            "tag": "wght",
+            "min": 200,
+            "default": 200,
+            "max": 800
+          }
+        ],
+        "required_sample_glyphs_present": true,
+        "names": {
+          "0": "Copyright 2019 The Manrope Project Authors (https://github.com/sharanda/manrope)",
+          "1": "Manrope ExtraLight",
+          "2": "Regular",
+          "14": "http://scripts.sil.org/OFL"
+        },
+        "checked_font_style": "normal"
+      }
+    }
+  ],
+  "licenses": {
+    "Manrope": "https://raw.githubusercontent.com/google/fonts/main/ofl/manrope/OFL.txt",
+    "Cormorant Garamond": "https://raw.githubusercontent.com/google/fonts/main/ofl/cormorantgaramond/OFL.txt"
+  },
+  "validation": {
+    "woff2_headers_brotli_table_layout_fvar_cmap": true,
+    "official_external_ofl_retained": true,
+    "six_requested_subsets": true
+  }
+}
