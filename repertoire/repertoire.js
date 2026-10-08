@@ -27,7 +27,7 @@
   window.bogemaRepertoire={getRequestText:requestText,getSummary:summary};
   function notify(){window.dispatchEvent(new CustomEvent("bogema:repertoire-change",{detail:summary()}));}
   function updateCounts(){
-    const count=counts();$("#active-lineup").textContent=active==="group"?"Группа":"Трио";for(const choice of ["want","maybe","skip"])$(`#count-${choice}`).textContent=count[choice];
+    const count=counts();for(const choice of ["want","maybe","skip"])$(`#count-${choice}`).textContent=count[choice];
     $("#reset-open").disabled=count.want+count.skip===0;
     notify();
   }
