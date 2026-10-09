@@ -1,4 +1,4 @@
-# Publish only reviewed website files
+# Track only reviewed website files
 *
 !assets/
 !repertoire/
@@ -8,10 +8,6 @@
 !/index.html
 !/styles.css
 !/app.js
-!/forms.js
-!/forms.css
-!/forms-config.json
-!/phone-input.mjs
 !/player.js
 !/player.css
 !/repertoire/index.html
@@ -38,3 +34,18 @@
 !/assets/poster-summer-rain.jpg
 !/assets/repertoire.docx
 !/assets/share-bogema-v1.jpg
+
+# Isolated V2 concept files
+!portfolio/
+!/portfolio/index.html
+!assets/fonts/
+!/assets/fonts/oswald-bold.ttf
+!/assets/fonts/oswald-regular.ttf
+!/assets/fonts/OFL.txt
+!/assets/poster-sax.webp
+!/assets/studio-group.webp
+!/assets/studio-vocal.webp
+!/assets/studio-guitar.webp
+!/assets/fonts/SOURCE.txt
+
+!/assets/share-bogema-v2.jpg

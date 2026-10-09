@@ -1,0 +1,7 @@
+Oswald, Vernon Adams / Kalapi Gajjar / Cyreal.
+Self-hosted from official Google Fonts on 2026-10-09.
+CSS: https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap
+Regular: https://fonts.gstatic.com/s/oswald/v57/TK3_WkUHHAIjg75cFRf3bXL8LICs1_FvgUE.ttf
+Bold: https://fonts.gstatic.com/s/oswald/v57/TK3_WkUHHAIjg75cFRf3bXL8LICs1xZogUE.ttf
+License: https://raw.githubusercontent.com/google/fonts/main/ofl/oswald/OFL.txt
+License text is in OFL.txt.
