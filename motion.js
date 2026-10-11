@@ -42,6 +42,10 @@
       } catch { /* All content remains fully visible without the enhancement. */ }
     }
   }, {threshold:.01, rootMargin:'0px 0px -32px 0px'});
+  addEventListener('bogema:navigate', () => {
+    observer.disconnect();
+    for (const animation of running) animation.cancel();
+  });
   document.querySelectorAll('.home-page main > section:not(.hero)').forEach(section => {
     // Do not fade the hero or anything already visible on initial/hash load.
     if (section.getBoundingClientRect().top >= innerHeight) observer.observe(section);

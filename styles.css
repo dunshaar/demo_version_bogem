@@ -184,3 +184,7 @@
 .menu-dialog{position:fixed;inset:calc(var(--menu-top,72px) + 8px) 12px auto auto;width:340px;max-width:calc(100vw - 24px);height:auto;max-height:calc(100dvh - var(--menu-top,72px) - 24px);margin:0;padding:24px 22px 18px;border:1px solid var(--line);border-radius:8px;box-shadow:0 18px 60px #0007;overflow:auto}
 .menu-dialog::backdrop{background:#0007}.menu-dialog .close-button{top:8px;right:8px;border:0}.menu-dialog>.eyebrow{padding-right:36px}.menu-dialog nav{margin:20px 0 12px;gap:0;font-size:23px;letter-spacing:-.025em}.menu-dialog nav a{display:flex;align-items:center;min-height:48px;border-bottom:1px solid var(--line)}.menu-dialog nav a:hover{color:var(--gold)}.menu-phone{font-size:16px}
 @media(max-height:480px){.menu-dialog{padding:18px 20px 12px}.menu-dialog nav{display:grid;grid-template-columns:1fr 1fr;column-gap:16px;margin-top:12px;font-size:20px}.menu-dialog nav a{min-height:44px}.menu-phone{min-height:36px;font-size:15px}}
+
+/* A lightweight menu panel does not lock scrolling or restore native dialog focus. */
+.menu-dialog{z-index:80}
+.menu-dialog:not([hidden]){animation:bogema-dialog-in 110ms ease-out}

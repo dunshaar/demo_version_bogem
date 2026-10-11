@@ -41,8 +41,12 @@
   <main>
     <section class="wrap rep-intro" aria-labelledby="page-title">
       <h1 id="page-title">Репертуар</h1>
-      <div class="rep-program-note"><p>У группы и трио разное звучание, поэтому для каждого состава подготовлен свой список песен</p><div class="rep-program-sizes"><span><strong>210</strong> песен у группы</span><span><strong>151</strong> песня у трио</span></div></div>
-      <div class="rep-downloads"><div class="rep-download-buttons"><button type="button" class="rep-secondary" id="download-list" aria-haspopup="dialog" aria-controls="catalog-download-dialog" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></svg><span>Скачать репертуар</span></button><button type="button" class="rep-secondary" id="download-selection" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></svg><span>Скачать пожелания</span></button></div><p id="catalog-export-status" class="rep-small" role="status"></p><p id="export-status" class="rep-small" role="status"></p></div>
+      <div class="rep-program-note"><div class="rep-program-description"><p>У группы и трио разное звучание, поэтому для каждого состава подготовлен свой список песен</p>        <span class="rep-sr-only" id="program-label">Выберите состав</span>
+        <div class="rep-tabs" role="tablist" aria-labelledby="program-label">
+          <button id="tab-group" type="button" role="tab" aria-selected="true" aria-controls="songs-group" disabled>Группа <span class="rep-sr-only">210</span></button>
+          <button id="tab-trio" type="button" role="tab" aria-selected="false" aria-controls="songs-trio" tabindex="-1" disabled>Трио <span class="rep-sr-only">151</span></button>
+        </div></div><div class="rep-program-sizes"><span><strong>210</strong> песен у группы</span><span><strong>151</strong> песня у трио</span></div></div>
+      <div class="rep-downloads"><div class="rep-download-buttons"><button type="button" class="rep-secondary" id="download-list" aria-haspopup="dialog" aria-controls="catalog-download-dialog" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></svg><span>Скачать репертуар</span></button></div><p id="catalog-export-status" class="rep-small" role="status"></p></div>
       <div class="rep-guide" aria-labelledby="guide-title">
         <div class="rep-guide-heading"><h2 id="guide-title">Выбирайте музыку под себя</h2><p>Отметьте любимые песни и те, которые лучше не играть</p></div>
         <div class="rep-guide-values">
@@ -57,13 +61,8 @@
     </section>
     <div class="wrap rep-workspace">
       <aside class="rep-companion" id="repertoire-companion" aria-labelledby="companion-title">
-        <div class="rep-companion-heading"><p id="companion-title">Ваша программа</p><p class="rep-companion-total"><strong id="companion-total">210</strong><span>песен</span></p></div>
-        <span class="rep-sr-only" id="program-label">Выберите состав</span>
-        <div class="rep-tabs" role="tablist" aria-labelledby="program-label">
-          <button id="tab-group" type="button" role="tab" aria-selected="true" aria-controls="songs-group" disabled>Группа <span class="rep-sr-only">210</span></button>
-          <button id="tab-trio" type="button" role="tab" aria-selected="false" aria-controls="songs-trio" tabindex="-1" disabled>Трио <span class="rep-sr-only">151</span></button>
-        </div>
-        <p id="companion-program" class="rep-sr-only">Группа</p>
+        <div class="rep-companion-heading"><p id="companion-title"><span id="companion-program">Группа</span></p><p class="rep-companion-total"><strong id="companion-total">210</strong><span>песен</span></p></div>
+
         <dl class="rep-counts" aria-label="Пожелания для выбранного состава">
           <div class="rep-count-want"><dt>Хочу</dt><dd id="count-want">0</dd></div>
           <div class="rep-count-maybe"><dt>Можно</dt><dd id="count-maybe">210</dd></div>
@@ -446,13 +445,16 @@
 <li class="rep-song-row" data-song-id="trio-song-152" data-program="trio"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">151</span><h3>Just The Two of Us</h3><span class="rep-song-artist">Grover Washington</span></div><div class="rep-choice-host"></div></li>
 </ol></section>
 <!-- CATALOG:END -->
-      <div class="rep-copy-tools"><button type="button" class="rep-text-button" id="copy-selection" disabled>Скопировать пожелания</button><p id="copy-status" class="rep-small" role="status"></p><div id="copy-fallback" hidden><p>Выделите текст и скопируйте его вручную</p><textarea id="copy-text" readonly aria-label="Ваши музыкальные пожелания"></textarea></div></div>
+      <div class="rep-copy-tools"><div class="rep-wishes-buttons"><button type="button" class="rep-secondary" id="download-selection" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></svg><span>Скачать пожелания</span></button><button type="button" class="rep-text-button" id="copy-selection" disabled>Скопировать пожелания</button></div><p id="export-status" class="rep-small" role="status"></p><p id="copy-status" class="rep-small" role="status"></p><div id="copy-fallback" hidden><p>Выделите текст и скопируйте его вручную</p><textarea id="copy-text" readonly aria-label="Ваши музыкальные пожелания"></textarea></div></div>
     </section>
+      <div class="rep-companion-dock" aria-hidden="true"></div>
+      </div>
+    </div>
+    <div class="wrap rep-request-wrap">
     <section class="rep-request" aria-labelledby="wishes-form-title">
       <div class="rep-request-intro"><p class="rep-request-eyebrow">Ваша программа</p><h2 id="wishes-form-title">Музыка, которую <br>вы выбрали</h2><p>Оставьте имя и телефон, чтобы мы могли обсудить ваши пожелания и составить программу выступления</p><p class="rep-small">В форму попадут отметки «Хочу» и «Не надо» для выбранного состава</p></div>
       <div class="rep-request-card" id="wishes-form" data-request-form data-source="repertoire"><noscript>Для отправки пожеланий включите JavaScript в браузере</noscript></div>
     </section>
-      </div>
     </div>
   </main>
   <dialog class="rep-action-dialog" id="catalog-download-dialog" aria-labelledby="catalog-download-title"><button type="button" class="rep-dialog-close" data-dismiss aria-label="Закрыть">×</button><h2 id="catalog-download-title">Какой репертуар скачать?</h2><p>Выберите состав</p><div class="rep-download-choices"><button type="button" class="rep-secondary" data-download-program="group"><strong>Группа</strong><span data-download-count="group">210 песен</span></button><button type="button" class="rep-secondary" data-download-program="trio"><strong>Трио</strong><span data-download-count="trio">151 песня</span></button></div></dialog>

@@ -23,25 +23,76 @@ for (const dialog of dialogs) {
 }
 const menu = document.querySelector('#menu-dialog');
 const menuButton = document.querySelector('.menu-button');
-menuButton?.addEventListener('click', event => {
+// Section links use one bounded animation; native focus must never start another.
+document.documentElement.style.scrollBehavior = 'auto';
+let navigationFrame = 0;
+function cancelSectionNavigation() {
+  cancelAnimationFrame(navigationFrame);
+  navigationFrame = 0;
+}
+function closeMenu(restoreFocus = false) {
+  menu.hidden = true;
+  menuButton.setAttribute('aria-expanded', 'false');
+  if (restoreFocus) menuButton.focus({preventScroll:true});
+}
+menuButton.addEventListener('click', () => {
+  if (!menu.hidden) { closeMenu(true); return; }
+  cancelSectionNavigation();
   menu.style.setProperty('--menu-top', `${Math.ceil(document.querySelector('.site-header').getBoundingClientRect().bottom)}px`);
-  openDialog(menu, event.currentTarget);
+  menu.hidden = false;
   menuButton.setAttribute('aria-expanded', 'true');
+  menu.querySelector('nav a').focus({preventScroll:true});
 });
-menu?.addEventListener('close', () => menuButton?.setAttribute('aria-expanded', 'false'));
-menu?.addEventListener('close', () => menuButton?.setAttribute('aria-expanded', 'false'));
-menu?.querySelectorAll('nav a').forEach(link => link.addEventListener('click', event => {
+menu.querySelector('[data-close]').addEventListener('click', () => closeMenu(true));
+document.addEventListener('pointerdown', event => {
+  if (!menu.hidden && !menu.contains(event.target) && !menuButton.contains(event.target)) closeMenu();
+});
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && !menu.hidden) { event.preventDefault(); closeMenu(true); }
+});
+menu.addEventListener('focusout', () => {
+  requestAnimationFrame(() => {
+    if (!menu.hidden && !menu.contains(document.activeElement) && document.activeElement !== menuButton) closeMenu();
+  });
+});
+function navigateToSection(target, hash) {
+  cancelSectionNavigation();
+  closeMenu();
+  // Anchor navigation should not compete with native dialog focus or reveal effects.
+  dispatchEvent(new Event('bogema:navigate'));
+  if (location.hash !== hash) history.pushState(null, '', hash);
+  const start = scrollY;
+  const inset = document.querySelector('.site-header').getBoundingClientRect().height + 16;
+  const end = Math.max(0, Math.min(start + target.getBoundingClientRect().top - inset, document.documentElement.scrollHeight - innerHeight));
+  const finish = () => {
+    navigationFrame = 0;
+    target.setAttribute('tabindex', '-1');
+    target.focus({preventScroll:true});
+  };
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches || Math.abs(end - start) < 2) {
+    scrollTo({top:end, behavior:'instant'}); finish(); return;
+  }
+  const began = performance.now(), duration = 240;
+  const step = now => {
+    const progress = Math.min(1, (now - began) / duration);
+    const eased = 1 - (1 - progress) ** 3;
+    scrollTo({top:start + (end - start) * eased, behavior:'instant'});
+    if (progress < 1) navigationFrame = requestAnimationFrame(step);
+    else finish();
+  };
+  navigationFrame = requestAnimationFrame(step);
+}
+document.querySelectorAll('#menu-dialog nav a, .site-nav a, .header-request, .footer-up').forEach(link => link.addEventListener('click', event => {
   const target = document.querySelector(link.hash);
   if (!target) return;
   event.preventDefault();
-  menu.close();
-  history.pushState(null, '', link.hash);
-  // Wait until the dialog has closed and the page can scroll again.
-  requestAnimationFrame(() => requestAnimationFrame(() => target.scrollIntoView({
-    behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block:'start'
-  })));
+  navigateToSection(target, link.hash);
 }));
-matchMedia('(min-width: 861px)').addEventListener('change', event => { if (event.matches && menu.open) menu.close(); });
+for (const type of ['wheel', 'touchstart', 'pointerdown']) addEventListener(type, cancelSectionNavigation, {passive:true});
+document.addEventListener('keydown', event => {
+  if (['ArrowUp','ArrowDown','PageUp','PageDown','Home','End',' '].includes(event.key)) cancelSectionNavigation();
+});
+matchMedia('(min-width: 861px)').addEventListener('change', event => { if (event.matches) closeMenu(); });
 
 const videoDialog = document.querySelector('#video-dialog');
 const video = videoDialog.querySelector('video');
