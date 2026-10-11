@@ -24,11 +24,24 @@ for (const dialog of dialogs) {
 const menu = document.querySelector('#menu-dialog');
 const menuButton = document.querySelector('.menu-button');
 menuButton?.addEventListener('click', event => {
+  menu.style.setProperty('--menu-top', `${Math.ceil(document.querySelector('.site-header').getBoundingClientRect().bottom)}px`);
   openDialog(menu, event.currentTarget);
   menuButton.setAttribute('aria-expanded', 'true');
 });
 menu?.addEventListener('close', () => menuButton?.setAttribute('aria-expanded', 'false'));
-menu?.querySelectorAll('nav a').forEach(link => link.addEventListener('click', () => menu.close()));
+menu?.addEventListener('close', () => menuButton?.setAttribute('aria-expanded', 'false'));
+menu?.querySelectorAll('nav a').forEach(link => link.addEventListener('click', event => {
+  const target = document.querySelector(link.hash);
+  if (!target) return;
+  event.preventDefault();
+  menu.close();
+  history.pushState(null, '', link.hash);
+  // Wait until the dialog has closed and the page can scroll again.
+  requestAnimationFrame(() => requestAnimationFrame(() => target.scrollIntoView({
+    behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block:'start'
+  })));
+}));
+matchMedia('(min-width: 861px)').addEventListener('change', event => { if (event.matches && menu.open) menu.close(); });
 
 const videoDialog = document.querySelector('#video-dialog');
 const video = videoDialog.querySelector('video');
@@ -78,10 +91,10 @@ const lineupOptions = document.querySelector('.lineup-options');
 const lineupPanel = document.querySelector('#lineup-detail');
 const lineupViewButtons = [...document.querySelectorAll('[data-view-lineup]')];
 const lineupImage = lineupPanel.querySelector('img');
-const lineupMediaCaption = lineupPanel.querySelector('figcaption');
 const mobileLineups = matchMedia('(max-width: 767px)');
 const lessMotion = matchMedia('(prefers-reduced-motion: reduce)');
 let viewedLineup = 'full';
+let mobileLineupOpen = false;
 let visualRequest = 0;
 let panelAnimation;
 let imageAnimation;
@@ -108,8 +121,7 @@ function showLineupImage(item, animate) {
     lineupImage.width = item.visual.width;
     lineupImage.height = item.visual.height;
     lineupImage.alt = item.visual.alt;
-    lineupMediaCaption.textContent = item.visual.caption;
-    if (animate && !lessMotion.matches && lineupImage.animate) {
+    if (animate && !lineupPanel.hidden && !lessMotion.matches && lineupImage.animate) {
       imageAnimation?.cancel();
       imageAnimation = lineupImage.animate([{opacity:.4}, {opacity:1}], {duration:240, easing:'ease-out'});
     }
@@ -121,6 +133,15 @@ function showLineupImage(item, animate) {
   if (preload.decode) preload.decode().then(apply, apply);
   else { preload.onload = apply; preload.onerror = apply; }
 }
+function syncLineupDisclosure() {
+  const expanded = !mobileLineups.matches || mobileLineupOpen;
+  lineupPanel.hidden = !expanded;
+  for (const button of lineupViewButtons) {
+    const current = expanded && button.dataset.viewLineup === viewedLineup;
+    button.setAttribute('aria-expanded', String(current));
+    button.closest('.lineup-option').classList.toggle('is-viewed', current);
+  }
+}
 function renderViewedLineup(id, animate = false) {
   const item = LINEUPS.find(lineup => lineup.id === id);
   if (!item) return;
@@ -131,11 +152,7 @@ function renderViewedLineup(id, animate = false) {
   showLineupImage(item, animate);
   lineupPanel.querySelector('[data-lineup-title]').textContent = item.label;
   lineupPanel.querySelector('[data-lineup-difference]').textContent = item.difference;
-  for (const button of lineupViewButtons) {
-    const current = button.dataset.viewLineup === id;
-    button.setAttribute('aria-expanded', String(current));
-    button.closest('.lineup-option').classList.toggle('is-viewed', current);
-  }
+  syncLineupDisclosure();
   placeLineupPanel();
   if (animate && !mobileLineups.matches && !lessMotion.matches && lineupPanel.animate) {
     panelAnimation = lineupPanel.querySelector('.lineup-detail-copy').animate([
@@ -146,23 +163,45 @@ function renderViewedLineup(id, animate = false) {
   dispatchEvent(new CustomEvent('bogema:layout'));
 }
 for (const button of lineupViewButtons) button.addEventListener('click', () => {
-  if (button.dataset.viewLineup === viewedLineup) return;
+  const same = button.dataset.viewLineup === viewedLineup;
+  if (!mobileLineups.matches && same) return;
   const before = button.getBoundingClientRect().top;
+  if (mobileLineups.matches) mobileLineupOpen = !(same && mobileLineupOpen);
   renderViewedLineup(button.dataset.viewLineup, true);
   if (mobileLineups.matches) {
-    // Removing an earlier open panel must not move the row being activated.
+    // Preserve the tapped row when an earlier panel closes, without animating height.
     const shift = button.getBoundingClientRect().top - before;
     if (Math.abs(shift) > 1) window.scrollBy({top:shift, behavior:'instant'});
-    if (!lessMotion.matches && lineupPanel.animate) {
-      const height = lineupPanel.getBoundingClientRect().height;
-      panelAnimation = lineupPanel.animate([
-        {height:'0px', opacity:.3, overflow:'hidden'},
-        {height:`${height}px`, opacity:1, overflow:'hidden'}
-      ], {duration:230, easing:'cubic-bezier(.2,.7,.2,1)'});
+    if (mobileLineupOpen && !lessMotion.matches && lineupPanel.animate) {
+      panelAnimation = lineupPanel.animate([{opacity:.4}, {opacity:1}], {duration:160, easing:'ease-out'});
     }
   }
 });
-mobileLineups.addEventListener('change', () => { stopLineupMotion(); placeLineupPanel(); });
+const closeLineup = document.createElement('button');
+closeLineup.type = 'button';
+closeLineup.className = 'lineup-collapse';
+closeLineup.textContent = 'Свернуть состав';
+lineupPanel.querySelector('.lineup-detail-copy').append(closeLineup);
+closeLineup.addEventListener('click', () => {
+  const button = lineupViewButtons.find(item => item.dataset.viewLineup === viewedLineup);
+  mobileLineupOpen = false;
+  stopLineupMotion();
+  syncLineupDisclosure();
+  button.focus({preventScroll:true});
+  const top = button.getBoundingClientRect().top;
+  if (top < document.querySelector('.site-header').getBoundingClientRect().bottom || top > innerHeight - button.offsetHeight) {
+    button.scrollIntoView({block:'start', behavior:'instant'});
+  }
+  dispatchEvent(new CustomEvent('bogema:layout'));
+});
+mobileLineups.addEventListener('change', () => {
+  stopLineupMotion();
+  if (lineupPanel.contains(document.activeElement)) {
+    lineupViewButtons.find(button => button.dataset.viewLineup === viewedLineup).focus({preventScroll:true});
+  }
+  syncLineupDisclosure();
+  placeLineupPanel();
+});
 renderViewedLineup(viewedLineup);
 
 // Arrow keys move through the five views without adding anything to a request.
