@@ -43,4 +43,4 @@ export const LINEUPS = Object.freeze([
   {id:'full', label:'Полный состав', members:null, roles:'Мужской и женский вокал, гитара, саксофон, бас, барабаны', difference:'К основному звучанию добавляется саксофон', videoId:null},
   {id:'extended', label:'Расширенный состав', members:null, roles:'Мужской и женский вокал, гитара, саксофон, клавишные, бас, барабаны', difference:'Саксофон и клавишные в одном составе', videoId:null},
 ].map(item => Object.freeze({...item, visual:Object.freeze(LINEUP_VISUALS[item.id])})));
-export const CONTACT = Object.freeze({name:'Алексей Слобухо', role:'Руководитель группы', phone:'+79006363727', phoneLabel:'+7 (900) 636-37-27', email:'bogemaband@inbox.ru', telegram:'DonSe6astian'});
+export const CONTACT = Object.freeze({name:'Алексей', role:'Руководитель группы', phone:'+79006363727', phoneLabel:'+7 (900) 636-37-27', email:'bogemaband@inbox.ru', telegram:'DonSe6astian'});

@@ -87,3 +87,10 @@
 @media(max-width:370px){.rep-intro h1{font-size:43px}.rep-guide{padding:20px 16px}.rep-choice-host{padding-left:0}.rep-companion{padding-inline:10px}.rep-companion-total strong{font-size:21px}.rep-tabs{width:100%}.rep-tabs button{padding-inline:5px;font-size:12px}.rep-counts dt{font-size:11px}.rep-counts dd{font-size:19px}.rep-counts dt:before{display:none}.rep-request-card{padding:20px 16px}}
 @media(prefers-reduced-motion:reduce){.repertoire-page *{transition:none!important;scroll-behavior:auto!important}}
 @media print{.rep-header,.rep-intro,.rep-companion,.rep-list-heading,.rep-footer,.rep-choice-host,.rep-deprecated,.rep-tools,.rep-request{display:none!important}.rep-workspace{display:block}.repertoire-page{color:#000;background:#fff}.rep-song-row{break-inside:avoid;border-color:#ccc}.rep-song-info h3,.rep-song-artist{color:#000}}
+
+.rep-program-note{display:flex;align-items:center;justify-content:space-between;gap:32px;margin:-2px 0 30px;padding:0 0 27px;border-bottom:1px solid var(--rep-line)}
+.rep-program-note>p{max-width:760px;font-size:15px;line-height:1.7;color:var(--rep-muted)}
+.rep-program-sizes{display:flex;gap:28px;flex-shrink:0}
+.rep-program-sizes>span{display:block;font-size:12px;color:var(--rep-muted)}
+.rep-program-sizes strong{display:block;font-size:29px;font-weight:400;line-height:1.25;color:var(--rep-gold);margin-bottom:4px}
+@media(max-width:900px){.rep-program-note{display:block}.rep-program-sizes{margin-top:18px;gap:34px}.rep-program-note>p br{display:none}.rep-program-note>p br:after{content:" "}}
