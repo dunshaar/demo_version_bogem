@@ -44,3 +44,6 @@
 !/request-contract.mjs
 
 !/assets/band.webp
+
+!/motion.js
+!/motion.css

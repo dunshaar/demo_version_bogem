@@ -1,5 +1,4 @@
 import { LINEUPS } from './project-data.mjs';
-import { preferencesStore } from './preferences-store.mjs';
 
 const dialogs = [...document.querySelectorAll('dialog')];
 const triggers = new WeakMap();
@@ -73,18 +72,25 @@ videoDialog.addEventListener('close', () => {
   error.hidden = true;
 });
 
-// Viewing a lineup is intentionally separate from selecting it for a message.
+// A lineup is a view of the group's offers, never a form selection.
 const lineupShowcase = document.querySelector('.lineup-showcase');
 const lineupOptions = document.querySelector('.lineup-options');
 const lineupPanel = document.querySelector('#lineup-detail');
 const lineupViewButtons = [...document.querySelectorAll('[data-view-lineup]')];
-const lineupDiscuss = document.querySelector('[data-lineup-discuss]');
-const lineupStatus = document.querySelector('.lineup-selection-status');
 const lineupImage = lineupPanel.querySelector('img');
 const lineupMediaCaption = lineupPanel.querySelector('figcaption');
 const lineupLive = lineupPanel.querySelector('[data-video]');
 const mobileLineups = matchMedia('(max-width: 767px)');
-let viewedLineup = preferencesStore.getSnapshot().commercialLineup?.id || 'full';
+const lessMotion = matchMedia('(prefers-reduced-motion: reduce)');
+let viewedLineup = 'full';
+let visualRequest = 0;
+let panelAnimation;
+let imageAnimation;
+function stopLineupMotion() {
+  panelAnimation?.cancel();
+  imageAnimation?.cancel();
+}
+lessMotion.addEventListener('change', () => { if (lessMotion.matches) stopLineupMotion(); });
 function placeLineupPanel() {
   const focused = document.activeElement;
   const restoreFocus = lineupPanel.contains(focused);
@@ -95,21 +101,39 @@ function placeLineupPanel() {
   }
   if (restoreFocus && document.activeElement !== focused) focused.focus({preventScroll:true});
 }
-function renderViewedLineup(id) {
+function showLineupImage(item, animate) {
+  const request = ++visualRequest;
+  const apply = () => {
+    if (request !== visualRequest) return;
+    lineupImage.src = item.visual.src;
+    lineupImage.width = item.visual.width;
+    lineupImage.height = item.visual.height;
+    lineupImage.alt = item.visual.alt;
+    lineupMediaCaption.textContent = item.visual.caption;
+    if (animate && !lessMotion.matches && lineupImage.animate) {
+      imageAnimation?.cancel();
+      imageAnimation = lineupImage.animate([{opacity:.4}, {opacity:1}], {duration:240, easing:'ease-out'});
+    }
+  };
+  if (!animate || lineupImage.getAttribute('src') === item.visual.src) { apply(); return; }
+  const preload = new Image();
+  preload.src = item.visual.src;
+  // Keep the previous image visible until the next real photo is ready.
+  if (preload.decode) preload.decode().then(apply, apply);
+  else { preload.onload = apply; preload.onerror = apply; }
+}
+function renderViewedLineup(id, animate = false) {
   const item = LINEUPS.find(lineup => lineup.id === id);
   if (!item) return;
+  stopLineupMotion();
   viewedLineup = id;
   lineupPanel.dataset.viewedLineup = id;
   lineupPanel.setAttribute('aria-labelledby', `lineup-view-${id}`);
-  lineupImage.src = item.visual.src;
-  lineupImage.width = item.visual.width;
-  lineupImage.height = item.visual.height;
-  lineupImage.alt = item.visual.alt;
-  lineupMediaCaption.textContent = item.visual.caption;
+  showLineupImage(item, animate);
   lineupPanel.querySelector('[data-lineup-title]').textContent = item.label;
   lineupPanel.querySelector('[data-lineup-difference]').textContent = item.difference;
-  lineupDiscuss.dataset.lineupDiscuss = id;
   lineupLive.hidden = !item.videoId;
+  lineupLive.parentElement.hidden = !item.videoId;
   if (item.videoId) lineupLive.dataset.video = item.videoId;
   for (const button of lineupViewButtons) {
     const current = button.dataset.viewLineup === id;
@@ -119,36 +143,21 @@ function renderViewedLineup(id) {
   placeLineupPanel();
 }
 for (const button of lineupViewButtons) button.addEventListener('click', () => {
+  if (button.dataset.viewLineup === viewedLineup) return;
   const before = button.getBoundingClientRect().top;
-  renderViewedLineup(button.dataset.viewLineup);
+  renderViewedLineup(button.dataset.viewLineup, true);
   if (mobileLineups.matches) {
-    // Keep the touched row in place when an earlier inline panel collapses.
-    requestAnimationFrame(() => {
-      const shift = button.getBoundingClientRect().top - before;
-      if (Math.abs(shift) > 1) window.scrollBy({top: shift, behavior: 'instant'});
-    });
+    // Removing an earlier open panel must not move the row being activated.
+    const shift = button.getBoundingClientRect().top - before;
+    if (Math.abs(shift) > 1) window.scrollBy({top:shift, behavior:'instant'});
+    if (!lessMotion.matches && lineupPanel.animate) {
+      const height = lineupPanel.getBoundingClientRect().height;
+      panelAnimation = lineupPanel.animate([
+        {height:'0px', opacity:.3, overflow:'hidden'},
+        {height:`${height}px`, opacity:1, overflow:'hidden'}
+      ], {duration:230, easing:'cubic-bezier(.2,.7,.2,1)'});
+    }
   }
 });
-lineupDiscuss.addEventListener('click', () => {
-  preferencesStore.setCommercialLineup(viewedLineup);
-});
-mobileLineups.addEventListener('change', placeLineupPanel);
+mobileLineups.addEventListener('change', () => { stopLineupMotion(); placeLineupPanel(); });
 renderViewedLineup(viewedLineup);
-function showCommercialLineup(snapshot) {
-  const chosen = snapshot.commercialLineup;
-  lineupStatus.textContent = chosen ? `Для обсуждения выбран ${chosen.label.toLocaleLowerCase('ru-RU')}.` : '';
-}
-showCommercialLineup(preferencesStore.getSnapshot());
-preferencesStore.subscribe(showCommercialLineup);
-
-const progress = document.querySelector('.scroll-progress');
-let scheduled = false;
-function drawProgress() {
-  const height = document.documentElement.scrollHeight - innerHeight;
-  progress.style.transform = `scaleX(${height > 0 ? Math.min(1, Math.max(0, scrollY / height)) : 0})`;
-  scheduled = false;
-}
-function schedule() { if (!scheduled) { scheduled = true; requestAnimationFrame(drawProgress); } }
-addEventListener('scroll', schedule, { passive: true });
-addEventListener('resize', schedule);
-drawProgress();

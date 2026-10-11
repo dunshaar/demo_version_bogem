@@ -1,6 +1,6 @@
 {
+  "mode": "demo",
   "enabled": false,
-  "apiConfigPath": null,
   "endpoint": null,
   "statusEndpoint": null
 }

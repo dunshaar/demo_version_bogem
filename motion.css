@@ -1,0 +1,19 @@
+/* v5: short, optional motion; the document remains visible without this file. */
+.scroll-progress{top:auto;bottom:0;height:2px;transition:none;z-index:1}
+.button,.contact-action,.lineup-view,.repertoire-option,.close-button{transition:background-color 190ms ease,border-color 190ms ease,color 190ms ease}
+.hero-actions .button>svg,.repertoire-option>svg,.live-caption svg{transition:transform 190ms ease}
+.hero-actions .button:is(:hover,:focus-visible)>svg,.repertoire-option:is(:hover,:focus-visible)>svg,.live-card:is(:hover,:focus-visible) .live-caption svg{transform:translateX(4px)}
+.promo-cover>img,.live-card-media img{transition:transform 260ms ease}
+.promo-cover:is(:hover,:focus-visible)>img,.live-card:is(:hover,:focus-visible) .live-card-media img{transform:scale(1.025)}
+.media-play{transition:background-color 190ms ease,box-shadow 190ms ease}
+.promo-cover:is(:hover,:focus-visible) .media-play,.live-card:is(:hover,:focus-visible) .media-play{background:#fff8e9;box-shadow:0 0 0 12px #f1ebde20}
+.lineup-chevron{transition:transform 220ms ease,color 190ms ease}
+dialog[open]{animation:bogema-dialog-in 220ms ease-out}
+dialog[open]::backdrop{animation:bogema-backdrop-in 220ms ease-out}
+@keyframes bogema-dialog-in{from{opacity:.4;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes bogema-backdrop-in{from{opacity:0}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto!important}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .promo-cover:is(:hover,:focus-visible)>img,.live-card:is(:hover,:focus-visible) .live-card-media img,.hero-actions .button:is(:hover,:focus-visible)>svg,.repertoire-option:is(:hover,:focus-visible)>svg,.live-card:is(:hover,:focus-visible) .live-caption svg{transform:none}
+}
