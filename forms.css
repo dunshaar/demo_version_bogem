@@ -39,7 +39,6 @@
 .bf-primary:not(:disabled):hover{background:#ddbd91;border-color:#ddbd91}
 .bf-secondary:hover{border-color:var(--gold,#cba878)}
 .bf-primary:focus-visible,.bf-secondary:focus-visible,.bf-text-button:focus-visible,.bf-check input:focus-visible,.bf-confirmation:focus-visible,.bf-exclusion:focus-visible{outline:2px solid var(--gold,#cba878);outline-offset:3px}
-.bf-action-note{margin:.7rem 0 0;color:#c7c1b7;font-size:.875rem;line-height:1.5;text-align:center}
 .bf-recovery{display:flex;flex-wrap:wrap;gap:.6rem}
 .bf-confirmation{padding:1.2rem 0;border-top:1px solid var(--gold,#cba878)}
 .bf-confirmation h3{margin:0;font:normal 1.8rem/1.3 Georgia,serif}
@@ -60,3 +59,27 @@
 .bf-consent .bf-field-error{padding-left:calc(21px + .65rem)}
 .bf-attachment-required .bf-selection-counts{padding-left:0}
 .bf-attachment-required .bf-text-button{font-size:.94rem}
+
+/* Form controls use the same quiet gold hierarchy as the repertoire. */
+.bf-field label{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:.25rem .7rem;font-size:.9375rem}
+.bf-optional{font-size:.8rem}
+.bf-field input,.bf-field select{min-height:54px;border-radius:6px;padding:.9rem 1rem;background:#ffffff04;transition:border-color 160ms ease,background-color 160ms ease}
+.bf-field input:hover,.bf-field select:hover{border-color:#d1b78666;background:#ffffff07}
+.bf-primary,.bf-secondary{min-height:50px;border-radius:6px;padding:.85rem 1.15rem;font-size:.9375rem;font-weight:500;letter-spacing:.005em}
+.bf-primary{min-height:56px;gap:1rem;padding:1rem 1.3rem;background:#d1b786;border-color:#d1b786;box-shadow:inset 0 1px 0 #fff3;color:#1b1a16}
+.bf-primary::after{content:"";width:15px;height:15px;flex:none;background:currentColor;clip-path:polygon(0 44%,74% 44%,43% 13%,52% 4%,100% 50%,52% 96%,43% 87%,74% 56%,0 56%);transition:transform 180ms ease}
+.bf-primary:not(:disabled):hover{background:#e3cea6;border-color:#e3cea6}
+.bf-primary:not(:disabled):hover::after{transform:translateX(3px)}
+.bf-primary:disabled::after{opacity:.45}
+.bf-secondary{background:#ffffff04;border-color:#d1b78655;color:var(--ink,#f5f0e7)}
+.bf-secondary:hover{background:#d1b78612;border-color:var(--gold,#cba878)}
+.bf-text-button{padding:.5rem .1rem;font-size:.875rem;text-decoration:none;border-bottom:1px solid #d1b78655}
+.bf-text-button:hover{border-bottom-color:var(--gold,#cba878)}
+.bf-attachment{margin-top:1.4rem;padding:1rem 1.05rem;border:1px solid var(--line,#45413b);border-radius:6px;background:#ffffff03}
+.bf-attachment-controls{justify-content:space-between;gap:.6rem}
+.bf-attachment-label{font-size:.9375rem;color:var(--ink,#f5f0e7)}
+.bf-preview-selection{min-height:42px;padding:.55rem .85rem;font-size:.8125rem}
+.bf-selection-counts{margin:.5rem 0 0;line-height:1.6}
+.bf-selection-preview{padding-top:1rem}
+.bf-confirmation{padding:1.4rem 0 .5rem}
+@media(prefers-reduced-motion:reduce){.bf-field input,.bf-field select,.bf-primary::after{transition:none}}
