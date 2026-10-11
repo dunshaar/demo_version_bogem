@@ -2,7 +2,7 @@ import { normalizePhone } from './phone-input.mjs';
 
 // The local site runs in demo mode. This strict contract is for a future adapter.
 export const LIMITS = Object.freeze({name:80,rawPhone:50,bodyBytes:131072,responseBytes:32768,timeoutMs:15000});
-const CHANNELS = new Set(['','phone','telegram']);
+const CHANNELS = new Set(['','phone','telegram','whatsapp','max']);
 const STATUSES = new Set(['want','skip']);
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const KEY = /^(group|trio)-song-\d{3,6}$/;
@@ -40,8 +40,9 @@ export function createFrozenRequest(values,snapshot,attached,requestId=uuid(),{e
   if(errors.length)throw new Error(errors[0][1]);
   if(!UUID.test(requestId))throw new Error('Некорректный номер заявки');
   if(attached&&!snapshot.ready)throw new Error('Пожелания ещё загружаются, попробуйте отправить чуть позже');
-  if(attached&&snapshot.deprecated?.length&&!excludeDeprecated)throw new Error('Подтвердите отправку без недоступных песен');
-  const records=attached?clone(snapshot.selected||[]):[],seen=new Set();
+  if(attached&&!['group','trio'].includes(snapshot.program))throw new Error('Выберите состав для пожеланий');
+  if(attached&&snapshot.deprecated?.some(song=>song.program===snapshot.program)&&!excludeDeprecated)throw new Error('Подтвердите отправку без недоступных песен');
+  const records=attached?clone((snapshot.selected||[]).filter(song=>song.program===snapshot.program)):[],seen=new Set();
   if(records.length&&(!Number.isInteger(snapshot.maxSelections)||records.length>snapshot.maxSelections))throw new Error('Число пожеланий превышает размер актуального каталога');
   for(const song of records){
     const key=song.program+':'+song.id;
@@ -54,7 +55,7 @@ export function createFrozenRequest(values,snapshot,attached,requestId=uuid(),{e
     selections:records.map(({program,id,status})=>({program,id,status}))};
   const body=JSON.stringify(payload);
   if(bytes(body)>LIMITS.bodyBytes)throw new Error('Заявка превышает допустимый размер, пожелания сохранены');
-  return deepFreeze({requestId,payload,body,bodyBytes:bytes(body),records});
+  return deepFreeze({requestId,program:attached?snapshot.program:null,payload,body,bodyBytes:bytes(body),records});
 }
 export function validateRequest(payload,{catalog}){
   const errors=[],missing=[];
@@ -64,7 +65,7 @@ export function validateRequest(payload,{catalog}){
   if(!exactKeys(payload,FIELDS)||payload.schemaVersion!==3||payload.project!=='bogema'||!UUID.test(payload.requestId||''))errors.push('Некорректный контракт запроса');
   const contact=plain(payload.contact)?payload.contact:{},checked=validateContact({...contact,date:payload.date,consent:payload.consent});
   errors.push(...checked.errors.map(([,message])=>message));
-  if(!exactKeys(contact,['name','phone','preferredChannel'])||contact.name!==checked.data.name||contact.phone!==checked.data.phone||(contact.preferredChannel!==null&&!['phone','telegram'].includes(contact.preferredChannel)))errors.push('Некорректные поля контакта');
+  if(!exactKeys(contact,['name','phone','preferredChannel'])||contact.name!==checked.data.name||contact.phone!==checked.data.phone||(contact.preferredChannel!==null&&!['phone','telegram','whatsapp','max'].includes(contact.preferredChannel)))errors.push('Некорректные поля контакта');
   if(payload.date!==null&&(typeof payload.date!=='string'||!payload.date||!validDate(payload.date)))errors.push('Некорректная дата');
   const programs=catalog?.lineups||{},max=Object.values(programs).reduce((sum,program)=>sum+new Set(program.songs.map(song=>song.id)).size,0);
   const selections=Array.isArray(payload.selections)?payload.selections:[];

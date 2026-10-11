@@ -1,4 +1,4 @@
-import { preferencesStore as store, STATUS_LABELS, PROGRAMS, formatPreferences, formatFullCatalog } from '../preferences-store.mjs';
+import { preferencesStore as store, STATUS_LABELS, PROGRAMS, currentProgramSnapshot, formatPreferences, formatFullCatalog } from '../preferences-store.mjs';
 
 const $ = selector => document.querySelector(selector);
 const rows = new Map();
@@ -110,8 +110,8 @@ function refresh(value) {
   $('#storage-status').textContent = snapshot.storage.message || ''; $('#storage-status').hidden = !snapshot.storage.message;
   $('#program-notice').hidden = !snapshot.urlWarning; $('#program-notice').textContent = snapshot.urlWarning;
   renderCatalog(); renderDeprecated();
-  const nonempty = snapshot.counts.total + snapshot.counts.deprecated > 0;
-  for (const id of ['copy-selection', 'download-selection', 'reset-open']) $(`#${id}`).disabled = !nonempty;
+  const current = currentProgramSnapshot(snapshot);
+  for (const id of ['copy-selection', 'download-selection', 'reset-open']) $(`#${id}`).disabled = !(current.selected.length + current.deprecated.length);
   if (!$('#copy-fallback').hidden) $('#copy-text').value = formatPreferences(snapshot);
   window.dispatchEvent(new Event('bogema:layout'));
 }
@@ -148,20 +148,41 @@ document.addEventListener('click', event => {
   const remove = event.target.closest('[data-remove-song]');
   if (remove) store.setStatus(remove.dataset.removeProgram, remove.dataset.removeSong, 'maybe');
 });
-function toggleReset(show) {
-  $('#reset-confirmation').hidden = !show; $('#preview-actions').hidden = show;
-  if (show) $('#reset-cancel').focus({ preventScroll: true });
+const actionDialogs = [...document.querySelectorAll('.rep-action-dialog')];
+const dialogTriggers = new WeakMap();
+function openActionDialog(dialog, trigger) {
+  if (dialog.open) return;
+  dialogTriggers.set(dialog, trigger); dialog.showModal(); document.body.classList.add('modal-open');
 }
-$('#reset-open').addEventListener('click', () => toggleReset(true));
-$('#reset-cancel').addEventListener('click', () => { toggleReset(false); $('#reset-open').focus({ preventScroll: true }); });
+for (const dialog of actionDialogs) {
+  dialog.querySelector('[data-dismiss]').addEventListener('click', () => dialog.close());
+  dialog.addEventListener('click', event => {
+    if (event.target !== dialog) return;
+    const r = dialog.getBoundingClientRect();
+    if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) dialog.close();
+  });
+  dialog.addEventListener('close', () => {
+    document.body.classList.remove('modal-open');
+    const trigger = dialogTriggers.get(dialog);
+    (trigger && !trigger.disabled ? trigger : $(`#tab-${snapshot.program}`)).focus({preventScroll:true});
+  });
+}
+let resetProgram;
+$('#reset-open').addEventListener('click', () => {
+  resetProgram = snapshot.program;
+  $('#reset-description').textContent = `Все песни ${resetProgram === 'group' ? 'группы' : 'трио'} снова получат отметку «Можно»`;
+  openActionDialog($('#reset-confirmation'), $('#reset-open'));
+  $('#reset-cancel').focus();
+});
+$('#reset-cancel').addEventListener('click', () => $('#reset-confirmation').close());
 $('#reset-confirm').addEventListener('click', () => {
-  toggleReset(false); store.clearMarks(); $('#copy-fallback').hidden = true;
-  $('#export-status').textContent = 'Все отметки сброшены, у каждой песни снова «Можно»';
-  $('#repertoire-tools summary').focus({ preventScroll: true });
+  store.clearMarks(resetProgram); $('#copy-fallback').hidden = true;
+  $('#reset-status').textContent = 'Отметки выбранного состава сброшены, у каждой песни снова «Можно»';
+  $('#reset-confirmation').close();
 });
 $('#copy-selection').addEventListener('click', async () => {
-  try { await navigator.clipboard.writeText(formatPreferences(snapshot)); $('#export-status').textContent = 'Пожелания скопированы'; $('#copy-fallback').hidden = true; }
-  catch { $('#copy-text').value = formatPreferences(snapshot); $('#copy-fallback').hidden = false; $('#copy-text').focus(); $('#copy-text').select(); $('#export-status').textContent = 'Выделите текст ниже и скопируйте вручную'; }
+  try { await navigator.clipboard.writeText(formatPreferences(snapshot)); $('#copy-status').textContent = 'Пожелания скопированы'; $('#copy-fallback').hidden = true; }
+  catch { $('#copy-text').value = formatPreferences(snapshot); $('#copy-fallback').hidden = false; $('#copy-text').focus(); $('#copy-text').select(); $('#copy-status').textContent = 'Выделите текст ниже и скопируйте вручную'; }
 });
 function download(text, filename, target = '#export-status') {
   try {
@@ -170,8 +191,13 @@ function download(text, filename, target = '#export-status') {
     setTimeout(() => URL.revokeObjectURL(url), 10000); $(target).textContent = 'Файл TXT подготовлен для скачивания';
   } catch { $(target).textContent = 'Не удалось подготовить файл, попробуйте ещё раз'; }
 }
-$('#download-list').addEventListener('click', () => download(formatFullCatalog(catalog, snapshot.program, snapshot.selected), `Богема - ${catalog.lineups[snapshot.program].label} - полный репертуар.txt`, '#catalog-export-status'));
-$('#download-selection').addEventListener('click', () => download(formatPreferences(snapshot), 'Богема - мои музыкальные пожелания.txt'));
+$('#download-list').addEventListener('click', () => openActionDialog($('#catalog-download-dialog'), $('#download-list')));
+for (const button of document.querySelectorAll('[data-download-program]')) button.addEventListener('click', () => {
+  const program = button.dataset.downloadProgram;
+  download(formatFullCatalog(catalog, program), `Богема - ${catalog.lineups[program].label} - полный репертуар.txt`, '#catalog-export-status');
+  $('#catalog-download-dialog').close();
+});
+$('#download-selection').addEventListener('click', () => download(formatPreferences(snapshot), `Богема - ${catalog.lineups[snapshot.program].label} - мои пожелания.txt`));
 $('#retry-catalog').addEventListener('click', () => { $('#catalog-loading').hidden = false; $('#catalog-error').hidden = true; store.reloadCatalog(); });
 
 const root = document.documentElement, header = $('.rep-header'), companion = $('#repertoire-companion');

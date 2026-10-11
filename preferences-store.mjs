@@ -135,7 +135,11 @@ export function createPreferencesStore({ catalog = null, storage = null, search 
       records.set(key, { program: programID, id, status, snapshot: { title: song.title, artist: song.artist, programLabel: data.lineups[programID].label } });
       changed();
     },
-    clearMarks() { records.clear(); changed(); },
+    clearMarks(programID = null) {
+      if (programID === null) records.clear();
+      else for (const [key, mark] of records) if (mark.program === programID) records.delete(key);
+      changed();
+    },
     markUnavailable(items) { for (const item of items) if (validID(item?.program) && validID(item?.id)) unavailable.add(keyFor(item.program, item.id)); notify(); },
     refreshFromStorage(value = search) { readSaved(); applySearch(value); notify(); },
     setCatalog(value) { data = validateCatalog(clone(value)); catalogVersion = data.version; catalogError = false; unavailable.clear(); notify(); },
@@ -151,7 +155,13 @@ export function createPreferencesStore({ catalog = null, storage = null, search 
   return api;
 }
 
+export function currentProgramSnapshot(snapshot) {
+  const selected = (snapshot.selected || []).filter(item => item.program === snapshot.program);
+  const deprecated = (snapshot.deprecated || []).filter(item => item.program === snapshot.program);
+  return {...snapshot, selected, deprecated};
+}
 export function formatPreferences(snapshot, { includeDeprecated = true } = {}) {
+  snapshot = currentProgramSnapshot(snapshot);
   const lines = ['БОГЕМА: МУЗЫКАЛЬНЫЕ ПОЖЕЛАНИЯ', 'Итоговую программу согласуем отдельно', BASELINE_EXPLANATION];
   const selected = (snapshot.selected || []).filter(item => ['want', 'skip'].includes(item.status));
   if (!selected.length) lines.push('', 'Изменений по актуальным песням нет');

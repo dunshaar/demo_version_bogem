@@ -94,3 +94,15 @@
 .rep-program-sizes>span{display:block;font-size:12px;color:var(--rep-muted)}
 .rep-program-sizes strong{display:block;font-size:29px;font-weight:400;line-height:1.25;color:var(--rep-gold);margin-bottom:4px}
 @media(max-width:900px){.rep-program-note{display:block}.rep-program-sizes{margin-top:18px;gap:34px}.rep-program-note>p br{display:none}.rep-program-note>p br:after{content:" "}}
+
+/* Export actions belong at the beginning; reset stays with the current program. */
+.rep-downloads{margin:0 0 30px}.rep-download-buttons{display:flex;flex-wrap:wrap;gap:12px}.rep-download-buttons .rep-secondary{min-height:54px;padding:14px 22px;font-size:15px;gap:14px}.rep-downloads .rep-small:not(:empty){margin-top:12px}
+.rep-reset{width:100%;margin-top:12px;border-top:1px solid #ffffff17;color:#b8b6ad;font-size:13px}.rep-reset:not(:disabled):hover{color:var(--rep-gold)}
+.rep-copy-tools{margin-top:24px}.rep-copy-tools .rep-small:not(:empty){margin-top:10px}
+.rep-action-dialog{position:fixed;inset:0;margin:auto;width:460px;max-width:calc(100vw - 32px);max-height:calc(100dvh - 32px);overflow:auto;padding:36px 28px 28px;border:1px solid #d1b78655;border-radius:12px;background:#1b1b19;color:#f2eee5;box-shadow:0 24px 100px #0008}
+.rep-action-dialog::backdrop{background:#000b}.rep-action-dialog h2{font-size:29px;line-height:1.15;letter-spacing:-.03em;padding-right:24px}.rep-action-dialog>p{color:var(--rep-muted);font-size:15px;margin-top:15px}
+.rep-dialog-close{position:absolute;right:8px;top:6px;width:44px;height:44px;border:0;background:transparent;font-size:28px;color:var(--rep-muted)}
+.rep-download-choices{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px}.rep-download-choices button{min-height:98px;flex-direction:column;gap:6px}.rep-download-choices strong{font-size:21px;font-weight:400}.rep-download-choices span{color:var(--rep-muted);font-size:13px}.rep-dialog-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}.rep-dialog-actions button{flex:1}
+@media(max-width:1040px){.rep-reset{grid-column:1/-1;margin:0;padding-block:7px;min-height:40px}}
+@media(max-width:600px){.rep-download-buttons{display:grid;grid-template-columns:1fr}.rep-download-buttons .rep-secondary{justify-content:flex-start}.rep-action-dialog{padding:36px 22px 24px}.rep-action-dialog h2{font-size:26px}.rep-dialog-actions{flex-direction:column}}
+@media print{.rep-downloads,.rep-copy-tools,.rep-action-dialog{display:none!important}}

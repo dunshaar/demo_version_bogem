@@ -6,11 +6,11 @@
   const blank=()=>({name:'',phone:'',preferredChannel:'',date:'',consent:false});
   let repertoire=false;
   let draft=blank(),phase='loading',notice='',prepared=null,attempt=null,lastRequestId='';
-  let contract,store,formatPreferences,controller,excludeConfirmed='',confirmExclusion=false;
+  let contract,store,formatPreferences,currentProgramSnapshot,controller,excludeConfirmed='',confirmExclusion=false;
   let config={mode:'unavailable',enabled:false,endpoint:null,statusEndpoint:null};
   const editable=()=>phase==='draft';
   const frozen=()=>['pending','rejected','catalog_changed','uncertain','partial'].includes(phase);
-  const snap=()=>store?.getSnapshot()||{ready:false,selected:[],deprecated:[],counts:{want:0,skip:0}};
+  const snap=()=>(store?currentProgramSnapshot(store.getSnapshot()):null)||{ready:false,selected:[],deprecated:[],counts:{want:0,skip:0}};
   const q=selector=>controller.form.querySelector(selector);
   const exclusionKey=()=>JSON.stringify([snap().catalogVersion,snap().selected.map(({program,id,status})=>[program,id,status]),snap().deprecated.map(({program,id,status})=>[program,id,status])]);
   function render(){if(controller)controller.render();}
@@ -42,7 +42,7 @@
         <div class="bf-fields">
           <div class="bf-field"><label for="bf-name">Имя</label><input id="bf-name" name="name" type="text" autocomplete="name" required maxlength="80" aria-describedby="bf-name-error"><p class="bf-field-error" id="bf-name-error" data-error="name" hidden></p></div>
           <div class="bf-field"><label for="bf-phone">Телефон</label><input id="bf-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required maxlength="50" placeholder="+7 (___) ___-__-__" aria-describedby="bf-phone-error"><p class="bf-field-error" id="bf-phone-error" data-error="phone" hidden></p></div>
-          <div class="bf-field"><label for="bf-channel">Как с вами связаться</label><select id="bf-channel" name="preferredChannel" aria-describedby="bf-channel-error"><option value="">Звонок или сообщение</option><option value="phone">Позвонить</option><option value="telegram">Написать в Telegram</option></select><p class="bf-field-error" id="bf-channel-error" data-error="preferredChannel" hidden></p></div>
+          <div class="bf-field"><label for="bf-channel">Как с вами связаться <span class="bf-optional">Необязательно</span></label><select id="bf-channel" name="preferredChannel" aria-describedby="bf-channel-error"><option value="">Выберите способ</option><option value="phone">Звонок</option><option value="telegram">Telegram</option><option value="whatsapp">WhatsApp</option><option value="max">MAX</option></select><p class="bf-field-error" id="bf-channel-error" data-error="preferredChannel" hidden></p></div>
           <div class="bf-field bf-field-date"><label for="bf-date">Дата мероприятия <span class="bf-optional">Если известна</span></label><input id="bf-date" name="date" type="date" aria-describedby="bf-date-error"><p class="bf-field-error" id="bf-date-error" data-error="date" hidden></p></div>
         </div>
         ${repertoire?`<section class="bf-attachment bf-attachment-required" hidden>
@@ -73,12 +73,13 @@
         const hasChanges=current.length+snapshot.deprecated.length>0;
         q('.bf-attachment').hidden=!hasChanges;
         const want=current.filter(song=>song.status==='want').length,skip=current.filter(song=>song.status==='skip').length;
+        q('.bf-attachment-label').textContent=(prepared&&frozen()?prepared.program:snapshot.program)==='trio'?'Пожелания для трио':'Пожелания для группы';
         q('.bf-selection-counts').textContent='Хочу: '+want+' · Не надо: '+skip+(snapshot.deprecated.length?' · Недоступно: '+snapshot.deprecated.length:'');
         q('.bf-storage-warning').hidden=!snapshot.storage?.message;
         q('.bf-storage-warning').textContent=snapshot.storage?.message||'';
         q('.bf-preview-selection').disabled=phase==='pending';
         if(!hasChanges){q('.bf-selection-preview').hidden=true;q('.bf-preview-selection').setAttribute('aria-expanded','false');}
-        q('.bf-selection-text').textContent=formatPreferences?formatPreferences({...snapshot,selected:current}):'';
+        q('.bf-selection-text').textContent=formatPreferences?formatPreferences({...snapshot,program:prepared&&frozen()?prepared.program:snapshot.program,selected:current}):'';
         q('.bf-exclusion').hidden=!confirmExclusion||!editable();
       }
       q('.bf-status').textContent=notice||((phase==='draft'&&config.mode!=='demo'&&!config.enabled)?'Отправка сейчас недоступна, попробуйте ещё раз позже':'');
@@ -178,7 +179,7 @@
       contract=modules[0];config=await loadConfig();modules[1].attachPhoneMask(controller.fields.phone);controller.form.dataset.phoneMask='ready';
       if(repertoire){
         const preferences=await import(new URL('preferences-store.mjs',scriptURL).href);
-        store=preferences.preferencesStore;formatPreferences=preferences.formatPreferences;
+        store=preferences.preferencesStore;formatPreferences=preferences.formatPreferences;currentProgramSnapshot=preferences.currentProgramSnapshot;
         store.subscribe(()=>{
           if(editable()){
             if(!snap().selected.length&&!snap().deprecated.length&&q('.bf-attachment').contains(document.activeElement))q('.bf-primary').focus({preventScroll:true});
