@@ -45,7 +45,7 @@
     try { await video.play(); if (request === playRequest) status.textContent = ''; }
     catch (error) {
       if (request !== playRequest || error?.name === 'AbortError') return;
-      status.textContent = 'Не удалось начать видео. Нажмите воспроизведение ещё раз.';
+      status.textContent = 'Не удалось начать видео, нажмите воспроизведение ещё раз';
     }
   }
   function updateVolume() {
@@ -75,7 +75,7 @@
     if (!total) return;
     const next = Math.max(0, Math.min(total, Number(seek.value)));
     try { video.currentTime = next; }
-    catch { status.textContent = 'Этот фрагмент ещё загружается. Попробуйте через секунду.'; }
+    catch { status.textContent = 'Этот фрагмент ещё загружается, попробуйте через секунду'; }
     clock.textContent = `${time(next)} / ${time(total)}`;
     seek.setAttribute('aria-valuetext', `${time(next)} из ${time(total)}`);
     seek.style.setProperty('--progress', `${next / total * 100}%`);
@@ -128,7 +128,7 @@
     try {
       if (document.fullscreenElement === player) await document.exitFullscreen();
       else await player.requestFullscreen();
-    } catch { status.textContent = 'Полный экран недоступен в этом браузере.'; }
+    } catch { status.textContent = 'Полный экран недоступен в этом браузере'; }
     finally { fullscreenPending = false; }
   }
   fullscreen.addEventListener('click', toggleFullscreen);

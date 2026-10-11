@@ -3,7 +3,9 @@
   'use strict';
   if(window.bogemaForms)return;
   const scriptURL=document.currentScript?.src||document.querySelector('script[src$="forms.js"]')?.src||new URL('forms.js',document.baseURI).href;
-  const blank=()=>({name:'',phone:'',date:''});
+  const blank=()=>({name:'',phone:'',preferredChannel:'',date:'',consent:false});
+  let repertoire=false;
+  const hasAttachment=()=>repertoire||attachment;
   let draft=blank(),attachment=false,phase='loading',notice='',prepared=null,attempt=null,lastRequestId='';
   let contract,store,formatPreferences,controller,excludeConfirmed='',confirmExclusion=false;
   let config={mode:'unavailable',enabled:false,endpoint:null,statusEndpoint:null};
@@ -29,42 +31,52 @@
     finally{clearTimeout(timer);}
   }
   function mount(host){
+    repertoire=host.dataset.source==='repertoire';
+    const requestLabel=repertoire?'Отправить пожелания':'Оставить заявку';
+    const submitLabel=repertoire?'Отправить пожелания':'Отправить заявку';
+    const wishesHref=repertoire?'#songs':'repertoire/';
     const form=document.createElement('form');form.className='bf-form';form.noValidate=true;
     form.addEventListener('submit',event=>{event.preventDefault();submit();});
     form.innerHTML=`<div class="bf-root">
-      <h3 class="bf-heading">Оставить заявку</h3>
+      <h3 class="bf-heading">${requestLabel}</h3>
       <div class="bf-editable-fields">
         <div class="bf-fields">
           <div class="bf-field"><label for="bf-name">Имя</label><input id="bf-name" name="name" type="text" autocomplete="name" required maxlength="80" aria-describedby="bf-name-error"><p class="bf-field-error" id="bf-name-error" data-error="name" hidden></p></div>
           <div class="bf-field"><label for="bf-phone">Телефон</label><input id="bf-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required maxlength="50" placeholder="+7 (___) ___-__-__" aria-describedby="bf-phone-error"><p class="bf-field-error" id="bf-phone-error" data-error="phone" hidden></p></div>
+          <div class="bf-field"><label for="bf-channel">Способ связи <span class="bf-optional">(необязательно)</span></label><select id="bf-channel" name="preferredChannel" aria-describedby="bf-channel-error"><option value="">Как удобнее</option><option value="phone">Позвонить</option><option value="telegram">Написать в Telegram</option></select><p class="bf-field-error" id="bf-channel-error" data-error="preferredChannel" hidden></p></div>
           <div class="bf-field bf-field-date"><label for="bf-date">Дата мероприятия <span class="bf-optional">(необязательно)</span></label><input id="bf-date" name="date" type="date" aria-describedby="bf-date-error"><p class="bf-field-error" id="bf-date-error" data-error="date" hidden></p></div>
         </div>
         <section class="bf-attachment" hidden>
           <div class="bf-attachment-controls"><label class="bf-check"><input name="attachment" type="checkbox"><span>Прикрепить пожелания по песням</span></label><button type="button" class="bf-text-button bf-preview-selection" aria-expanded="false" aria-controls="bf-selection-preview">Посмотреть</button></div>
           <p class="bf-selection-counts"></p><p class="bf-storage-warning" role="status" hidden></p>
-          <div class="bf-selection-preview" id="bf-selection-preview" hidden><pre class="bf-selection-text"></pre><a class="bf-text-button" href="repertoire/">Изменить пожелания</a><button type="button" class="bf-text-button bf-close-selection">Свернуть</button></div>
+          <div class="bf-selection-preview" id="bf-selection-preview" hidden><pre class="bf-selection-text"></pre><a class="bf-text-button" href="${wishesHref}">Изменить пожелания</a><button type="button" class="bf-text-button bf-close-selection">Свернуть</button></div>
         </section>
-        <section class="bf-exclusion" tabindex="-1" hidden aria-labelledby="bf-exclusion-heading"><h4 id="bf-exclusion-heading">Некоторые песни больше недоступны</h4><p>Они останутся в сохранённых пожеланиях, но не попадут в заявку. Продолжить без них?</p><div class="bf-recovery"><button class="bf-secondary bf-exclude" type="button">Отправить без недоступных</button><a class="bf-text-button" href="repertoire/">Вернуться к пожеланиям</a><button class="bf-text-button bf-exclude-cancel" type="button">Назад к форме</button></div></section>
+        <section class="bf-exclusion" tabindex="-1" hidden aria-labelledby="bf-exclusion-heading"><h4 id="bf-exclusion-heading">Некоторые песни больше недоступны</h4><p>Они останутся в сохранённых пожеланиях, но не попадут в заявку<br>Продолжить без них?</p><div class="bf-recovery"><button class="bf-secondary bf-exclude" type="button">Отправить без недоступных</button><a class="bf-text-button" href="${wishesHref}">Вернуться к пожеланиям</a><button class="bf-text-button bf-exclude-cancel" type="button">Назад к форме</button></div></section>
       </div>
+      <div class="bf-consent"><label class="bf-check"><input id="bf-consent" name="consent" type="checkbox" required aria-describedby="bf-consent-error"><span>Я соглашаюсь с политикой конфиденциальности и даю согласие на обработку персональных данных</span></label><p class="bf-field-error" id="bf-consent-error" data-error="consent" hidden></p></div>
       <p class="bf-status" role="status" aria-live="polite" aria-atomic="true"></p>
       <p class="bf-request-id" hidden></p>
-      <button class="bf-primary" type="submit" disabled>Отправить заявку</button>
-      <p class="bf-action-note">Свяжемся с вами, чтобы уточнить детали</p>
+      <button class="bf-primary" type="submit" disabled>${submitLabel}</button>
+      <p class="bf-action-note">${repertoire?"Свяжемся с вами, чтобы согласовать программу":"Свяжемся с вами, чтобы уточнить детали"}</p>
       <div class="bf-recovery"><button class="bf-secondary bf-retry" type="button" hidden>Повторить отправку</button><button class="bf-secondary bf-check-status" type="button" hidden>Проверить результат</button><button class="bf-secondary bf-edit" type="button" hidden>Изменить данные</button></div>
-      <section class="bf-confirmation" tabindex="-1" hidden><h3 class="bf-confirmation-title">Заявка отправлена</h3><p>Спасибо! Свяжемся с вами, чтобы обсудить выступление и подтвердить дату</p><button class="bf-secondary bf-new" type="button">Новая заявка</button></section>
+      <section class="bf-confirmation" tabindex="-1" hidden><h3 class="bf-confirmation-title">${repertoire?"Пожелания отправлены":"Заявка отправлена"}</h3><p>${repertoire?"Спасибо! Свяжемся с вами, чтобы обсудить выбранные песни и согласовать программу":"Спасибо! Свяжемся с вами, чтобы обсудить выступление и подтвердить дату"}</p><button class="bf-secondary bf-new" type="button">${repertoire?"Отправить ещё":"Новая заявка"}</button></section>
     </div>`;
     host.replaceChildren(form);
-    const fields=Object.fromEntries(['name','phone','date','attachment'].map(name=>[name,form.elements.namedItem(name)]));
+    const fields=Object.fromEntries(['name','phone','preferredChannel','date','consent','attachment'].map(name=>[name,form.elements.namedItem(name)]));
     controller={form,fields,render(){
       const snapshot=snap(),locked=!editable(),success=['demo_complete','accepted','delivered'].includes(phase);
       form.dataset.state=phase;form.dataset.mode=config.mode;
       form.setAttribute('aria-busy',String(phase==='pending'));
-      for(const name of Object.keys(draft)){if(fields[name].value!==draft[name])fields[name].value=draft[name];fields[name].disabled=locked;}
+      for(const name of Object.keys(draft)){if(name==='consent')fields[name].checked=draft[name];else if(fields[name].value!==draft[name])fields[name].value=draft[name];fields[name].disabled=locked;}
       const current=prepared&&frozen()?prepared.records:snapshot.selected;
       const hasChanges=current.length+snapshot.deprecated.length>0;
-      fields.attachment.checked=attachment;fields.attachment.disabled=locked||!snapshot.ready||!hasChanges;
+      fields.attachment.checked=hasAttachment();fields.attachment.disabled=locked||!snapshot.ready||!hasChanges;
       q('.bf-editable-fields').hidden=success;
+      q('.bf-consent').hidden=success;
+      fields.attachment.closest('label').hidden=repertoire;
       q('.bf-attachment').hidden=!hasChanges;
+      q('.bf-attachment').classList.toggle('bf-attachment-required',repertoire);
+      q('.bf-preview-selection').textContent=repertoire?'Пожелания к отправке':'Посмотреть';
       const want=current.filter(song=>song.status==='want').length,skip=current.filter(song=>song.status==='skip').length;
       q('.bf-selection-counts').textContent='Хочу: '+want+' · Не надо: '+skip+(snapshot.deprecated.length?' · Недоступно: '+snapshot.deprecated.length:'');
       q('.bf-storage-warning').hidden=!snapshot.storage?.message;
@@ -73,9 +85,9 @@
       if(!hasChanges){q('.bf-selection-preview').hidden=true;q('.bf-preview-selection').setAttribute('aria-expanded','false');}
       q('.bf-selection-text').textContent=formatPreferences?formatPreferences({...snapshot,selected:current}):'';
       q('.bf-exclusion').hidden=!confirmExclusion||!editable();
-      q('.bf-status').textContent=notice||((phase==='draft'&&config.mode!=='demo'&&!config.enabled)?'Отправка сейчас недоступна. Свяжитесь с группой через контакты рядом.':'');
+      q('.bf-status').textContent=notice||((phase==='draft'&&config.mode!=='demo'&&!config.enabled)?'Отправка сейчас недоступна, попробуйте ещё раз позже':'');
       q('.bf-primary').disabled=!editable()||confirmExclusion||(config.mode!=='demo'&&!config.enabled);
-      q('.bf-primary').textContent=phase==='pending'?'Отправляем…':'Отправить заявку';
+      q('.bf-primary').textContent=phase==='pending'?'Отправляем':submitLabel;
       q('.bf-primary').hidden=success||['rejected','catalog_changed','uncertain','partial'].includes(phase);
       q('.bf-action-note').hidden=success;
       q('.bf-retry').hidden=phase!=='rejected'||!attempt?.result.retryable;
@@ -86,10 +98,10 @@
       q('.bf-request-id').hidden=!requestId||config.mode==='demo';
       q('.bf-request-id').textContent=requestId?'Номер заявки: '+requestId:'';
       q('.bf-confirmation').hidden=!success;
-      q('.bf-confirmation-title').textContent=phase==='accepted'?'Заявка принята':'Заявка отправлена';
+      q('.bf-confirmation-title').textContent=repertoire?(phase==='accepted'?'Пожелания приняты':'Пожелания отправлены'):(phase==='accepted'?'Заявка принята':'Заявка отправлена');
     }};
     for(const name of Object.keys(draft)){
-      const update=()=>{if(editable()){draft[name]=fields[name].value;error(name);changed();}};
+      const update=()=>{if(editable()){draft[name]=name==='consent'?fields[name].checked:fields[name].value;error(name);changed();}};
       fields[name].addEventListener('input',update);fields[name].addEventListener('change',update);
     }
     fields.attachment.addEventListener('change',()=>{if(editable()){attachment=fields.attachment.checked;changed();}});
@@ -100,14 +112,14 @@
     q('.bf-close-selection').addEventListener('click',closePreview);
     q('.bf-selection-preview').addEventListener('keydown',event=>{if(event.key==='Escape'){event.preventDefault();closePreview();}});
     q('.bf-exclude').addEventListener('click',()=>{if(!editable()||!confirmExclusion)return;excludeConfirmed=exclusionKey();confirmExclusion=false;submit();});
-    q('.bf-exclude-cancel').addEventListener('click',()=>{confirmExclusion=false;excludeConfirmed='';render();fields.attachment.focus({preventScroll:true});});
+    q('.bf-exclude-cancel').addEventListener('click',()=>{confirmExclusion=false;excludeConfirmed='';render();(repertoire?fields.name:fields.attachment).focus({preventScroll:true});});
     q('.bf-exclusion').addEventListener('keydown',event=>{if(event.key==='Escape'){event.preventDefault();q('.bf-exclude-cancel').click();}});
     q('.bf-retry').addEventListener('click',()=>deliver(false));
     q('.bf-check-status').addEventListener('click',()=>deliver(true));
     q('.bf-edit').addEventListener('click',()=>{
       if(!['rejected','catalog_changed'].includes(phase))return;
       attempt=null;prepared=null;phase='draft';excludeConfirmed='';confirmExclusion=false;
-      notice='Проверьте данные перед новой отправкой.';if(!snap().selected.length&&!snap().deprecated.length)attachment=false;
+      notice='Проверьте данные перед новой отправкой';if(!snap().selected.length&&!snap().deprecated.length)attachment=false;
       render();focusName();
     });
     q('.bf-new').addEventListener('click',()=>{
@@ -122,14 +134,15 @@
     for(const name of Object.keys(draft))error(name);
     const checked=contract.validateContact(draft,controller.fields.date.validity.valid);
     if(checked.errors.length){for(const [name,message]of checked.errors)error(name,message);notice='Проверьте выделенные поля';render();controller.fields[checked.errors[0][0]].focus();return;}
-    if(attachment&&snap().deprecated.length&&excludeConfirmed!==exclusionKey()){
+    if(repertoire&&!snap().selected.length){notice='Отметьте хотя бы одну песню как «Хочу» или «Не надо», затем отправьте пожелания';render();q('.bf-status').scrollIntoView({block:'center',behavior:'auto'});return;}
+    if(hasAttachment()&&snap().deprecated.length&&excludeConfirmed!==exclusionKey()){
       confirmExclusion=true;notice='';render();q('.bf-exclusion').focus({preventScroll:true});return;
     }
     try{
-      prepared=contract.createFrozenRequest(draft,snap(),attachment,undefined,{excludeDeprecated:!!excludeConfirmed});
+      prepared=contract.createFrozenRequest(draft,snap(),hasAttachment(),undefined,{excludeDeprecated:!!excludeConfirmed});
       attempt=config.mode==='demo'?null:new contract.RequestAttempt(prepared,config);
       deliver(false);
-    }catch(failure){notice=failure.message||'Проверьте данные перед отправкой.';render();}
+    }catch(failure){notice=failure.message||'Проверьте данные перед отправкой';render();}
   }
   function completed(status){
     lastRequestId=prepared?.requestId||'';draft=blank();attachment=false;prepared=null;attempt=null;confirmExclusion=false;excludeConfirmed='';
@@ -146,22 +159,22 @@
       await new Promise(resolve=>setTimeout(resolve,450));completed('demo_complete');return;
     }
     if(!attempt)return;
-    phase='pending';notice=checking?'Проверяем результат заявки…':'';render();
+    phase='pending';notice=checking?'Проверяем результат заявки':'';render();
     const result=await(checking?attempt.check():attempt.send());phase=result.status;
     if(['accepted','delivered'].includes(phase)){completed(phase);return;}
     if(phase==='catalog_changed'){
       await store.reloadCatalog();store.markUnavailable(result.missing);
-      notice='Репертуар обновился. Проверьте пожелания перед отправкой: недоступные песни не попадут в заявку.';
-    }else if(phase==='partial')notice='Получена только часть заявки: '+result.parts.confirmed+' из '+result.parts.total+'. Проверьте результат — повторная отправка пока отключена.';
-    else if(phase==='rejected')notice=result.message+' Данные сохранены.';
-    else{phase='uncertain';notice=(result.message||'Результат заявки неизвестен.')+' Данные сохранены на этой странице. Проверьте результат или свяжитесь с группой, указав номер заявки.';}
+      notice='Репертуар обновился, проверьте пожелания перед отправкой: недоступные песни не попадут в заявку';
+    }else if(phase==='partial')notice='Получена только часть заявки: '+result.parts.confirmed+' из '+result.parts.total+', проверьте результат: повторная отправка пока отключена';
+    else if(phase==='rejected')notice=result.message+', данные сохранены';
+    else{phase='uncertain';notice=(result.message||'Результат заявки неизвестен')+', данные сохранены на этой странице, результат можно проверить по номеру заявки';}
     render();
   }
   window.bogemaForms=Object.freeze({get mode(){return config.mode;},refresh:render});
-  window.addEventListener('pageshow',event=>{if(event.persisted&&editable()){attachment=false;confirmExclusion=false;excludeConfirmed='';render();}});
+  window.addEventListener('pageshow',event=>{if(event.persisted&&editable()){draft=blank();attachment=false;confirmExclusion=false;excludeConfirmed='';render();}});
   window.addEventListener('beforeunload',event=>{if(config.mode!=='demo'&&['pending','uncertain','partial'].includes(phase)){event.preventDefault();event.returnValue='';}});
   async function start(){
-    const host=document.querySelector('[data-request-form][data-source="home"]');if(!host)return;
+    const host=document.querySelector('[data-request-form]');if(!host)return;
     mount(host);
     try{
       const modules=await Promise.all([import(new URL('request-contract.mjs',scriptURL).href),import(new URL('preferences-store.mjs',scriptURL).href),import(new URL('phone-input.mjs',scriptURL).href)]);
@@ -178,7 +191,7 @@
         render();
       });
       await store.ready;phase='draft';render();
-    }catch{phase='unavailable';notice='Форма не загрузилась. Свяжитесь с группой через контакты рядом.';render();}
+    }catch{phase='unavailable';notice='Форма не загрузилась, попробуйте обновить страницу';render();}
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 })();

@@ -57,7 +57,7 @@ document.querySelectorAll('[data-video]').forEach(button => button.addEventListe
   video.play().catch(cause => {
     if (request !== videoRequest || !videoDialog.open || cause?.name === 'AbortError') return;
     if (video.error) error.hidden = false;
-    else playerStatus.textContent = 'Нажмите кнопку воспроизведения, чтобы начать видео.';
+    else playerStatus.textContent = 'Нажмите кнопку воспроизведения, чтобы начать видео';
   });
 }));
 video.addEventListener('error', () => { if (videoDialog.open) error.hidden = false; });
@@ -79,7 +79,6 @@ const lineupPanel = document.querySelector('#lineup-detail');
 const lineupViewButtons = [...document.querySelectorAll('[data-view-lineup]')];
 const lineupImage = lineupPanel.querySelector('img');
 const lineupMediaCaption = lineupPanel.querySelector('figcaption');
-const lineupLive = lineupPanel.querySelector('[data-video]');
 const mobileLineups = matchMedia('(max-width: 767px)');
 const lessMotion = matchMedia('(prefers-reduced-motion: reduce)');
 let viewedLineup = 'full';
@@ -132,15 +131,19 @@ function renderViewedLineup(id, animate = false) {
   showLineupImage(item, animate);
   lineupPanel.querySelector('[data-lineup-title]').textContent = item.label;
   lineupPanel.querySelector('[data-lineup-difference]').textContent = item.difference;
-  lineupLive.hidden = !item.videoId;
-  lineupLive.parentElement.hidden = !item.videoId;
-  if (item.videoId) lineupLive.dataset.video = item.videoId;
   for (const button of lineupViewButtons) {
     const current = button.dataset.viewLineup === id;
     button.setAttribute('aria-expanded', String(current));
     button.closest('.lineup-option').classList.toggle('is-viewed', current);
   }
   placeLineupPanel();
+  if (animate && !mobileLineups.matches && !lessMotion.matches && lineupPanel.animate) {
+    panelAnimation = lineupPanel.querySelector('.lineup-detail-copy').animate([
+      {opacity:.35, transform:'translateY(6px)'},
+      {opacity:1, transform:'translateY(0)'}
+    ], {duration:230, easing:'ease-out'});
+  }
+  dispatchEvent(new CustomEvent('bogema:layout'));
 }
 for (const button of lineupViewButtons) button.addEventListener('click', () => {
   if (button.dataset.viewLineup === viewedLineup) return;
@@ -161,3 +164,16 @@ for (const button of lineupViewButtons) button.addEventListener('click', () => {
 });
 mobileLineups.addEventListener('change', () => { stopLineupMotion(); placeLineupPanel(); });
 renderViewedLineup(viewedLineup);
+
+// Arrow keys move through the five views without adding anything to a request.
+for (const [index, button] of lineupViewButtons.entries()) button.addEventListener('keydown', event => {
+  let next;
+  if (event.key === 'ArrowDown' || event.key === 'ArrowRight') next = (index + 1) % lineupViewButtons.length;
+  else if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') next = (index - 1 + lineupViewButtons.length) % lineupViewButtons.length;
+  else if (event.key === 'Home') next = 0;
+  else if (event.key === 'End') next = lineupViewButtons.length - 1;
+  else return;
+  event.preventDefault();
+  lineupViewButtons[next].focus({preventScroll:true});
+  lineupViewButtons[next].click();
+});

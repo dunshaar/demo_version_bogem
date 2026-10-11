@@ -19,21 +19,21 @@ const LINEUP_VISUALS = Object.freeze({
     "width": 2000,
     "height": 1165,
     "alt": "Пять участников группы Богема",
-    "caption": "На фото — группа Богема"
+    "caption": "На фото группа Богема"
   },
   "full": {
     "src": "assets/band.webp",
     "width": 1400,
     "height": 906,
     "alt": "Группа Богема: вокалист с гитарой, вокалистка и музыканты с саксофоном",
-    "caption": "На фото — группа Богема"
+    "caption": "На фото группа Богема"
   },
   "extended": {
     "src": "assets/formats-full.webp",
     "width": 1200,
     "height": 777,
     "alt": "Участники Богемы на общей фотосессии",
-    "caption": "На фото — группа Богема"
+    "caption": "На фото группа Богема"
   }
 });
 export const LINEUPS = Object.freeze([

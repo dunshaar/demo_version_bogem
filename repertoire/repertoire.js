@@ -14,7 +14,7 @@ if (cleanURL.href !== location.href) history.replaceState(null, '', cleanURL);
 
 function createChoices(song, program) {
   const choices = element('fieldset', undefined, 'rep-song-choices');
-  choices.append(element('legend', `Пожелание: ${song.title} — ${song.artist || 'Исполнитель не указан'}, ${catalog.lineups[program].label}`, 'rep-sr-only'));
+  choices.append(element('legend', `Пожелание: ${song.title}, ${song.artist || 'Исполнитель не указан'}, ${catalog.lineups[program].label}`, 'rep-sr-only'));
   for (const [status, title] of Object.entries(STATUS_LABELS)) {
     const label = element('label'), input = element('input'), caption = element('span', title);
     input.type = 'radio'; input.name = `mark-${program}-${song.id}`; input.value = status;
@@ -104,7 +104,7 @@ function renderPreview() {
   }
   if (snapshot.deprecated.length) {
     fragment.append(element('h3', `Недоступны в репертуаре · ${snapshot.deprecated.length}`));
-    fragment.append(element('p', 'Эти пожелания останутся только в скачанном тексте, в отдельной части. Они не прикрепляются к заявке как актуальные песни.', 'rep-small'));
+    fragment.append(element('p', 'Эти пожелания сохраняются в отдельной части скачанного текста и не прикрепляются к заявке как актуальные песни', 'rep-small'));
     const list = element('ul');
     for (const song of snapshot.deprecated) {
       const item = element('li'), name = element('span', song.title || `Название не восстановлено (${song.id})`);
@@ -135,8 +135,8 @@ function refresh(value) {
   $('#selection-summary').hidden = count.total === 0;
   $('#selection-counts').textContent = `Хочу: ${count.want} · Не надо: ${count.skip}`;
   $('#deprecated-section').hidden = !count.deprecated;
-  $('#deprecated-summary').textContent = `Сохранённых пожеланий, которых больше нет в текущем репертуаре: ${count.deprecated}. Они не прикрепляются как актуальные песни.`;
-  if (!nonempty && dialog.open) { dialog.close(); $('#wishes-status').textContent = 'У всех песен снова «Можно».'; }
+  $('#deprecated-summary').textContent = `Сохранённых пожеланий, которых больше нет в текущем репертуаре: ${count.deprecated}, они не прикрепляются как актуальные песни`;
+  if (!nonempty && dialog.open) { dialog.close(); $('#wishes-status').textContent = 'У всех песен снова «Можно»'; }
   renderPreview();
   window.dispatchEvent(new Event('bogema:layout'));
 }
@@ -186,17 +186,17 @@ $('#reset-cancel').addEventListener('click', () => { toggleReset(false); $('#res
 $('#reset-confirm').addEventListener('click', () => store.clearMarks());
 dialog.addEventListener('cancel', event => { if (!$('#reset-confirmation').hidden) { event.preventDefault(); toggleReset(false); $('#reset-open').focus({ preventScroll: true }); } });
 $('#copy-selection').addEventListener('click', async () => {
-  try { await navigator.clipboard.writeText(formatPreferences(snapshot)); $('#export-status').textContent = 'Пожелания скопированы.'; $('#copy-fallback').hidden = true; }
-  catch { $('#copy-text').value = formatPreferences(snapshot); $('#copy-fallback').hidden = false; $('#copy-text').focus(); $('#copy-text').select(); $('#export-status').textContent = 'Выделите текст ниже и скопируйте вручную.'; }
+  try { await navigator.clipboard.writeText(formatPreferences(snapshot)); $('#export-status').textContent = 'Пожелания скопированы'; $('#copy-fallback').hidden = true; }
+  catch { $('#copy-text').value = formatPreferences(snapshot); $('#copy-fallback').hidden = false; $('#copy-text').focus(); $('#copy-text').select(); $('#export-status').textContent = 'Выделите текст ниже и скопируйте вручную'; }
 });
 function download(text, filename, target = '#export-status') {
   try {
     const url = URL.createObjectURL(new Blob(['\uFEFF', text], { type: 'text/plain;charset=utf-8' }));
     const link = element('a'); link.href = url; link.download = filename; document.body.append(link); link.click(); link.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 10000); $(target).textContent = 'Файл TXT подготовлен для скачивания.';
-  } catch { $(target).textContent = 'Не удалось подготовить файл. Попробуйте ещё раз.'; }
+    setTimeout(() => URL.revokeObjectURL(url), 10000); $(target).textContent = 'Файл TXT подготовлен для скачивания';
+  } catch { $(target).textContent = 'Не удалось подготовить файл, попробуйте ещё раз'; }
 }
-$('#download-list').addEventListener('click', () => download(formatFullCatalog(catalog, snapshot.program, snapshot.selected), `Богема — ${catalog.lineups[snapshot.program].label} — полный репертуар.txt`, '#catalog-export-status'));
-$('#download-selection').addEventListener('click', () => download(formatPreferences(snapshot), 'Богема — мои музыкальные пожелания.txt'));
+$('#download-list').addEventListener('click', () => download(formatFullCatalog(catalog, snapshot.program, snapshot.selected), `Богема - ${catalog.lineups[snapshot.program].label} - полный репертуар.txt`, '#catalog-export-status'));
+$('#download-selection').addEventListener('click', () => download(formatPreferences(snapshot), 'Богема - мои музыкальные пожелания.txt'));
 $('#retry-catalog').addEventListener('click', () => { $('#catalog-loading').hidden = false; $('#catalog-error').hidden = true; store.reloadCatalog(); });
 store.subscribe(refresh); refresh(snapshot); store.ready.then(() => refresh(store.getSnapshot()));

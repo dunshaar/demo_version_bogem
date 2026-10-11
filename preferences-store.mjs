@@ -35,12 +35,12 @@ export function createPreferencesStore({ catalog = null, storage = null, search 
 
   function storageMessage() {
     const issues = [];
-    if (storageState.read === 'blocked' || storageState.read === 'unavailable') issues.push('Сохранение недоступно: пожелания работают только в памяти этой открытой страницы. После обновления или перехода они могут потеряться. Скопируйте пожелания до ухода.');
-    if (storageState.read === 'corrupt') issues.push('Сохранённые данные повреждены и не восстановлены. Новые пожелания можно выбрать и скопировать.');
-    if (storageState.read === 'unsupported') issues.push('Версия сохранённых данных не поддерживается; её значения не перенесены автоматически.');
-    if (storageState.read === 'partial') issues.push('Часть сохранённых данных не удалось восстановить. Проверьте восстановленные пожелания.');
-    if (storageState.write === 'blocked') issues.push('Браузер не сохранил последние изменения. Они доступны на этой странице, но после обновления или перехода могут потеряться. Скопируйте пожелания до ухода.');
-    storageState.message = issues.join(' ');
+    if (storageState.read === 'blocked' || storageState.read === 'unavailable') issues.push('Сохранение недоступно: пожелания работают только на этой открытой странице и могут потеряться после обновления или перехода, поэтому скопируйте их до ухода');
+    if (storageState.read === 'corrupt') issues.push('Сохранённые данные не удалось восстановить, но вы можете заново отметить песни и скопировать пожелания');
+    if (storageState.read === 'unsupported') issues.push('Версия сохранённых данных не поддерживается, поэтому пожелания не перенесены автоматически');
+    if (storageState.read === 'partial') issues.push('Часть сохранённых данных не удалось восстановить, проверьте пожелания');
+    if (storageState.write === 'blocked' && !['blocked', 'unavailable'].includes(storageState.read)) issues.push('Браузер не сохранил последние изменения, скопируйте пожелания до обновления страницы или перехода');
+    storageState.message = issues.join('\n');
   }
   function readSaved() {
     if (!storage) { storageState.read = 'unavailable'; storageMessage(); return false; }
@@ -85,7 +85,7 @@ export function createPreferencesStore({ catalog = null, storage = null, search 
     if (params.has('lineup')) {
       const requested = params.get('lineup');
       if (PROGRAMS.includes(requested)) { program = requested; urlWarning = ''; }
-      else { program = 'group'; urlWarning = 'Программа в ссылке не найдена. Открыт репертуар группы; сохранённые пожелания не изменены.'; }
+      else { program = 'group'; urlWarning = 'Программа в ссылке не найдена, открыт репертуар группы без изменения ваших пожеланий'; }
     } else { urlWarning = ''; if (!PROGRAMS.includes(program)) program = 'group'; }
   }
   function persist() {
@@ -152,9 +152,9 @@ export function createPreferencesStore({ catalog = null, storage = null, search 
 }
 
 export function formatPreferences(snapshot, { includeDeprecated = true } = {}) {
-  const lines = ['БОГЕМА — МУЗЫКАЛЬНЫЕ ПОЖЕЛАНИЯ', 'Итоговую программу согласуем отдельно.', BASELINE_EXPLANATION];
+  const lines = ['БОГЕМА: МУЗЫКАЛЬНЫЕ ПОЖЕЛАНИЯ', 'Итоговую программу согласуем отдельно', BASELINE_EXPLANATION];
   const selected = (snapshot.selected || []).filter(item => ['want', 'skip'].includes(item.status));
-  if (!selected.length) lines.push('', 'Изменений по актуальным песням нет.');
+  if (!selected.length) lines.push('', 'Изменений по актуальным песням нет');
   for (const program of PROGRAMS) {
     const records = selected.filter(item => item.program === program);
     if (!records.length) continue;
@@ -163,12 +163,12 @@ export function formatPreferences(snapshot, { includeDeprecated = true } = {}) {
       const songs = records.filter(item => item.status === status);
       if (!songs.length) continue;
       lines.push(`${STATUS_LABELS[status].toLocaleUpperCase('ru')} (${songs.length})`);
-      songs.forEach((song, index) => lines.push(`${index + 1}. ${song.title} — ${song.artist || 'Исполнитель не указан'}`));
+      songs.forEach((song, index) => lines.push(`${index + 1}. ${song.title}, ${song.artist || 'Исполнитель не указан'}`));
     }
   }
   if (includeDeprecated && snapshot.deprecated?.length) {
-    lines.push('', 'НЕДОСТУПНЫ В ТЕКУЩЕМ РЕПЕРТУАРЕ — НЕ ПРИКРЕПЛЯЮТСЯ К ЗАЯВКЕ');
-    snapshot.deprecated.forEach(song => lines.push(`${song.programLabel} · ${STATUS_LABELS[song.status]}: ${song.title || `Название восстановить не удалось (${song.id})`} — ${song.artist || 'Исполнитель не указан'}`));
+    lines.push('', 'НЕДОСТУПНЫ В ТЕКУЩЕМ РЕПЕРТУАРЕ: НЕ ПРИКРЕПЛЯЮТСЯ К ЗАЯВКЕ');
+    snapshot.deprecated.forEach(song => lines.push(`${song.programLabel} · ${STATUS_LABELS[song.status]}: ${song.title || `Название восстановить не удалось (${song.id})`}, ${song.artist || 'Исполнитель не указан'}`));
   }
   return `${lines.join('\n')}\n`;
 }
@@ -176,7 +176,7 @@ export function formatFullCatalog(catalog, program, selected = []) {
   const lineup = catalog?.lineups?.[program];
   if (!lineup) return '';
   const marks = new Map(selected.filter(item => item.program === program).map(item => [item.id, item.status]));
-  return [`БОГЕМА — ПОЛНЫЙ РЕПЕРТУАР: ${lineup.label}`, `Версия: ${catalog.version}`, `Песен: ${lineup.songs.length}. Итоговую программу согласуем отдельно.`, '', ...lineup.songs.map((song, index) => `${index + 1}. ${song.title} — ${song.artist || 'Исполнитель не указан'} [${STATUS_LABELS[marks.get(song.id) || 'maybe']}]`), ''].join('\n');
+  return [`БОГЕМА: ПОЛНЫЙ РЕПЕРТУАР: ${lineup.label}`, `Версия: ${catalog.version}`, `Песен: ${lineup.songs.length}\nИтоговую программу согласуем отдельно`, '', ...lineup.songs.map((song, index) => `${index + 1}. ${song.title}, ${song.artist || 'Исполнитель не указан'} [${STATUS_LABELS[marks.get(song.id) || 'maybe']}]`), ''].join('\n');
 }
 let browserStorage = null;
 try { if (typeof window !== 'undefined') browserStorage = globalThis.localStorage || null; } catch { browserStorage = { getItem() { throw new Error('Storage blocked'); }, setItem() { throw new Error('Storage blocked'); } }; }

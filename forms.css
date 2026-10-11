@@ -1,4 +1,4 @@
-/* One short home-page form; no contact constructor or secondary order flow. */
+/* Shared contact form, with a dedicated song-wishes mode on the repertoire page. */
 .bf-form{width:100%;min-width:0;margin:0;color:var(--ink,#f5f0e7);scroll-margin-top:100px}
 .bf-root,.bf-field{min-width:0}
 .bf-root [hidden]{display:none!important}
@@ -6,14 +6,14 @@
 .bf-fields{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:1rem 1.15rem}
 .bf-field label{display:block;margin:0 0 .45rem;font-size:1rem;line-height:1.4;overflow-wrap:anywhere}
 .bf-optional{color:var(--muted,#bdb6ab);font-size:.875em;white-space:normal}
-.bf-field input{display:block;width:100%;max-width:100%;min-width:0;min-height:48px;box-sizing:border-box;border:1px solid var(--line,#45413b);border-radius:3px;background:rgba(255,255,255,.035);color:var(--ink,#f5f0e7);padding:.78rem .85rem;font:inherit;font-size:1rem;line-height:1.4}
+.bf-field input,.bf-field select{display:block;width:100%;max-width:100%;min-width:0;min-height:48px;box-sizing:border-box;border:1px solid var(--line,#45413b);border-radius:3px;background:rgba(255,255,255,.035);color:var(--ink,#f5f0e7);padding:.78rem .85rem;font:inherit;font-size:1rem;line-height:1.4}
 .bf-field input::placeholder{color:#b6b0a5;opacity:1}
-.bf-field-date{grid-column:1 / -1;max-width:22rem}
+.bf-field-date{max-width:100%}
 .bf-field input[type=date]{appearance:none;-webkit-appearance:none;text-align:left}
 .bf-field input[type=date]::-webkit-date-and-time-value{min-height:1.4em;text-align:left}
 .bf-field input[type=date]::-webkit-datetime-edit{display:inline-flex;padding:0;max-width:100%}
 .bf-field input[type=date]::-webkit-calendar-picker-indicator{opacity:.8;cursor:pointer}
-.bf-field input:focus-visible{outline:2px solid var(--gold,#cba878);outline-offset:-2px;border-color:var(--gold,#cba878)}
+.bf-field input:focus-visible,.bf-field select:focus-visible{outline:2px solid var(--gold,#cba878);outline-offset:-2px;border-color:var(--gold,#cba878)}
 .bf-field [aria-invalid=true]{border-color:#ebb79e}
 .bf-field-error{color:#ffc3a8;margin:.4rem 0 0;font-size:.875rem;line-height:1.5}
 .bf-text-button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;border:0;padding:.45rem .15rem;background:transparent;color:var(--gold,#cba878);font:inherit;font-size:.875rem;line-height:1.5;text-align:left;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px;cursor:pointer}
@@ -50,3 +50,13 @@
 .bf-field [disabled]{opacity:.75}
 @media(max-width:640px){.bf-fields{grid-template-columns:minmax(0,1fr);gap:1rem}.bf-field-date{grid-column:auto;max-width:none}.bf-primary{padding-inline:.8rem}.bf-check{flex-basis:100%}.bf-selection-counts{padding-left:0}}
 @media(prefers-reduced-motion:reduce){.bf-primary,.bf-secondary{transition:none}}
+
+.bf-field select{color-scheme:dark;appearance:auto;cursor:pointer}
+.bf-field select option{background:#191917;color:#f5f0e7}
+.bf-consent{margin-top:1.15rem;padding-top:.9rem;border-top:1px solid var(--line,#45413b)}
+.bf-consent .bf-check{align-items:flex-start;font-size:.8125rem;line-height:1.6;color:#c7c1b7}
+.bf-consent input{margin-top:.12rem}
+.bf-consent input[aria-invalid=true]{outline:2px solid #ebb79e;outline-offset:2px}
+.bf-consent .bf-field-error{padding-left:calc(21px + .65rem)}
+.bf-attachment-required .bf-selection-counts{padding-left:0}
+.bf-attachment-required .bf-text-button{font-size:.94rem}
