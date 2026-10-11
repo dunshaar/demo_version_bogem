@@ -201,37 +201,12 @@ $('#download-selection').addEventListener('click', () => download(formatPreferen
 $('#retry-catalog').addEventListener('click', () => { $('#catalog-loading').hidden = false; $('#catalog-error').hidden = true; store.reloadCatalog(); });
 
 const root = document.documentElement, header = $('.rep-header'), companion = $('#repertoire-companion');
-const companionDock = $('.rep-companion-dock'), companionOrigin = element('div', undefined, 'rep-companion-origin');
-companionOrigin.hidden = true; companionOrigin.setAttribute('aria-hidden', 'true');
-companion.before(companionOrigin);
-let companionDocked = false;
-function positionCompanion() {
-  const mobile = matchMedia('(max-width:1040px)').matches;
-  const height = companion.getBoundingClientRect().height;
-  const shouldDock = mobile && companionDock.getBoundingClientRect().top + height <= innerHeight - 24;
-  if (shouldDock === companionDocked) return;
-  companionDocked = shouldDock;
-  const focused = companion.contains(document.activeElement) ? document.activeElement : null;
-  if (shouldDock) {
-    companionOrigin.hidden = false;
-    companionDock.append(companion);
-  } else {
-    companionOrigin.before(companion);
-    companionOrigin.hidden = true;
-  }
-  companion.classList.toggle('is-docked', shouldDock);
-  focused?.focus({preventScroll:true});
-}
-window.addEventListener('scroll', positionCompanion, {passive:true});
-window.addEventListener('bogema:layout', positionCompanion);
-
 function syncStickyOffsets() {
   const headerHeight = Math.ceil(header.getBoundingClientRect().height);
   root.style.setProperty('--rep-header-height', `${headerHeight}px`);
   root.style.setProperty('--rep-companion-height', `${Math.ceil(companion.getBoundingClientRect().height)}px`);
   const cramped = companion.getBoundingClientRect().height + headerHeight > window.innerHeight * .62;
   document.body.classList.toggle('rep-compact-viewport', cramped);
-  positionCompanion();
 }
 if ('ResizeObserver' in window) { const observer = new ResizeObserver(syncStickyOffsets); observer.observe(header); observer.observe(companion); }
 window.addEventListener('resize', syncStickyOffsets, { passive: true });

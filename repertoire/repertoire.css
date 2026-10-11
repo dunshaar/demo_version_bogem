@@ -107,25 +107,16 @@
 @media(max-width:600px){.rep-download-buttons{display:grid;grid-template-columns:1fr}.rep-download-buttons .rep-secondary{justify-content:flex-start}.rep-action-dialog{padding:36px 22px 24px}.rep-action-dialog h2{font-size:26px}.rep-dialog-actions{flex-direction:column}}
 @media print{.rep-downloads,.rep-copy-tools,.rep-action-dialog{display:none!important}}
 
-/* Choose the lineup before the list; keep the summary within the repertoire. */
+/* Choose the lineup before the list; the summary accompanies the list and request. */
 .rep-program-description{min-width:0;flex:1}.rep-program-description .rep-tabs{width:100%;max-width:360px;margin-top:20px}
 .rep-program-description .rep-tabs button{min-height:46px;font-size:15px}
 .rep-wishes-buttons{display:flex;align-items:center;gap:12px 20px;flex-wrap:wrap}.rep-wishes-buttons .rep-secondary{min-height:52px;padding:13px 20px;font-size:15px}
-.rep-companion-dock{display:none}
-.rep-request-wrap .rep-request{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:44px}
-.rep-request-wrap .rep-request,.rep-request-wrap .rep-request-card{scroll-margin-top:calc(var(--rep-header-height,84px) + 22px)}
 @media(max-width:1040px){
   .rep-companion-heading{grid-column:1/-1;grid-row:auto;flex-wrap:nowrap;justify-content:space-between}
   .rep-companion-heading>p:first-child{display:block;font-size:16px}
-  .rep-companion-dock{display:block;height:calc(var(--rep-companion-height,150px) + 24px)}
 }
-@media(max-width:700px){.rep-request-wrap .rep-request{grid-template-columns:1fr;gap:24px}.rep-wishes-buttons{align-items:stretch;flex-direction:column}.rep-wishes-buttons .rep-text-button{align-self:center}.rep-program-description .rep-tabs{max-width:none}}
-@media print{.rep-companion-dock{display:none!important}}
+@media(max-width:700px){.rep-wishes-buttons{align-items:stretch;flex-direction:column}.rep-wishes-buttons .rep-text-button{align-self:center}.rep-program-description .rep-tabs{max-width:none}}
 
 @media(max-width:1040px){
-  .rep-companion.is-docked{position:relative;top:auto;margin-bottom:0;box-shadow:none}
   .rep-catalog{padding-bottom:24px}.rep-workspace{padding-bottom:16px}
 }
-
-.rep-companion-origin{height:calc(var(--rep-companion-height,150px) + 28px)}
-@media(max-width:700px){.rep-companion-origin{height:calc(var(--rep-companion-height,150px) + 24px)}}
