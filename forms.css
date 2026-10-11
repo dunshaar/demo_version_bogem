@@ -36,3 +36,38 @@
 .bf-confirmation-icon { width:32px; height:32px; color:var(--gold,#cba878); margin-bottom:1rem; }
 .bf-confirmation h3 { margin:0; font:inherit; font-size:1.3rem; font-weight:600; line-height:1.35; }
 .bf-confirmation p { margin:.65rem 0 0; font-size:.92rem; line-height:1.6; color:var(--muted,#aaa49b); }
+
+/* v3: honest manual preparation, explicit attachment and recovery states. */
+.bf-mode-note{font-size:.92rem;line-height:1.65;margin:0 0 1.5rem;color:#c7c1b7}
+.bf-field textarea,.bf-request-text{display:block;width:100%;min-width:0;max-width:100%;box-sizing:border-box;resize:vertical;border:1px solid var(--line,#45413b);border-radius:3px;background:rgba(255,255,255,.035);color:var(--ink,#f5f0e7);padding:.85rem .9rem;font:inherit;font-size:1rem;line-height:1.55}
+.bf-field textarea:focus-visible,.bf-request-text:focus-visible{outline:2px solid var(--gold,#cba878);outline-offset:-2px}
+.bf-field-comment{grid-column:1/-1}
+.bf-lineup-warning{font-size:.9rem;line-height:1.6;color:#ffc3a8;margin:1rem 0}
+.bf-attachment{border-top:1px solid var(--line,#45413b);padding-top:1.25rem;margin-top:1.6rem}
+.bf-check{display:flex;gap:.8rem;align-items:center;min-height:44px;cursor:pointer;font-size:1rem;line-height:1.45}
+.bf-check input{flex:none;width:22px;height:22px;margin:0;accent-color:var(--gold,#cba878)}
+.bf-check input:focus-visible{outline:2px solid var(--gold,#cba878);outline-offset:4px}
+.bf-attachment .bf-selection{margin:.45rem 0;color:#d2c6b2;font-size:.9rem}
+.bf-selection-preview{margin:1rem 0}
+.bf-selection-preview summary{width:fit-content;min-height:44px;display:list-item;align-content:center;padding-block:.7rem;font-size:.9rem;color:var(--gold,#cba878);cursor:pointer}
+.bf-selection-preview summary:focus-visible{outline:2px solid var(--gold,#cba878);outline-offset:3px}
+.bf-selection-text{margin:.5rem 0 1rem;padding:1rem;border-left:1px solid var(--gold,#cba878);white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;font-size:.88rem;line-height:1.65;color:var(--ink,#f5f0e7)}
+.bf-secondary{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:.7rem 1rem;border:1px solid var(--line,#696050);border-radius:3px;background:transparent;color:var(--ink,#f5f0e7);font:inherit;font-size:.9rem;line-height:1.5;cursor:pointer;text-align:center}
+.bf-secondary:hover{border-color:var(--gold,#cba878)}
+.bf-secondary:focus-visible,.bf-prepared:focus-visible{outline:2px solid var(--gold,#cba878);outline-offset:3px}
+.bf-recovery{display:flex;flex-wrap:wrap;gap:.7rem}
+.bf-prepared{margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--line,#45413b)}
+.bf-prepared h3{margin:0;font:inherit;font-size:1.2rem;line-height:1.4}
+.bf-prepared-note,.bf-direct{font-size:.86rem;line-height:1.65;color:#c7c1b7;margin:.8rem 0 1rem}
+.bf-copy{margin-top:.8rem}
+.bf-direct{margin-top:1.6rem}
+.bf-direct a{color:var(--gold,#cba878);text-decoration:underline;text-underline-offset:4px;overflow-wrap:anywhere}
+.bf-direct a:focus-visible{outline:2px solid var(--gold,#cba878);outline-offset:4px}
+.bf-request-id{font-size:.8rem;line-height:1.6;overflow-wrap:anywhere;color:#c7c1b7}
+.bf-form [disabled]{cursor:default}
+.bf-field [disabled]{opacity:.75}
+.bf-new{margin-top:1rem}
+@media(max-width:640px){.bf-mode-note{font-size:.9rem}.bf-secondary{max-width:100%}.bf-recovery{flex-direction:column}.bf-selection-text{font-size:.85rem;padding:.75rem}.bf-confirmation{padding:1.1rem}}
+.bf-form{min-width:0}
+.bf-optional{white-space:normal;overflow-wrap:anywhere}
+.bf-field label,.bf-check span{overflow-wrap:anywhere}

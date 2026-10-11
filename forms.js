@@ -1,292 +1,241 @@
-/* Shared demo form. Loaded with defer, not type=module.
- * Future live adapter belongs at the prepare boundary below. Until a verified
- * backend contract exists, this module never POSTs data or reports delivery.
- * Live work needs its own CSRF/config contract, immutable pending snapshot,
- * stable request UUID on retry, and a server-confirmed delivered state.
- */
+/* One memory-only contact draft per document. Preferences live in their own store. */
 (() => {
   'use strict';
   if (window.bogemaForms) return;
-  const scriptURL = document.currentScript?.src || new URL('forms.js', document.baseURI).href;
-  const channelLabels = { '': 'Не выбран', phone: 'По телефону', whatsapp: 'WhatsApp', telegram: 'Telegram', max: 'MAX' };
-  const controllers = [];
-  let sequence = 0;
-  let normalizePhone = fallbackPhone;
-  let attachPhoneMask = null;
-
-  function fallbackPhone(value) {
-    const text = String(value ?? '').trim();
-    if (!text || !/^[+\d\s()-]+$/.test(text) || /\+/.test(text.slice(1))) return '';
-    const digits = text.replace(/\D/g, '');
-    if (digits.length === 10 && !text.startsWith('+')) return `+7${digits}`;
-    if (digits.length === 11 && (/^7/.test(digits) || (!text.startsWith('+') && /^8/.test(digits)))) return `+7${digits.slice(1)}`;
-    return '';
+  const scriptURL=document.currentScript?.src||document.querySelector('script[src$="forms.js"]')?.src||new URL('forms.js',document.baseURI).href;
+  const controllers=[];
+  const blank=()=>({name:'',phone:'',telegram:'',preferredChannel:'phone',date:'',comment:''});
+  let draft=blank(),attachment=false,phase='loading',notice='',prepared=null,attempt=null,lastRequestId='',sequence=0;
+  let contract,store,formatPreferences,phoneMask,config={enabled:false,statusEndpoint:null};
+  const transferred=new Set();
+  const frozen=()=>['pending','rejected','catalog_changed','uncertain','partial'].includes(phase);
+  const editable=()=>['draft','prepared'].includes(phase);
+  const snapshot=()=>store?.getSnapshot()||{ready:false,selected:[],deprecated:[],availableLineups:[]};
+  const escape=value=>String(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+  const q=(form,selector)=>form.querySelector(selector);
+  function announce(message){notice=message;renderAll();}
+  function invalidate(){if(!editable())return;prepared=null;phase='draft';notice='';renderAll();}
+  function renderAll(){for(const controller of controllers)controller.render();}
+  function clearError(controller,name){
+    const field=controller.fields[name];if(!field)return;
+    field.removeAttribute('aria-invalid');
+    const error=q(controller.form,'[data-error="'+name+'"]');
+    if(error){error.textContent='';error.hidden=true;}
   }
-
-  async function loadConfig() {
-    const abort = new AbortController();
-    const timer = setTimeout(() => abort.abort(), 4000);
-    try {
-      const response = await fetch(new URL('forms-config.json', scriptURL), { signal: abort.signal, credentials: 'same-origin', cache: 'no-cache' });
-      if (!response.ok) throw new Error('Config unavailable');
-      const config = await response.json();
-      return { enabled: config.enabled === true, apiConfigPath: typeof config.apiConfigPath === 'string' ? config.apiConfigPath : null };
-    } catch {
-      return { enabled: false, apiConfigPath: null };
-    } finally { clearTimeout(timer); }
+  function setError(controller,name,message){
+    const field=controller.fields[name];if(!field)return;
+    field.setAttribute('aria-invalid','true');
+    const error=q(controller.form,'[data-error="'+name+'"]');
+    if(error){error.textContent=message;error.hidden=false;}
   }
-
-  function repertoireSnapshot() {
-    try {
-      const api = window.bogemaRepertoire;
-      if (!api || typeof api.getSummary !== 'function' || typeof api.getRequestText !== 'function') return { ready: false };
-      const summary = api.getSummary();
-      if (!summary || summary.ready !== true) return { ready: false };
-      return { ready: true, api, summary };
-    } catch { return { ready: false }; }
+  function currentSelectionText(){
+    const snap=snapshot();
+    if(frozen()&&prepared)return contract.requestText(prepared);
+    if(!attachment)return 'Музыкальная подборка не прикреплена. Сохранённые отметки останутся в репертуаре.';
+    return formatPreferences?formatPreferences({...snap,deprecated:[]},{includeDeprecated:false}):'Подборка загружается…';
   }
-
-  function summaryText(summary) {
-    const lineup = summary.lineupLabel || ({ group: 'Группа', trio: 'Трио' })[summary.lineup] || 'Репертуар';
-    const count = value => Number.isInteger(value) && value >= 0 ? value : 0;
-    return `${lineup}, всего песен ${count(summary.total)}, хочу ${count(summary.want)}, можно ${count(summary.maybe)}, не надо ${count(summary.skip)}`;
+  function previewText(){return prepared?contract.requestText(prepared):currentSelectionText();}
+  async function loadConfig(){
+    const abort=new AbortController(),timer=setTimeout(()=>abort.abort(),4000);
+    try{
+      const response=await fetch(new URL('forms-config.json',scriptURL),{credentials:'same-origin',cache:'no-cache',signal:abort.signal});
+      if(!response.ok)throw new Error();
+      return contract.endpointConfig(await response.json(),scriptURL);
+    }catch{return {enabled:false,endpoint:null,statusEndpoint:null};}
+    finally{clearTimeout(timer);}
   }
-
-  function validDate(value) {
-    if (!value) return true;
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
-    const [year, month, day] = value.split('-').map(Number);
-    if (year < 1) return false;
-    const date = new Date(`${value}T12:00:00Z`);
-    return Number.isFinite(date.getTime()) && date.getUTCFullYear() === year && date.getUTCMonth() + 1 === month && date.getUTCDate() === day;
+  function field(id,name,label,control,hint=''){
+    return '<div class="bf-field bf-field-'+name+'"><label for="'+id+'-'+name+'">'+label+'</label>'+control+
+      (hint?'<p class="bf-hint">'+hint+'</p>':'')+'<p class="bf-field-error" id="'+id+'-'+name+'-error" data-error="'+name+'" hidden></p></div>';
   }
-
-  function formatDate(value) {
-    return value ? value.split('-').reverse().join('.') : 'Пока не определена';
-  }
-
-  function validateContact(values, dateValidity = true, source = 'home') {
-    const data = {
-      name: String(values.name ?? '').trim(),
-      phone: normalizePhone(values.phone),
-    };
-    if (source !== 'repertoire') {
-      data.date = String(values.date ?? '');
-      data.preferredChannel = String(values.preferredChannel ?? '');
-    }
-    const errors = [];
-    if (!data.name) errors.push(['name', 'Введите имя.']);
-    else if (data.name.length > 80) errors.push(['name', 'Имя должно быть не длиннее 80 символов.']);
-    if (!data.phone) errors.push(['phone', 'Введите номер полностью: +7 и 10 цифр.']);
-    if (source !== 'repertoire') {
-      if (!dateValidity || !validDate(data.date)) errors.push(['date', 'Проверьте дату.']);
-      if (!Object.hasOwn(channelLabels, data.preferredChannel)) errors.push(['preferredChannel', 'Выберите способ связи из списка.']);
-    }
-    return { data, errors };
-  }
-
-  function buildRequest(data, source, selectedLineup = '', snapshot = null) {
-    const lines = ['ЗАЯВКА\nКАВЕР-ГРУППА БОГЕМА', '', `Имя: ${data.name}`, `Телефон: ${data.phone}`];
-    if (source !== 'repertoire') lines.push(`Дата: ${formatDate(data.date)}`, `Удобнее связаться: ${channelLabels[data.preferredChannel]}`);
-    if (selectedLineup) lines.push(`Состав: ${selectedLineup}`);
-    if (source === 'repertoire') {
-      if (!snapshot?.ready) throw new Error('Репертуар ещё не готов. Дождитесь загрузки.');
-      const allRecords = snapshot.api.getRequestText();
-      if (typeof allRecords !== 'string' || !allRecords.trim()) throw new Error('Не удалось собрать репертуар. Попробуйте ещё раз.');
-      // Keep the entire catalogue text, including defaults and source annotations.
-      lines.push('', summaryText(snapshot.summary), '', 'РЕПЕРТУАР И ПРЕДПОЧТЕНИЯ', allRecords);
-    }
-    return lines.join('\n') + '\n';
-  }
-
-  function mount(host) {
-    if (host.dataset.bfMounted) return;
-    host.dataset.bfMounted = 'true';
-    const source = host.dataset.source === 'repertoire' ? 'repertoire' : 'home';
-    let id;
-    do { id = `bf-${source}-${++sequence}`; } while (document.getElementById(`${id}-name`));
-    const markup = `
-      <div class="bf-root">
-        <div class="bf-lineup" hidden><span class="bf-lineup-label"></span><button class="bf-lineup-remove" type="button" aria-label="Убрать выбранный состав">Убрать</button></div>
-        ${source === 'repertoire' ? '<p class="bf-selection" role="status" aria-live="polite">Репертуар загружается…</p>' : ''}
-        <div class="bf-fields">
-          <div class="bf-field"><label for="${id}-name">Имя <span aria-hidden="true">*</span></label>
-            <input id="${id}-name" name="name" type="text" autocomplete="name" required maxlength="80" aria-describedby="${id}-name-error">
-            <p id="${id}-name-error" class="bf-field-error" hidden></p></div>
-          <div class="bf-field"><label for="${id}-phone">Телефон <span aria-hidden="true">*</span></label>
-            <input id="${id}-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required maxlength="50" placeholder="+7 (___) ___-__-__" aria-describedby="${id}-phone-error">
-            <p id="${id}-phone-error" class="bf-field-error" hidden></p></div>
-          ${source === 'home' ? `<div class="bf-field"><label for="${id}-date">Дата <span class="bf-optional">(необязательно)</span></label>
-            <input id="${id}-date" name="date" type="date" aria-describedby="${id}-date-hint ${id}-date-error">
-            <p id="${id}-date-hint" class="bf-hint">Если дата ещё не определена, оставьте поле пустым</p>
-            <p id="${id}-date-error" class="bf-field-error" hidden></p></div>
-          <div class="bf-field"><label for="${id}-channel">Способ связи <span class="bf-optional">(необязательно)</span></label>
-            <select id="${id}-channel" name="preferredChannel" aria-describedby="${id}-channel-hint ${id}-preferredChannel-error">
-              <option value="">Не выбран</option><option value="phone">По телефону</option><option value="whatsapp">WhatsApp</option><option value="telegram">Telegram</option><option value="max">MAX</option>
-            </select><p id="${id}-channel-hint" class="bf-hint">Выберите, где вам удобнее получить ответ</p>
-            <p id="${id}-preferredChannel-error" class="bf-field-error" hidden></p></div>` : ''}
-        </div>
-        <p class="bf-status" role="status" aria-live="polite" aria-atomic="true"></p>
-        <button class="bf-primary" type="submit" disabled>Отправить заявку</button>
-        <section class="bf-confirmation" tabindex="-1" aria-labelledby="${id}-confirmation-title" hidden>
-          <svg class="bf-confirmation-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true"><circle cx="16" cy="16" r="15" stroke="currentColor"/><path d="m9 16 5 5 9-10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <h3 id="${id}-confirmation-title">Спасибо за заявку</h3>
-          <p>Пусть ваш праздник звучит ярко</p>
-        </section>
-      </div>`;
-    const form = host.tagName === 'FORM' ? host : document.createElement('form');
-    form.classList.add('bf-form');
-    form.noValidate = true;
-    form.innerHTML = markup;
-    if (form !== host) host.replaceChildren(form);
-    const fieldNames = source === 'repertoire' ? ['name', 'phone'] : ['name', 'phone', 'date', 'preferredChannel'];
-    const fields = Object.fromEntries(fieldNames.map(name => [name, form.elements.namedItem(name)]));
-    const q = selector => form.querySelector(selector);
-    const primary = q('.bf-primary');
-    const status = q('.bf-status');
-    const confirmation = q('.bf-confirmation');
-    const lineupChip = q('.bf-lineup');
-    let initialized = false;
-    let preparing = false;
-    let selectedLineup = '';
-    let preparedText = '';
-    let lastSelection = '';
-
-    function syncButton() {
-      const ready = source !== 'repertoire' || repertoireSnapshot().ready;
-      primary.disabled = !initialized || preparing || !ready;
-    }
-    function clearError(name) {
-      fields[name].removeAttribute('aria-invalid');
-      const error = document.getElementById(`${id}-${name}-error`);
-      error.textContent = '';
-      error.hidden = true;
-    }
-    function setError(name, message) {
-      fields[name].setAttribute('aria-invalid', 'true');
-      const error = document.getElementById(`${id}-${name}-error`);
-      error.textContent = message;
-      error.hidden = false;
-    }
-    function invalidate() {
-      preparedText = '';
-      confirmation.hidden = true;
-      status.textContent = '';
-      primary.textContent = 'Отправить заявку';
-      syncButton();
-    }
-    function setLineup(name) {
-      if (source !== 'home') return;
-      const value = typeof name === 'string' ? name.trim().slice(0, 120) : '';
-      if (value === selectedLineup) return;
-      selectedLineup = value;
-      lineupChip.hidden = !value;
-      q('.bf-lineup-label').textContent = value ? `Выбран состав: ${value}` : '';
-      invalidate();
-    }
-    function refreshSelection() {
-      if (source !== 'repertoire') return;
-      const snapshot = repertoireSnapshot();
-      const label = snapshot.ready ? summaryText(snapshot.summary) : 'Загружаем выбранный репертуар…';
-      let fingerprint = 'not-ready';
-      if (snapshot.ready) {
-        try { fingerprint = JSON.stringify(snapshot.summary) + '\n' + snapshot.api.getRequestText(); }
-        catch { fingerprint = 'not-ready'; }
+  function mount(host){
+    const source=host.dataset.source==='repertoire'?'repertoire':'home',id='bf-'+source+'-'+(++sequence);
+    const input=(name,type,attrs='')=>'<input id="'+id+'-'+name+'" name="'+name+'" type="'+type+'" aria-describedby="'+id+'-'+name+'-error" '+attrs+'>';
+    const select=(name,options)=>'<select id="'+id+'-'+name+'" name="'+name+'" aria-describedby="'+id+'-'+name+'-error">'+options+'</select>';
+    const form=host.tagName==='FORM'?host:document.createElement('form');
+    form.className='bf-form';form.noValidate=true;
+    // Installed before asynchronous imports: contacts never enter a GET URL.
+    form.addEventListener('submit',event=>{event.preventDefault();submit(controller);});
+    form.innerHTML='<div class="bf-root">'+
+      '<p class="bf-mode-note">Загружаем форму…</p>'+
+      '<div class="bf-fields">'+
+      field(id,'name','Имя <span aria-hidden="true">*</span>',input('name','text','autocomplete="name" required maxlength="80"'))+
+      field(id,'preferredChannel','Способ связи',select('preferredChannel','<option value="phone">По телефону</option><option value="telegram">Telegram</option><option value="whatsapp">WhatsApp</option><option value="max">MAX</option>'))+
+      field(id,'phone','Телефон <span aria-hidden="true">*</span>',input('phone','tel','inputmode="tel" autocomplete="tel" required maxlength="50" placeholder="+7 (___) ___-__-__"'))+
+      field(id,'telegram','Имя пользователя Telegram <span aria-hidden="true">*</span>',input('telegram','text','autocomplete="off" autocapitalize="none" spellcheck="false" maxlength="33" placeholder="@username"'),'Укажите имя пользователя, по которому вам можно написать.')+
+      field(id,'date','Дата <span class="bf-optional">(необязательно)</span>',input('date','date'),'Если ещё не определена, оставьте поле пустым.')+
+      field(id,'commercialLineup','Выбранный состав <span class="bf-optional">(необязательно)</span>',select('commercialLineup','<option value="">Без выбранного состава</option>'))+
+      field(id,'comment','Город, площадка или пожелания <span class="bf-optional">(необязательно)</span>','<textarea id="'+id+'-comment" name="comment" maxlength="2000" rows="3" aria-describedby="'+id+'-comment-error"></textarea>','<span class="bf-comment-count">0</span> / 2000 символов')+
+      '</div><p class="bf-lineup-warning" role="status" hidden></p>'+
+      '<section class="bf-attachment"><label class="bf-check"><input name="attachment" type="checkbox"><span>Прикрепить музыкальную подборку</span></label>'+
+      '<p class="bf-selection"></p><p class="bf-hint">Отсоединение не удаляет отметки и текст комментария. Пожелания требуют согласования.</p>'+
+      '<details class="bf-selection-preview"><summary>Посмотреть прикрепляемые пожелания</summary><pre class="bf-selection-text"></pre></details></section>'+
+      '<p class="bf-status" role="status" aria-live="polite" aria-atomic="true"></p>'+
+      '<p class="bf-request-id" hidden></p>'+
+      '<button class="bf-primary" type="submit" disabled>Подготовить обращение</button>'+
+      '<div class="bf-recovery"><button class="bf-secondary bf-retry" type="button" hidden>Повторить тот же запрос</button><button class="bf-secondary bf-check-status" type="button" hidden>Проверить результат</button><button class="bf-secondary bf-edit" type="button" hidden>Изменить данные</button></div>'+
+      '<section class="bf-prepared" tabindex="-1" hidden><h3>Текст обращения</h3><p class="bf-prepared-note"></p>'+
+      '<textarea class="bf-request-text" aria-label="Текст обращения для ручного копирования" readonly rows="10"></textarea>'+
+      '<button class="bf-secondary bf-copy" type="button">Скопировать текст</button></section>'+
+      '<section class="bf-confirmation" tabindex="-1" hidden><h3 class="bf-confirmation-title"></h3><p>Дата и музыкальная программа ещё требуют согласования. Музыкальные отметки сохранены, но к следующему обращению не прикреплены.</p><button class="bf-secondary bf-new" type="button">Новое обращение</button></section>'+
+      '<p class="bf-direct">Можно связаться напрямую: <a href="tel:+79006363727">+7 (900) 636-37-27</a> или <a href="https://t.me/DonSe6astian" target="_blank" rel="noopener noreferrer">написать в Telegram ↗</a>. Открытие мессенджера само по себе ничего не отправляет.</p>'+
+      '</div>';
+    if(form!==host)host.replaceChildren(form);
+    const names=['name','preferredChannel','phone','telegram','date','comment','commercialLineup','attachment'];
+    const fields=Object.fromEntries(names.map(name=>[name,form.elements.namedItem(name)]));
+    const controller={form,fields,source,lastLineups:'',render(){
+      const snap=snapshot(),locked=!editable(),fullSuccess=['accepted','delivered'].includes(phase);
+      form.dataset.state=phase;
+      const lineupOptions=JSON.stringify([snap.availableLineups||[],snap.unavailableLineup]);
+      if(this.lastLineups!==lineupOptions){
+        fields.commercialLineup.innerHTML=(snap.unavailableLineup?'<option value="__unavailable__" disabled>Сохранённый состав недоступен</option>':'')+'<option value="">Без выбранного состава</option>'+
+          (snap.availableLineups||[]).map(item=>'<option value="'+escape(item.id)+'">'+escape(item.label)+'</option>').join('');
+        this.lastLineups=lineupOptions;
       }
-      if (lastSelection && fingerprint !== lastSelection) invalidate();
-      lastSelection = fingerprint;
-      q('.bf-selection').textContent = label;
-      syncButton();
+      for(const name of Object.keys(draft)) if(fields[name].value!==draft[name])fields[name].value=draft[name];
+      fields.commercialLineup.value=frozen()&&prepared?prepared.payload.commercialLineupId||'':snap.unavailableLineup?'__unavailable__':snap.commercialLineup?.id||'';
+      fields.attachment.checked=attachment;
+      for(const name of names)fields[name].disabled=locked;
+      fields.attachment.disabled=locked||!snap.ready||(!attachment&&!snap.selected.length);
+      const telegram=draft.preferredChannel==='telegram';
+      q(form,'.bf-field-phone').hidden=telegram;fields.phone.required=!telegram;
+      q(form,'.bf-field-telegram').hidden=!telegram;fields.telegram.required=telegram;
+      q(form,'.bf-mode-note').textContent=phase==='loading'?'Загружаем форму…':config.enabled?'Заполните контакты и проверьте состав и прикрепление перед отправкой.':'Отправка через сайт пока не подключена. Подготовьте текст обращения и передайте его группе удобным способом.';
+      const warning=q(form,'.bf-lineup-warning');warning.hidden=!snap.unavailableLineup;
+      warning.textContent=snap.unavailableLineup?'Сохранённый состав недоступен. Выберите состав заново или выберите «Без выбранного состава».':'';
+      const count=frozen()&&prepared?prepared.records.length:snap.selected.length;
+      q(form,'.bf-selection').textContent=attachment?'Прикреплено записей: '+count+'.':'Прикрепление выключено. Актуальных отметок: '+snap.selected.length+'.';
+      if(snap.deprecated?.length)q(form,'.bf-selection').textContent+=' Требуют уточнения: '+snap.deprecated.length+' — они не входят в прикреплённую подборку.';
+      q(form,'.bf-selection-preview').hidden=!attachment;
+      q(form,'.bf-selection-text').textContent=currentSelectionText();
+      q(form,'.bf-comment-count').textContent=String(draft.comment.length);
+      q(form,'.bf-status').textContent=notice;
+      const primary=q(form,'.bf-primary');primary.hidden=frozen()||fullSuccess;
+      primary.disabled=!editable();
+      primary.textContent=config.enabled?'Отправить обращение':'Подготовить обращение';
+      q(form,'.bf-retry').hidden=phase!=='rejected'||!attempt?.result.retryable;
+      q(form,'.bf-check-status').hidden=!['uncertain','partial'].includes(phase)||!config.statusEndpoint;
+      q(form,'.bf-edit').hidden=!['rejected','catalog_changed'].includes(phase);
+      q(form,'.bf-edit').textContent=phase==='catalog_changed'?'Пересмотреть обращение':'Изменить данные';
+      const requestId=prepared?.requestId||lastRequestId;
+      q(form,'.bf-request-id').hidden=!requestId||!config.enabled;
+      q(form,'.bf-request-id').textContent=requestId?'Номер обращения: '+requestId:'';
+      q(form,'.bf-prepared').hidden=!prepared||fullSuccess||phase==='pending';
+      q(form,'.bf-request-text').value=prepared?contract.requestText(prepared):'';
+      q(form,'.bf-prepared-note').textContent=config.enabled?'Это неизменный снимок текущего обращения. До проверки результата не отправляйте его повторно.':'Это подготовленный текст. Он ещё не отправлен. Скопируйте его и передайте группе самостоятельно.';
+      q(form,'.bf-confirmation').hidden=!fullSuccess;
+      q(form,'.bf-confirmation-title').textContent=phase==='delivered'?'Обращение доставлено':'Обращение принято в обработку';
+    }};
+    for(const name of Object.keys(draft)){
+      const field=fields[name];
+      field.addEventListener('input',()=>{if(!editable())return;draft[name]=field.value;clearError(controller,name);invalidate();});
+      field.addEventListener('change',()=>{if(!editable())return;draft[name]=field.value;clearError(controller,name);invalidate();});
     }
-    function validate() {
-      for (const name of Object.keys(fields)) clearError(name);
-      const { data, errors } = validateContact(Object.fromEntries(Object.entries(fields).map(([name, field]) => [name, field.value])), fields.date?.validity.valid ?? true, source);
-      for (const [key, message] of errors) setError(key, message);
-      if (errors.length) {
-        status.textContent = 'Проверьте выделенные поля.';
-        fields[errors[0][0]].focus();
-        return null;
-      }
-      return data;
-    }
-
-    // Prevent default before any validation or readiness branch. No implicit GET
-    // submission can put contact data in an URL during async initialization.
-    form.addEventListener('submit', event => {
-      event.preventDefault();
-      if (!initialized || preparing) return;
-      refreshSelection();
-      if (source === 'repertoire' && !repertoireSnapshot().ready) {
-        status.textContent = 'Репертуар ещё не готов. Дождитесь загрузки.';
-        return;
-      }
-      if (preparedText) { confirmation.focus(); return; }
-      preparing = true;
-      syncButton();
-      try {
-        const data = validate();
-        if (!data) return;
-        // Preview-only boundary: a future backend adapter must not infer success
-        // from this local preparation. It needs an explicit delivered response.
-        preparedText = buildRequest(data, source, selectedLineup, source === 'repertoire' ? repertoireSnapshot() : null);
-        // This confirmation demonstrates the agreed UI only; no transport runs.
-        confirmation.hidden = false;
-        status.textContent = '';
-        confirmation.focus();
-      } catch (error) {
-        status.textContent = error instanceof Error ? error.message : 'Проверьте данные и попробуйте ещё раз.';
-      } finally {
-        setTimeout(() => { preparing = false; syncButton(); }, 0);
-      }
+    fields.commercialLineup.addEventListener('change',()=>{if(editable()){store.setCommercialLineup(fields.commercialLineup.value||null);invalidate();}});
+    fields.attachment.addEventListener('change',()=>{if(editable()){attachment=fields.attachment.checked&&snapshot().selected.length>0;invalidate();}});
+    q(form,'.bf-retry').addEventListener('click',()=>deliver(controller,false));
+    q(form,'.bf-check-status').addEventListener('click',()=>deliver(controller,true));
+    q(form,'.bf-edit').addEventListener('click',()=>{
+      if(!['rejected','catalog_changed'].includes(phase))return;
+      attempt=null;prepared=null;phase='draft';notice='Проверьте данные. Следующая отправка будет новой редакцией обращения.';
+      if(!snapshot().selected.length)attachment=false;
+      renderAll();fields.name.focus();
     });
-    for (const [name, field] of Object.entries(fields)) {
-      field.addEventListener('input', event => {
-        // The mask inserts its prefix on focus via a synthetic input event.
-        // That prefix alone must not hide the required-phone error.
-        const prefixOnlyFocus = name === 'phone' && field.value.trim() === '+7' && !event.isTrusted;
-        if (!prefixOnlyFocus) clearError(name);
-        invalidate();
-      });
-      field.addEventListener('change', () => { clearError(name); invalidate(); });
-    }
-    q('.bf-lineup-remove').addEventListener('click', () => { setLineup(''); fields.name.focus(); });
-
-    const controller = { setLineup, refreshSelection, initialize() {
-      if (attachPhoneMask) { attachPhoneMask(fields.phone); form.dataset.phoneMask = 'ready'; }
-      else {
-        form.dataset.phoneMask = 'fallback';
-        status.textContent = 'Автоформатирование телефона недоступно. Введите номер полностью.';
-      }
-      initialized = true;
-      refreshSelection();
-      syncButton();
-    } };
+    q(form,'.bf-new').addEventListener('click',()=>{
+      if(!['accepted','delivered'].includes(phase))return;
+      phase='draft';lastRequestId='';notice='';renderAll();fields.name.focus();
+    });
+    q(form,'.bf-copy').addEventListener('click',async()=>{
+      if(!prepared)return;
+      const textarea=q(form,'.bf-request-text');
+      try{if(!navigator.clipboard?.writeText)throw new Error();await navigator.clipboard.writeText(contract.requestText(prepared));announce('Текст скопирован. Отправьте его группе самостоятельно.');}
+      catch{textarea.focus();textarea.select();announce('Автоматическое копирование недоступно. Текст выделен — скопируйте его вручную.');}
+    });
     controllers.push(controller);
-    return controller;
   }
-
-  function refresh() { for (const controller of controllers) controller.refreshSelection(); }
-  window.bogemaForms = Object.freeze({ mode: 'preview', refresh });
-  window.addEventListener('bogema:lineup', event => { for (const controller of controllers) controller.setLineup(event.detail?.name); });
-  for (const event of ['bogema:repertoire-change', 'bogema:repertoire-ready']) window.addEventListener(event, refresh);
-  document.addEventListener('click', event => {
-    const card = event.target.closest?.('[data-lineup]');
-    if (card) for (const controller of controllers) controller.setLineup(card.dataset.lineup);
-    queueMicrotask(refresh);
-  });
-  document.addEventListener('change', () => queueMicrotask(refresh));
-
-  async function start() {
-    for (const host of document.querySelectorAll('[data-request-form]')) mount(host);
-    const results = await Promise.allSettled([loadConfig(), import(new URL('phone-input.mjs', scriptURL).href)]);
-    if (results[1].status === 'fulfilled') {
-      normalizePhone = results[1].value.normalizePhone;
-      attachPhoneMask = results[1].value.attachPhoneMask;
+  function submit(controller){
+    if(!editable())return;
+    for(const name of Object.keys(draft))clearError(controller,name);
+    const checked=contract.validateContact(draft,controller.fields.date.validity.valid);
+    if(checked.errors.length){
+      for(const [name,message]of checked.errors)setError(controller,name,message);
+      announce('Проверьте выделенные поля.');controller.fields[checked.errors[0][0]].focus();return;
     }
-    // enabled/apiConfigPath are deliberately not used to POST. A configured
-    // flag alone does not implement a real API or authorize claiming delivery.
-    for (const controller of controllers) controller.initialize();
+    try{
+      prepared=contract.createFrozenRequest(draft,controller.source,snapshot(),attachment);
+      if(!config.enabled){phase='prepared';notice='Обращение подготовлено, но ещё не отправлено.';renderAll();q(controller.form,'.bf-prepared').focus();return;}
+      attempt=new contract.RequestAttempt(prepared,config);deliver(controller,false);
+    }catch(error){announce(error.message||'Не удалось подготовить обращение. Проверьте данные.');}
   }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true });
-  else start();
+  async function deliver(controller,checking){
+    if(!attempt||phase==='pending')return;
+    if(checking&&!['uncertain','partial'].includes(phase))return;
+    if(!checking&&!['draft','prepared','rejected'].includes(phase))return;
+    phase='pending';notice=checking?'Проверяем результат по номеру обращения…':'Отправляем обращение…';renderAll();
+    const result=await (checking?attempt.check():attempt.send());
+    phase=result.status;
+    if(['accepted','delivered'].includes(phase)){
+      lastRequestId=prepared.requestId;
+      draft=blank();attachment=false;prepared=null;attempt=null;transferred.clear();store.clearCommercialLineup();
+      notice=phase==='accepted'?'Полный запрос принят для дальнейшей обработки. Это ещё не подтверждение даты.':'Доставка полного обращения подтверждена. Дату и программу нужно согласовать.';
+      renderAll();q(controller.form,'.bf-confirmation').focus();return;
+    }
+    if(phase==='catalog_changed'){
+      store.markUnavailable(result.missing);
+      notice='Каталог обновился. Некоторые записи требуют уточнения. Обращение не принято: пересмотрите подборку или явно перенесите пожелания в комментарий.';
+    }else if(phase==='partial'){
+      notice='Подтверждена только часть обращения: '+result.parts.confirmed+' из '+result.parts.total+'. Полного подтверждения нет. Не отправляйте обращение заново; проверьте результат или свяжитесь с группой по номеру обращения.';
+    }else if(phase==='rejected'){
+      notice=result.message+' Данные и прикрепление сохранены.';
+    }else{
+      phase='uncertain';notice=(result.message||'Результат обращения неизвестен.')+' Данные сохранены на этой странице. '+(config.statusEndpoint?'Проверьте результат по номеру обращения.':'Свяжитесь с группой и назовите номер обращения. Повторная отправка отключена до проверки.');
+    }
+    renderAll();
+  }
+  window.bogemaForms=Object.freeze({get mode(){return config.enabled?'endpoint':'manual';},refresh:renderAll});
+  window.addEventListener('bogema:attach-request',()=>{
+    if(!editable()){announce('Сейчас зафиксировано обращение. Сначала проверьте его результат.');return;}
+    if(!snapshot().selected.length){announce('Сначала отметьте песни в репертуаре.');return;}
+    attachment=true;invalidate();announce('Музыкальная подборка прикреплена к текущему обращению.');
+  });
+  window.addEventListener('bogema:comment-request',event=>{
+    const {key,text}=event.detail||{};
+    let ok=false,message='';
+    if(typeof key!=='string'||typeof text!=='string')return;
+    if(!editable())message='Сначала завершите проверку текущего обращения или выберите «Изменить данные».';
+    else if(transferred.has(key)||draft.comment.includes(text)){ok=true;message='Это пожелание уже переносили в комментарий.';}
+    else{
+      const next=draft.comment?(draft.comment+'\n'+text):text;
+      if(next.length>2000)message='Недостаточно места в комментарии. Сократите его; предел — 2000 символов.';
+      else{draft.comment=next;transferred.add(key);ok=true;invalidate();message='Неподтверждённое пожелание добавлено в видимый комментарий.';}
+    }
+    announce(message);window.dispatchEvent(new CustomEvent('bogema:comment-result',{detail:{key,ok,message}}));
+  });
+  window.addEventListener('pageshow',event=>{
+    if(event.persisted&&editable()){attachment=false;prepared=null;phase='draft';notice='Прикрепление выключено после возврата. Включите его снова, если оно нужно для этого обращения.';renderAll();}
+  });
+  window.addEventListener('beforeunload',event=>{
+    if(['pending','uncertain','partial'].includes(phase)){event.preventDefault();event.returnValue='';}
+  });
+  async function start(){
+    for(const host of document.querySelectorAll('[data-request-form]'))mount(host);
+    try{
+      const modules=await Promise.all([import(new URL('request-contract.mjs',scriptURL).href),import(new URL('preferences-store.mjs',scriptURL).href),import(new URL('phone-input.mjs',scriptURL).href)]);
+      contract=modules[0];store=modules[1].preferencesStore;formatPreferences=modules[1].formatPreferences;phoneMask=modules[2].attachPhoneMask;
+      config=await loadConfig();
+      for(const controller of controllers){phoneMask(controller.fields.phone);controller.form.dataset.phoneMask='ready';}
+      store.subscribe(()=>{
+        if(editable()){
+          if(!snapshot().selected.length)attachment=false;
+          prepared=null;phase='draft';
+        }
+        renderAll();
+      });
+      await store.ready;
+      phase='draft';renderAll();
+    }catch{
+      phase='unavailable';notice='Форма не загрузилась. Свяжитесь с группой по телефону или в Telegram.';renderAll();
+    }
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 })();

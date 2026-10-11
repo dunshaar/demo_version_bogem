@@ -1,4 +1,6 @@
 {
   "enabled": false,
-  "apiConfigPath": null
+  "apiConfigPath": null,
+  "endpoint": null,
+  "statusEndpoint": null
 }
