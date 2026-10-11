@@ -72,10 +72,12 @@ function navigateToSection(target, hash) {
   if (matchMedia('(prefers-reduced-motion: reduce)').matches || Math.abs(end - start) < 2) {
     scrollTo({top:end, behavior:'instant'}); finish(); return;
   }
-  const began = performance.now(), duration = 240;
+  // Give long journeys enough frames to remain visible, with a gentle start and stop.
+  const duration = Math.min(850, 450 + Math.abs(end - start) / 10);
+  const began = performance.now();
   const step = now => {
     const progress = Math.min(1, (now - began) / duration);
-    const eased = 1 - (1 - progress) ** 3;
+    const eased = (1 - Math.cos(Math.PI * progress)) / 2;
     scrollTo({top:start + (end - start) * eased, behavior:'instant'});
     if (progress < 1) navigationFrame = requestAnimationFrame(step);
     else finish();
