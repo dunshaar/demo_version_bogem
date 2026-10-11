@@ -11,13 +11,14 @@ const keyFor = (program, id) => `${program}:${id}`;
 const element = (tag, text, className) => { const node = document.createElement(tag); if (text !== undefined) node.textContent = text; if (className) node.className = className; return node; };
 
 function openDialog(dialog, opener) {
+  if (dialog.open) return;
   dialog.returnValue = '';
   dialogOpeners.set(dialog, opener || document.activeElement);
   dialog.showModal();
 }
 for (const dialog of document.querySelectorAll('dialog')) {
   dialog.querySelectorAll('[data-close-dialog]').forEach(button => button.addEventListener('click', () => dialog.close()));
-  dialog.addEventListener('close', () => { const opener = dialogOpeners.get(dialog); if (opener?.isConnected) opener.focus({ preventScroll: true }); });
+  dialog.addEventListener('close', () => { const opener = dialogOpeners.get(dialog); if (opener?.isConnected && !opener.disabled && opener.getClientRects().length) opener.focus({ preventScroll: true }); else if (opener) $('#song-search').focus({ preventScroll: true }); });
 }
 
 function createChoices(song, program) {
@@ -98,7 +99,7 @@ function renderResults() {
   const total = catalog.lineups[snapshot.program].songs.length;
   const label = catalog.lineups[snapshot.program].label;
   const filtered = !!query.query || !!query.category || query.status !== 'all';
-  $('#results-status').textContent = `${label}: ${total} песен · найдено ${matches.length} · показано ${visible.length}`;
+  $('#results-status').textContent = filtered ? `Найдено ${matches.length} из ${total} · показано ${visible.length}` : `${total} песен · показано ${visible.length}`;
   $('#reset-filters').hidden = !filtered;
   $('#catalog-empty').hidden = matches.length > 0;
   $('#empty-copy').textContent = query.query ? `По запросу «${query.query}» с выбранными фильтрами нет совпадений.` : 'В выбранной программе нет песен с такими фильтрами. Отметки других программ сохранены.';
@@ -107,23 +108,14 @@ function renderResults() {
   $('#show-more').textContent = `Показать ещё ${Math.min(PAGE_SIZE, remaining)}`;
   $('#show-all').textContent = filtered ? `Показать все результаты (${matches.length})` : `Показать весь список (${matches.length})`;
   $('#remaining-status').textContent = `Осталось ${remaining}`;
-  $('#download-list').textContent = `Полный репертуар: ${label.toLocaleLowerCase('ru')} — TXT ↓`;
+  $('#download-list').textContent = `Скачать репертуар ${snapshot.program === 'group' ? 'группы' : 'трио'} — TXT ↓`;
 }
 function recordDescription(record) {
   return `${record.title || `Название восстановить не удалось (${record.id})`} — ${record.artist || 'Исполнитель не указан'}`;
 }
 function renderDeprecated() {
-  const section = $('#deprecated-section'); section.hidden = !snapshot.deprecated.length;
-  const fragment = document.createDocumentFragment();
-  for (const record of snapshot.deprecated) {
-    const item = element('li');
-    item.append(element('div', `${record.programLabel} · ${STATUS_LABELS[record.status]}: ${recordDescription(record)}`));
-    const actions = element('div');
-    const transfer = element('button', 'Перенести в комментарий', 'rep-text-button'); transfer.type = 'button'; transfer.dataset.transfer = record.key;
-    const remove = element('button', 'Удалить отметку', 'rep-text-button'); remove.type = 'button'; remove.dataset.removeProgram = record.program; remove.dataset.removeSong = record.id;
-    actions.append(transfer, remove); item.append(actions); fragment.append(item);
-  }
-  $('#deprecated-list').replaceChildren(fragment);
+  $('#deprecated-section').hidden = !snapshot.deprecated.length;
+  $('#deprecated-summary').textContent = `Не найдены в текущем каталоге: ${snapshot.deprecated.length}. Они сохранены отдельно и не прикрепляются как актуальные песни.`;
 }
 function renderPreview() {
   if (!$('#preview-dialog').open) return;
@@ -159,11 +151,16 @@ function renderPreview() {
     for (const song of snapshot.deprecated) {
       const item = element('li'); const name = element('span', recordDescription(song)); name.append(element('small', `${song.programLabel} · ${STATUS_LABELS[song.status]} · Не входит в список для обращения`));
       const remove = element('button', 'Удалить', 'rep-text-button'); remove.type = 'button'; remove.dataset.removeProgram = song.program; remove.dataset.removeSong = song.id;
-      item.append(name, remove); list.append(item);
+      const actions = element('div', undefined, 'rep-preview-stale-actions');
+      const transfer = element('button', 'В комментарий', 'rep-text-button'); transfer.type = 'button'; transfer.dataset.transfer = song.key;
+      actions.append(transfer, remove); item.append(name, actions); list.append(item);
     }
     fragment.append(list);
   }
+  const contentScroll = content.closest('.rep-preview-scroll').scrollTop;
   content.replaceChildren(fragment);
+  content.closest('.rep-preview-scroll').scrollTop = contentScroll;
+  if (!$('#copy-fallback').hidden) $('#copy-text').value = formatPreferences(snapshot);
   if (focusKey) {
     const replacement = [...content.querySelectorAll('[data-preview-key]')].find(node => node.dataset.previewKey === focusKey && node.tagName === focusKind);
     if (replacement) replacement.focus({ preventScroll: true });
@@ -175,17 +172,22 @@ function refresh(value) {
   if (snapshot.ready && (!initialized || snapshot.catalogVersion !== catalog?.version || snapshot.maxSelections !== PROGRAMS.reduce((n, key) => n + (catalog?.lineups?.[key]?.songs.length || 0), 0))) initialize();
   if (snapshot.catalogError && !snapshot.ready) { $('#catalog-loading').hidden = true; $('#catalog-error').hidden = false; document.documentElement.dataset.repertoireReady = 'false'; }
   const storageMessage = snapshot.storage.message;
-  $('#storage-status').textContent = storageMessage || 'Пожелания и выбранный состав сохраняются на этом устройстве. Контакты, комментарий и разрешение прикреплять подборку не сохраняются. К новому обращению набор нужно прикрепить заново.';
-  $('#storage-status').classList.toggle('rep-notice', !!storageMessage);
+  $('#storage-status').textContent = storageMessage || '';
+  $('#storage-status').hidden = !storageMessage;
   $('#program-notice').hidden = !snapshot.urlWarning; $('#program-notice').textContent = snapshot.urlWarning;
   if (initialized && activeProgram !== snapshot.program) { activeProgram = snapshot.program; visibleLimit = PAGE_SIZE; refreshCategories(); }
   renderResults();
   const count = snapshot.counts;
-  $('#selection-total').textContent = count.total;
-  $('#selection-counts').textContent = count.total ? `Хочу — ${count.want} · Можно — ${count.maybe} · Не надо — ${count.skip}${count.deprecated ? ` · Требуют уточнения — ${count.deprecated}` : ''}` : `Актуальных отметок пока нет.${count.deprecated ? ` Требуют уточнения — ${count.deprecated}.` : ' Просмотр списка ни к чему не обязывает.'}`;
-  $('#selection-program-counts').textContent = count.total ? `Группа — ${count.byProgram.group.total} · Трио — ${count.byProgram.trio.total}. Учтены и песни, которые сейчас скрыты фильтрами.` : '';
-  $('#reset-open').disabled = count.total + count.deprecated === 0;
-  $('#discuss-selection').disabled = count.total === 0;
+  const nonempty = count.total + count.deprecated > 0;
+  $('#selection-summary').hidden = !nonempty;
+  $('#selection-empty').hidden = nonempty;
+  $('#selection-total').textContent = count.total ? count.total : 'требует уточнения';
+  $('#selection-counts').textContent = count.total ? `Хочу ${count.want} · Можно ${count.maybe} · Не надо ${count.skip}` : '';
+  const programs = PROGRAMS.filter(program => count.byProgram[program].total).map(program => `${catalog.lineups[program].label} ${count.byProgram[program].total}`);
+  $('#selection-program-counts').textContent = [...(programs.length > 1 || (programs.length && !count.byProgram[snapshot.program].total) ? programs : []), ...(count.deprecated ? [`Требуют уточнения ${count.deprecated}`] : [])].join(' · ');
+  for (const id of ['preview-open', 'reset-open', 'copy-selection', 'download-selection']) $(`#${id}`).disabled = !nonempty;
+  for (const id of ['discuss-selection', 'preview-discuss']) $(`#${id}`).disabled = count.total === 0;
+  if (!nonempty && !$('#reset-confirmation').hidden) toggleReset(false);
   renderDeprecated(); renderPreview();
 }
 function resetFilters() { query.query = ''; query.category = ''; query.status = 'all'; $('#song-search').value = ''; $('#song-category').value = ''; $('#song-status').value = 'all'; visibleLimit = PAGE_SIZE; renderResults(); }
@@ -218,7 +220,9 @@ document.addEventListener('click', event => {
   if (transfer) {
     const record = snapshot.deprecated.find(song => song.key === transfer.dataset.transfer); if (!record) return;
     const text = `Неподтверждённое пожелание — ${record.programLabel} — ${STATUS_LABELS[record.status]}: ${recordDescription(record)}.`;
+    if ($('#preview-dialog').open) { dialogOpeners.delete($('#preview-dialog')); $('#preview-dialog').close(); }
     window.dispatchEvent(new CustomEvent('bogema:comment-request', { detail: { key: record.key, text } }));
+    $('#request').scrollIntoView({ behavior: 'instant' });
   }
 });
 window.addEventListener('bogema:comment-result', event => { $('#comment-result').textContent = event.detail?.message || ''; });
@@ -232,25 +236,55 @@ function expand(all) {
 }
 $('#show-more').addEventListener('click', () => expand(false));
 $('#show-all').addEventListener('click', () => expand(true));
-$('#preview-open').addEventListener('click', event => { openDialog($('#preview-dialog'), event.currentTarget); renderPreview(); });
-$('#discuss-selection').addEventListener('click', () => { window.dispatchEvent(new CustomEvent('bogema:attach-request')); $('#request').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' }); });
-$('#reset-open').addEventListener('click', event => openDialog($('#reset-dialog'), event.currentTarget));
-$('#reset-dialog').addEventListener('close', event => { if (event.currentTarget.returnValue === 'reset') { store.clearMarks(); $('#selection-title').tabIndex = -1; $('#selection-title').focus({ preventScroll: true }); $('#export-status').textContent = 'Все отметки удалены. Прикрепление подборки выключено.'; } });
+function showPreview(trigger) {
+  toggleReset(false);
+  $('#copy-fallback').hidden = true;
+  $('#export-status').textContent = '';
+  openDialog($('#preview-dialog'), trigger);
+  renderPreview();
+}
+$('#preview-open').addEventListener('click', event => showPreview(event.currentTarget));
+document.querySelectorAll('[data-preview-open]').forEach(button => button.addEventListener('click', () => showPreview(button)));
+window.addEventListener('bogema:preview-request', event => { event.preventDefault(); showPreview(event.detail?.trigger); });
+function discussSelection() {
+  if (!snapshot.selected.length) return;
+  if ($('#preview-dialog').open) { dialogOpeners.delete($('#preview-dialog')); $('#preview-dialog').close(); }
+  window.dispatchEvent(new CustomEvent('bogema:attach-request'));
+  $('#request').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+}
+$('#discuss-selection').addEventListener('click', discussSelection);
+$('#preview-discuss').addEventListener('click', discussSelection);
+function toggleReset(show) {
+  $('#reset-confirmation').hidden = !show;
+  $('#preview-actions').hidden = show;
+  if (show) $('#reset-cancel').focus({ preventScroll: true });
+}
+$('#reset-open').addEventListener('click', () => toggleReset(true));
+$('#reset-cancel').addEventListener('click', () => { toggleReset(false); $('#reset-open').focus({ preventScroll: true }); });
+$('#reset-confirm').addEventListener('click', () => {
+  store.clearMarks(); toggleReset(false); $('#copy-fallback').hidden = true;
+  $('#export-status').textContent = 'Отметки удалены. Подборка больше не прикреплена к сообщению.';
+  $('#preview-dialog [data-close-dialog]').focus({ preventScroll: true });
+});
+$('#preview-dialog').addEventListener('cancel', event => {
+  if (!$('#reset-confirmation').hidden) { event.preventDefault(); toggleReset(false); $('#reset-open').focus({ preventScroll: true }); }
+});
+$('#preview-dialog').addEventListener('close', () => { toggleReset(false); });
 async function copySelection() {
   const text = formatPreferences(snapshot);
-  try { await navigator.clipboard.writeText(text); $('#export-status').textContent = 'Подборка скопирована. Группе ничего не отправлено.'; }
-  catch { $('#copy-text').value = text; openDialog($('#copy-dialog'), $('#copy-selection')); $('#copy-text').focus(); $('#copy-text').select(); $('#export-status').textContent = 'Автоматическое копирование недоступно. Открыт текст для ручного копирования.'; }
+  try { await navigator.clipboard.writeText(text); $('#export-status').textContent = 'Подборка скопирована. Передайте её группе удобным способом.'; $('#copy-fallback').hidden = true; }
+  catch { $('#copy-text').value = formatPreferences(snapshot); $('#copy-fallback').hidden = false; $('#copy-text').focus(); $('#copy-text').select(); $('#export-status').textContent = 'Выделите текст ниже и скопируйте вручную.'; }
 }
 $('#copy-selection').addEventListener('click', copySelection);
-function download(text, filename) {
+function download(text, filename, target = '#export-status') {
   try {
     const url = URL.createObjectURL(new Blob(['\uFEFF', text], { type: 'text/plain;charset=utf-8' }));
     const link = element('a'); link.href = url; link.download = filename; document.body.append(link); link.click(); link.remove();
     setTimeout(() => URL.revokeObjectURL(url), 10000);
-    $('#export-status').textContent = 'Скачивание TXT началось. Группе ничего не отправлено.';
-  } catch { $('#export-status').textContent = 'Не удалось подготовить файл. Попробуйте скопировать подборку.'; }
+    $(target).textContent = 'Файл TXT подготовлен для скачивания.';
+  } catch { $(target).textContent = 'Не удалось подготовить файл. Попробуйте ещё раз или скопируйте подборку.'; }
 }
-$('#download-list').addEventListener('click', () => download(formatFullCatalog(catalog, snapshot.program, snapshot.selected), `Богема — ${catalog.lineups[snapshot.program].label} — полный репертуар.txt`));
+$('#download-list').addEventListener('click', () => download(formatFullCatalog(catalog, snapshot.program, snapshot.selected), `Богема — ${catalog.lineups[snapshot.program].label} — полный репертуар.txt`, '#catalog-export-status'));
 $('#download-selection').addEventListener('click', () => download(formatPreferences(snapshot), 'Богема — мои музыкальные пожелания.txt'));
 $('#retry-catalog').addEventListener('click', () => { $('#catalog-loading').hidden = false; $('#catalog-error').hidden = true; store.reloadCatalog(); });
 store.subscribe(refresh);

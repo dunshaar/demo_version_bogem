@@ -40,7 +40,7 @@ const playerStatus = document.querySelector('.bp-status');
 const videos = {
   promo: { title: 'Промо 2026', src: 'assets/promo.mp4', poster: 'assets/poster-promo.jpg' },
   'live-2025': { title: 'LIVE 2025 · Группа Богема', src: 'assets/live-2025.mp4', poster: 'assets/poster-live-2025.jpg' },
-  'trio-live': { title: 'Трио LIVE · Архивная запись', src: 'assets/trio-live.mp4', poster: 'assets/poster-trio-live.jpg' },
+  'trio-live': { title: 'Live-запись · Богема', src: 'assets/trio-live.mp4', poster: 'assets/poster-trio-live.jpg' },
   'summer-rain': { title: 'Вокалист-гитарист · Летний дождь', src: 'assets/summer-rain.mp4', poster: 'assets/poster-summer-rain.jpg' },
 };
 let videoRequest = 0;
@@ -73,23 +73,73 @@ videoDialog.addEventListener('close', () => {
   error.hidden = true;
 });
 
-const lineupLinks = [...document.querySelectorAll('[data-lineup]')];
+// Viewing a lineup is intentionally separate from selecting it for a message.
+const lineupShowcase = document.querySelector('.lineup-showcase');
+const lineupOptions = document.querySelector('.lineup-options');
+const lineupPanel = document.querySelector('#lineup-detail');
+const lineupViewButtons = [...document.querySelectorAll('[data-view-lineup]')];
+const lineupDiscuss = document.querySelector('[data-lineup-discuss]');
 const lineupStatus = document.querySelector('.lineup-selection-status');
-function showLineup(snapshot) {
-  const chosen = snapshot.commercialLineup?.id;
-  for (const link of lineupLinks) {
-    const selected = link.dataset.lineup === chosen;
-    link.closest('[data-offer]')?.classList.toggle('is-selected', selected);
-    link.querySelector('span').textContent = selected ? 'Выбран для обсуждения' : 'Обсудить состав';
+const lineupImage = lineupPanel.querySelector('img');
+const lineupMediaCaption = lineupPanel.querySelector('figcaption');
+const lineupLive = lineupPanel.querySelector('[data-video]');
+const mobileLineups = matchMedia('(max-width: 767px)');
+let viewedLineup = preferencesStore.getSnapshot().commercialLineup?.id || 'full';
+function placeLineupPanel() {
+  const focused = document.activeElement;
+  const restoreFocus = lineupPanel.contains(focused);
+  if (mobileLineups.matches) {
+    lineupOptions.querySelector(`[data-offer="${viewedLineup}"]`).append(lineupPanel);
+  } else {
+    lineupShowcase.prepend(lineupPanel);
   }
-  if (lineupStatus) lineupStatus.textContent = snapshot.commercialLineup ? `Выбран состав «${snapshot.commercialLineup.label}». Изменить или убрать его можно в форме.` : '';
+  if (restoreFocus && document.activeElement !== focused) focused.focus({preventScroll:true});
 }
-for (const link of lineupLinks) link.addEventListener('click', () => {
-  const id = link.dataset.lineup;
-  if (LINEUPS.some(item => item.id === id)) preferencesStore.setCommercialLineup(id);
+function renderViewedLineup(id) {
+  const item = LINEUPS.find(lineup => lineup.id === id);
+  if (!item) return;
+  viewedLineup = id;
+  lineupPanel.dataset.viewedLineup = id;
+  lineupPanel.setAttribute('aria-labelledby', `lineup-view-${id}`);
+  lineupImage.src = item.visual.src;
+  lineupImage.width = item.visual.width;
+  lineupImage.height = item.visual.height;
+  lineupImage.alt = item.visual.alt;
+  lineupMediaCaption.textContent = item.visual.caption;
+  lineupPanel.querySelector('[data-lineup-title]').textContent = item.label;
+  lineupPanel.querySelector('[data-lineup-difference]').textContent = item.difference;
+  lineupDiscuss.dataset.lineupDiscuss = id;
+  lineupLive.hidden = !item.videoId;
+  if (item.videoId) lineupLive.dataset.video = item.videoId;
+  for (const button of lineupViewButtons) {
+    const current = button.dataset.viewLineup === id;
+    button.setAttribute('aria-expanded', String(current));
+    button.closest('.lineup-option').classList.toggle('is-viewed', current);
+  }
+  placeLineupPanel();
+}
+for (const button of lineupViewButtons) button.addEventListener('click', () => {
+  const before = button.getBoundingClientRect().top;
+  renderViewedLineup(button.dataset.viewLineup);
+  if (mobileLineups.matches) {
+    // Keep the touched row in place when an earlier inline panel collapses.
+    requestAnimationFrame(() => {
+      const shift = button.getBoundingClientRect().top - before;
+      if (Math.abs(shift) > 1) window.scrollBy({top: shift, behavior: 'instant'});
+    });
+  }
 });
-showLineup(preferencesStore.getSnapshot());
-preferencesStore.subscribe(showLineup);
+lineupDiscuss.addEventListener('click', () => {
+  preferencesStore.setCommercialLineup(viewedLineup);
+});
+mobileLineups.addEventListener('change', placeLineupPanel);
+renderViewedLineup(viewedLineup);
+function showCommercialLineup(snapshot) {
+  const chosen = snapshot.commercialLineup;
+  lineupStatus.textContent = chosen ? `Для обсуждения выбран ${chosen.label.toLocaleLowerCase('ru-RU')}.` : '';
+}
+showCommercialLineup(preferencesStore.getSnapshot());
+preferencesStore.subscribe(showCommercialLineup);
 
 const progress = document.querySelector('.scroll-progress');
 let scheduled = false;
