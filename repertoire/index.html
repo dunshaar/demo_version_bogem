@@ -41,19 +41,43 @@
   <main>
     <section class="wrap rep-intro" aria-labelledby="page-title">
       <h1 id="page-title">Репертуар</h1>
-      <div class="rep-guide" aria-label="Как отметить пожелания"><p class="rep-guide-lead">Отметьте, что хотите услышать</p><div class="rep-guide-values"><p><strong>Хочу</strong>Хотелось бы услышать эту песню</p><p><strong>Можно</strong>Без особых пожеланий, подходит для программы</p><p><strong>Не надо</strong>Не включать в программу</p></div><p class="rep-guide-foot">По умолчанию у всех песен стоит «Можно»<br>Меняйте только то, что для вас важно, и отправьте пожелания через форму внизу страницы<br>Итоговую программу согласуем отдельно</p></div>
+      <div class="rep-guide" aria-labelledby="guide-title">
+        <div class="rep-guide-heading"><h2 id="guide-title">Выбирайте музыку под себя</h2><p>Отметьте любимые песни и те, которые не хотите слышать</p></div>
+        <div class="rep-guide-values">
+          <div class="rep-guide-option rep-guide-want"><span class="rep-guide-symbol" aria-hidden="true">✓</span><div><strong>Хочу</strong><p>Очень хочу услышать эту песню</p></div></div>
+          <div class="rep-guide-option rep-guide-maybe"><span class="rep-guide-symbol" aria-hidden="true">○</span><div><strong>Можно</strong><p>Песня подходит, выбор за музыкантами</p></div></div>
+          <div class="rep-guide-option rep-guide-skip"><span class="rep-guide-symbol" aria-hidden="true">×</span><div><strong>Не надо</strong><p>Не включать в программу</p></div></div>
+        </div>
+        <div class="rep-guide-foot"><p>У всех песен уже стоит «Можно»</p><p>Отметьте только то, что важно для вас</p></div>
+      </div>
       <p class="rep-notice" id="storage-status" role="status" hidden></p>
       <p class="rep-notice" id="program-notice" role="status" hidden></p>
     </section>
-    <section class="wrap rep-catalog" id="songs" aria-labelledby="list-title">
-      <div class="rep-catalog-tools"><div class="rep-program"><span class="rep-sr-only" id="program-label">Программа каталога</span><div class="rep-tabs" role="tablist" aria-labelledby="program-label"><button id="tab-group" type="button" role="tab" aria-selected="true" aria-controls="songs-group" disabled>Группа <span>210</span></button><button id="tab-trio" type="button" role="tab" aria-selected="false" aria-controls="songs-trio" tabindex="-1" disabled>Трио <span>151</span></button></div></div><button type="button" class="rep-text-button" id="download-list" disabled>Скачать репертуар · TXT ↓</button></div>
-      <h2 class="rep-sr-only" id="list-title">Песни и ваши пожелания</h2>
-      <div class="rep-result-line"><p id="results-status" role="status" aria-live="polite"></p><p id="catalog-export-status" role="status"></p></div>
+    <div class="wrap rep-workspace">
+      <aside class="rep-companion" id="repertoire-companion" aria-labelledby="companion-title">
+        <div class="rep-companion-heading"><p id="companion-title">Ваша программа</p><p class="rep-companion-total"><strong id="companion-total">210</strong><span>песен</span></p></div>
+        <span class="rep-sr-only" id="program-label">Выберите состав</span>
+        <div class="rep-tabs" role="tablist" aria-labelledby="program-label">
+          <button id="tab-group" type="button" role="tab" aria-selected="true" aria-controls="songs-group" disabled>Группа <span class="rep-sr-only">210</span></button>
+          <button id="tab-trio" type="button" role="tab" aria-selected="false" aria-controls="songs-trio" tabindex="-1" disabled>Трио <span class="rep-sr-only">151</span></button>
+        </div>
+        <p id="companion-program" class="rep-sr-only">Группа</p>
+        <dl class="rep-counts" aria-label="Пожелания для выбранного состава">
+          <div class="rep-count-want"><dt>Хочу</dt><dd id="count-want">0</dd></div>
+          <div class="rep-count-maybe"><dt>Можно</dt><dd id="count-maybe">210</dd></div>
+          <div class="rep-count-skip"><dt>Не надо</dt><dd id="count-skip">0</dd></div>
+        </dl>
+        <p class="rep-companion-note">Счётчики относятся к выбранному составу <br>Пожелания для группы и трио сохраняются отдельно</p>
+        <p class="rep-companion-other" id="companion-other" hidden></p>
+      </aside>
+      <div class="rep-main-column">
+    <section class="rep-catalog" id="songs" aria-labelledby="list-title">
+      <div class="rep-list-heading"><h2 id="list-title">Песни группы</h2><span>Ваш выбор</span></div>
+      <div class="rep-result-line rep-sr-only"><p id="results-status" role="status" aria-live="polite"></p></div>
       <p id="catalog-loading" class="rep-small">Подключаем отметки, полный список доступен ниже</p>
       <p id="catalog-error" class="rep-notice" role="alert" hidden>Не удалось подключить отметки. Полный список ниже остаётся доступным <button type="button" class="rep-text-button" id="retry-catalog">Повторить</button></p>
-      <noscript><p class="rep-notice">Ниже весь репертуар обеих программ<br>Для отметок нужен JavaScript<br>Можно <a href="../assets/repertoire.docx" download>скачать исходный общий репертуар DOCX</a></p><style>#catalog-loading,.rep-tabs,#download-list,.rep-result-line{display:none}</style></noscript>
-      <div class="rep-selection" id="selection-summary" hidden><p id="selection-counts"></p><button type="button" class="rep-text-button" id="preview-open">Посмотреть пожелания</button><a class="rep-text-button" href="#wishes-form">Отправить пожелания ↓</a></div>
-      <section id="deprecated-section" class="rep-notice rep-deprecated" hidden aria-labelledby="deprecated-title"><h2 id="deprecated-title">Некоторые песни больше недоступны</h2><p id="deprecated-summary"></p><button type="button" class="rep-text-button" data-preview-open>Посмотреть пожелания</button></section>
+      <noscript><p class="rep-notice">Ниже весь репертуар обеих программ <br>Для отметок нужен JavaScript <br>Можно <a href="../assets/repertoire.docx" download>скачать исходный общий репертуар DOCX</a></p><style>#catalog-loading,.rep-companion,.rep-tools,.rep-result-line{display:none}</style></noscript>
+      <section id="deprecated-section" class="rep-notice rep-deprecated" hidden aria-labelledby="deprecated-title"><h2 id="deprecated-title">Некоторые песни больше недоступны</h2><p>Эти сохранённые отметки не войдут в заявку</p><ul id="deprecated-songs"></ul></section>
       <p id="wishes-status" class="rep-sr-only" role="status"></p>
       <!-- CATALOG:START -->
 <section class="rep-program-list" id="songs-group" aria-label="Группа"><h2 class="rep-static-title">Группа · 210 песен</h2><ol id="song-list-group" class="rep-song-list"><li class="rep-song-row" data-song-id="group-song-001" data-program="group"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">01</span><h3>Остров</h3><span class="rep-song-artist">Л. Агутин</span></div><div class="rep-choice-host"></div></li>
@@ -420,17 +444,30 @@
 <li class="rep-song-row" data-song-id="trio-song-152" data-program="trio"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">151</span><h3>Just The Two of Us</h3><span class="rep-song-artist">Grover Washington</span></div><div class="rep-choice-host"></div></li>
 </ol></section>
 <!-- CATALOG:END -->
+      <details class="rep-tools" id="repertoire-tools">
+        <summary>Сохранить список или сбросить отметки<span aria-hidden="true">+</span></summary>
+        <div class="rep-tools-content">
+          <p>Можно сохранить себе весь репертуар выбранного состава или только ваши пожелания</p>
+          <div class="rep-tools-buttons" id="preview-actions">
+            <button type="button" class="rep-secondary" id="download-list" disabled>Весь репертуар в TXT</button>
+            <button type="button" class="rep-secondary" id="download-selection" disabled>Пожелания в TXT</button>
+            <button type="button" class="rep-secondary" id="copy-selection" disabled>Скопировать пожелания</button>
+            <button type="button" class="rep-text-button" id="reset-open" disabled>Сбросить все отметки</button>
+          </div>
+          <div class="rep-reset-confirmation" id="reset-confirmation" hidden><p>Вернуть все песни группы и трио к «Можно»?</p><div><button type="button" class="rep-secondary" id="reset-cancel">Оставить как есть</button><button type="button" class="rep-primary" id="reset-confirm">Сбросить отметки</button></div></div>
+          <p id="catalog-export-status" class="rep-small" role="status"></p>
+          <p id="export-status" class="rep-small" role="status"></p>
+          <div id="copy-fallback" hidden><p>Выделите текст и скопируйте его вручную</p><textarea id="copy-text" readonly aria-label="Ваши музыкальные пожелания"></textarea></div>
+        </div>
+      </details>
     </section>
-    <section class="wrap rep-request" aria-labelledby="wishes-form-title">
-      <div class="rep-request-intro"><p class="rep-request-eyebrow">Ваша программа</p><h2 id="wishes-form-title">Музыка, которую<br>вы выбрали</h2><p>Оставьте имя и телефон, чтобы мы могли обсудить ваши пожелания и составить программу выступления</p><p class="rep-small">В форму попадут отметки «Хочу» и «Не надо» из репертуара группы и трио</p></div>
+    <section class="rep-request" aria-labelledby="wishes-form-title">
+      <div class="rep-request-intro"><p class="rep-request-eyebrow">Ваша программа</p><h2 id="wishes-form-title">Музыка, которую <br>вы выбрали</h2><p>Оставьте имя и телефон, чтобы мы могли обсудить ваши пожелания и составить программу выступления</p><p class="rep-small">В форму попадут отметки «Хочу» и «Не надо» из репертуара группы и трио</p></div>
       <div class="rep-request-card" id="wishes-form" data-request-form data-source="repertoire"><noscript>Для отправки пожеланий включите JavaScript в браузере</noscript></div>
     </section>
+      </div>
+    </div>
   </main>
   <footer class="wrap rep-footer"><span>Богема · 2026</span><a href="#page-title">Наверх ↑</a></footer>
-  <dialog id="preview-dialog" class="rep-dialog rep-preview" aria-labelledby="preview-title">
-    <div class="rep-dialog-head"><div><h2 id="preview-title">Ваши пожелания</h2><p class="rep-small">По остальным песням особых пожеланий нет («Можно»)</p></div><button type="button" class="rep-dialog-close" data-close-dialog aria-label="Закрыть пожелания" autofocus>×</button></div>
-    <div class="rep-preview-scroll"><div id="preview-content"></div><div id="copy-fallback" hidden><p>Браузер не разрешил копирование<br>Выделите текст и скопируйте его вручную</p><textarea id="copy-text" readonly aria-label="Полный текст музыкальных пожеланий"></textarea></div></div>
-    <div class="rep-preview-footer"><p id="export-status" class="rep-small" role="status"></p><div id="preview-actions" class="rep-preview-export"><button type="button" class="rep-text-button" id="copy-selection">Скопировать</button><button type="button" class="rep-text-button" id="download-selection">Скачать TXT</button><button type="button" class="rep-text-button" id="reset-open">Вернуть всё к «Можно»</button></div><div id="reset-confirmation" hidden><p>Вернуть все песни обеих программ к «Можно» и удалить пожелания по недоступным песням?</p><div><button type="button" class="rep-secondary" id="reset-cancel">Оставить пожелания</button><button type="button" class="rep-primary" id="reset-confirm">Вернуть к «Можно»</button></div></div></div>
-  </dialog>
 </body>
 </html>

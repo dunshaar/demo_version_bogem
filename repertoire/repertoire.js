@@ -3,12 +3,12 @@ import { preferencesStore as store, STATUS_LABELS, PROGRAMS, formatPreferences, 
 const $ = selector => document.querySelector(selector);
 const rows = new Map();
 let catalog = null, snapshot = store.getSnapshot(), initialized = false, activeProgram = snapshot.program;
-let previewOpener = null;
 const keyFor = (program, id) => `${program}:${id}`;
 const element = (tag, text, className) => { const node = document.createElement(tag); if (text !== undefined) node.textContent = text; if (className) node.className = className; return node; };
-const dialog = $('#preview-dialog');
 const removedParameters = ['q', 'query', 'search', 'category', 'status', 'filter', 'sort', 'page', 'limit'];
 const cleanURL = new URL(location.href);
+// Record the initially restored program so browser Back restores it too.
+if (!cleanURL.searchParams.has('lineup')) cleanURL.searchParams.set('lineup', snapshot.program);
 for (const key of removedParameters) cleanURL.searchParams.delete(key);
 if (cleanURL.href !== location.href) history.replaceState(null, '', cleanURL);
 
@@ -65,63 +65,42 @@ function renderCatalog() {
     const tab = $(`#tab-${program}`); tab.setAttribute('aria-selected', String(selected)); tab.tabIndex = selected ? 0 : -1;
     $(`#songs-${program}`).hidden = !selected;
     for (const song of catalog.lineups[program].songs) {
-      const row = rows.get(keyFor(program, song.id));
-      const mark = store.getStatus(program, song.id);
+      const row = rows.get(keyFor(program, song.id)), mark = store.getStatus(program, song.id);
       row.dataset.status = mark;
       for (const input of row.querySelectorAll('input[type=radio]')) input.checked = input.value === mark;
     }
   }
-  $('#results-status').textContent = `${catalog.lineups[snapshot.program].songs.length} песен`;
-  $('#download-list').textContent = `Скачать репертуар ${snapshot.program === 'group' ? 'группы' : 'трио'} · TXT ↓`;
-  if (activeProgram !== snapshot.program) {
-    activeProgram = snapshot.program;
-    $('#catalog-export-status').textContent = '';
-    window.dispatchEvent(new Event('bogema:layout'));
-  }
+  const program = snapshot.program, total = catalog.lineups[program].songs.length;
+  const counts = snapshot.counts.byProgram[program];
+  $('#companion-program').textContent = catalog.lineups[program].label;
+  $('#companion-total').textContent = total;
+  $('#count-want').textContent = counts.want;
+  $('#count-maybe').textContent = Math.max(0, total - counts.want - counts.skip);
+  $('#count-skip').textContent = counts.skip;
+  $('#list-title').textContent = program === 'group' ? 'Песни группы' : 'Песни трио';
+  $('#results-status').textContent = `${catalog.lineups[program].label}, ${total} песен`;
+  const other = program === 'group' ? 'trio' : 'group', otherCount = snapshot.counts.byProgram[other].total;
+  $('#companion-other').hidden = !otherCount;
+  $('#companion-other').textContent = `${other === 'group' ? 'Группа' : 'Трио'}: сохранено отметок ${otherCount}`;
+  if (activeProgram !== program) { activeProgram = program; $('#catalog-export-status').textContent = ''; }
 }
-function renderPreview() {
-  if (!dialog.open) return;
-  const focused = document.activeElement, focusKey = focused?.dataset?.previewKey;
-  const content = $('#preview-content'), fragment = document.createDocumentFragment();
-  for (const program of PROGRAMS) {
-    const songs = snapshot.selected.filter(song => song.program === program);
-    if (!songs.length) continue;
-    fragment.append(element('h3', songs[0].programLabel));
-    for (const status of ['want', 'skip']) {
-      const selected = songs.filter(song => song.status === status); if (!selected.length) continue;
-      fragment.append(element('h4', `${STATUS_LABELS[status]} · ${selected.length}`));
-      const list = element('ul');
-      for (const song of selected) {
-        const item = element('li'), name = element('span', song.title);
-        name.append(element('small', song.artist || 'Исполнитель не указан'));
-        const neutral = element('button', 'Вернуть «Можно»', 'rep-text-button'); neutral.type = 'button';
-        neutral.dataset.removeProgram = song.program; neutral.dataset.removeSong = song.id; neutral.dataset.previewKey = keyFor(song.program, song.id);
-        neutral.setAttribute('aria-label', `Вернуть «Можно»: ${song.title}, ${song.programLabel}`);
-        item.append(name, neutral); list.append(item);
-      }
-      fragment.append(list);
-    }
+function renderDeprecated() {
+  const section = $('#deprecated-section'), content = $('#deprecated-songs');
+  section.hidden = !snapshot.deprecated.length;
+  const focusedKey = document.activeElement?.dataset?.removeKey;
+  const fragment = document.createDocumentFragment();
+  for (const song of snapshot.deprecated) {
+    const item = element('li'), name = element('span', song.title || 'Название не восстановлено');
+    name.append(element('small', `${song.artist || 'Исполнитель не указан'} · ${song.programLabel}`));
+    const remove = element('button', 'Удалить отметку', 'rep-text-button'); remove.type = 'button';
+    remove.dataset.removeProgram = song.program; remove.dataset.removeSong = song.id; remove.dataset.removeKey = keyFor(song.program, song.id);
+    remove.setAttribute('aria-label', `Удалить отметку: ${song.title || song.id}`);
+    item.append(name, remove); fragment.append(item);
   }
-  if (snapshot.deprecated.length) {
-    fragment.append(element('h3', `Недоступны в репертуаре · ${snapshot.deprecated.length}`));
-    fragment.append(element('p', 'Эти пожелания сохраняются в отдельной части скачанного текста и не прикрепляются к заявке как актуальные песни', 'rep-small'));
-    const list = element('ul');
-    for (const song of snapshot.deprecated) {
-      const item = element('li'), name = element('span', song.title || `Название не восстановлено (${song.id})`);
-      name.append(element('small', `${song.artist || 'Исполнитель не указан'} · ${song.programLabel} · ${STATUS_LABELS[song.status]}`));
-      const remove = element('button', 'Удалить', 'rep-text-button'); remove.type = 'button';
-      remove.dataset.removeProgram = song.program; remove.dataset.removeSong = song.id; remove.dataset.previewKey = keyFor(song.program, song.id);
-      remove.setAttribute('aria-label', `Удалить недоступную песню: ${song.title || song.id}`);
-      item.append(name, remove); list.append(item);
-    }
-    fragment.append(list);
-  }
-  const contentScroll = $('.rep-preview-scroll').scrollTop;
-  content.replaceChildren(fragment); $('.rep-preview-scroll').scrollTop = contentScroll;
-  if (!$('#copy-fallback').hidden) $('#copy-text').value = formatPreferences(snapshot);
-  if (focusKey) {
-    const replacement = [...content.querySelectorAll('[data-preview-key]')].find(node => node.dataset.previewKey === focusKey);
-    (replacement || dialog.querySelector('[data-close-dialog]')).focus({ preventScroll: true });
+  content.replaceChildren(fragment);
+  if (focusedKey) {
+    const next = [...content.querySelectorAll('button')].find(node => node.dataset.removeKey === focusedKey) || content.querySelector('button') || $(`#tab-${snapshot.program}`);
+    next.focus({ preventScroll: true });
   }
 }
 function refresh(value) {
@@ -130,20 +109,23 @@ function refresh(value) {
   if (snapshot.catalogError && !snapshot.ready) { $('#catalog-loading').hidden = true; $('#catalog-error').hidden = false; document.documentElement.dataset.repertoireReady = 'false'; }
   $('#storage-status').textContent = snapshot.storage.message || ''; $('#storage-status').hidden = !snapshot.storage.message;
   $('#program-notice').hidden = !snapshot.urlWarning; $('#program-notice').textContent = snapshot.urlWarning;
-  renderCatalog();
-  const count = snapshot.counts, nonempty = count.total + count.deprecated > 0;
-  $('#selection-summary').hidden = count.total === 0;
-  $('#selection-counts').textContent = `Хочу: ${count.want} · Не надо: ${count.skip}`;
-  $('#deprecated-section').hidden = !count.deprecated;
-  $('#deprecated-summary').textContent = `Сохранённых пожеланий, которых больше нет в текущем репертуаре: ${count.deprecated}, они не прикрепляются как актуальные песни`;
-  if (!nonempty && dialog.open) { dialog.close(); $('#wishes-status').textContent = 'У всех песен снова «Можно»'; }
-  renderPreview();
+  renderCatalog(); renderDeprecated();
+  const nonempty = snapshot.counts.total + snapshot.counts.deprecated > 0;
+  for (const id of ['copy-selection', 'download-selection', 'reset-open']) $(`#${id}`).disabled = !nonempty;
+  if (!$('#copy-fallback').hidden) $('#copy-text').value = formatPreferences(snapshot);
   window.dispatchEvent(new Event('bogema:layout'));
 }
 function selectProgram(program, focus = false) {
   const url = new URL(location.href); url.searchParams.set('lineup', program);
   if (url.href !== location.href) history.pushState(null, '', url);
+  const workspace = $('.rep-workspace');
+  const belowStart = workspace.getBoundingClientRect().top < header.getBoundingClientRect().height;
+  const changed = program !== snapshot.program;
   store.setProgram(program);
+  if (changed && belowStart) {
+    const top = window.scrollY + workspace.getBoundingClientRect().top - header.getBoundingClientRect().height - 12;
+    window.scrollTo({ top: Math.max(0, top), behavior: 'instant' });
+  }
   if (focus) $(`#tab-${program}`).focus({ preventScroll: true });
 }
 PROGRAMS.forEach((program, index) => {
@@ -156,7 +138,11 @@ PROGRAMS.forEach((program, index) => {
 });
 document.addEventListener('change', event => {
   const control = event.target;
-  if (control.matches('.rep-song-choices input')) { $('#wishes-status').textContent = ''; store.setStatus(control.dataset.program, control.dataset.song, control.value); }
+  if (control.matches('.rep-song-choices input')) {
+    store.setStatus(control.dataset.program, control.dataset.song, control.value);
+    const counts = snapshot.counts.byProgram[snapshot.program], total = catalog.lineups[snapshot.program].songs.length;
+    $('#wishes-status').textContent = `Хочу ${counts.want}, можно ${total - counts.want - counts.skip}, не надо ${counts.skip}`;
+  }
 });
 document.addEventListener('click', event => {
   const remove = event.target.closest('[data-remove-song]');
@@ -166,25 +152,13 @@ function toggleReset(show) {
   $('#reset-confirmation').hidden = !show; $('#preview-actions').hidden = show;
   if (show) $('#reset-cancel').focus({ preventScroll: true });
 }
-function showPreview(trigger) {
-  if (!snapshot.selected.length && !snapshot.deprecated.length) return;
-  toggleReset(false); $('#copy-fallback').hidden = true; $('#export-status').textContent = '';
-  previewOpener = trigger || document.activeElement;
-  if (!dialog.open) dialog.showModal();
-  renderPreview();
-}
-$('#preview-open').addEventListener('click', event => showPreview(event.currentTarget));
-document.querySelectorAll('[data-preview-open]').forEach(button => button.addEventListener('click', () => showPreview(button)));
-dialog.querySelector('[data-close-dialog]').addEventListener('click', () => dialog.close());
-dialog.addEventListener('close', () => {
-  toggleReset(false);
-  const target = previewOpener?.isConnected && previewOpener.getClientRects().length ? previewOpener : $(`#tab-${snapshot.program}`);
-  target.focus({ preventScroll: true }); previewOpener = null;
-});
 $('#reset-open').addEventListener('click', () => toggleReset(true));
 $('#reset-cancel').addEventListener('click', () => { toggleReset(false); $('#reset-open').focus({ preventScroll: true }); });
-$('#reset-confirm').addEventListener('click', () => store.clearMarks());
-dialog.addEventListener('cancel', event => { if (!$('#reset-confirmation').hidden) { event.preventDefault(); toggleReset(false); $('#reset-open').focus({ preventScroll: true }); } });
+$('#reset-confirm').addEventListener('click', () => {
+  toggleReset(false); store.clearMarks(); $('#copy-fallback').hidden = true;
+  $('#export-status').textContent = 'Все отметки сброшены, у каждой песни снова «Можно»';
+  $('#repertoire-tools summary').focus({ preventScroll: true });
+});
 $('#copy-selection').addEventListener('click', async () => {
   try { await navigator.clipboard.writeText(formatPreferences(snapshot)); $('#export-status').textContent = 'Пожелания скопированы'; $('#copy-fallback').hidden = true; }
   catch { $('#copy-text').value = formatPreferences(snapshot); $('#copy-fallback').hidden = false; $('#copy-text').focus(); $('#copy-text').select(); $('#export-status').textContent = 'Выделите текст ниже и скопируйте вручную'; }
@@ -199,4 +173,16 @@ function download(text, filename, target = '#export-status') {
 $('#download-list').addEventListener('click', () => download(formatFullCatalog(catalog, snapshot.program, snapshot.selected), `Богема - ${catalog.lineups[snapshot.program].label} - полный репертуар.txt`, '#catalog-export-status'));
 $('#download-selection').addEventListener('click', () => download(formatPreferences(snapshot), 'Богема - мои музыкальные пожелания.txt'));
 $('#retry-catalog').addEventListener('click', () => { $('#catalog-loading').hidden = false; $('#catalog-error').hidden = true; store.reloadCatalog(); });
+
+const root = document.documentElement, header = $('.rep-header'), companion = $('#repertoire-companion');
+function syncStickyOffsets() {
+  const headerHeight = Math.ceil(header.getBoundingClientRect().height);
+  root.style.setProperty('--rep-header-height', `${headerHeight}px`);
+  root.style.setProperty('--rep-companion-height', `${Math.ceil(companion.getBoundingClientRect().height)}px`);
+  const cramped = companion.getBoundingClientRect().height + headerHeight > window.innerHeight * .62;
+  document.body.classList.toggle('rep-compact-viewport', cramped);
+}
+if ('ResizeObserver' in window) { const observer = new ResizeObserver(syncStickyOffsets); observer.observe(header); observer.observe(companion); }
+window.addEventListener('resize', syncStickyOffsets, { passive: true });
+syncStickyOffsets();
 store.subscribe(refresh); refresh(snapshot); store.ready.then(() => refresh(store.getSnapshot()));
