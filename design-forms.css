@@ -1,0 +1,13 @@
+/* Framer's quiet underlined fields, backed by the existing form behavior. */
+.home-page .bf-heading{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+.home-page .bf-fields{display:grid;grid-template-columns:1fr;gap:24px}
+.home-page .bf-field label{font-size:11px;font-weight:500;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted);gap:4px 16px;margin-bottom:8px}
+.home-page .bf-optional{font-size:11px;letter-spacing:0;text-transform:none}
+.home-page .bf-field input,.home-page .bf-field select{border:0;border-bottom:1px solid #97988e88;border-radius:0 0 7px 7px;background:transparent;color:var(--ink);padding:12px 0;min-height:52px;font-size:16px}
+.home-page .bf-field input::placeholder{color:#b7b8ae}.home-page .bf-field input:hover,.home-page .bf-field select:hover{border-color:var(--ink)}
+.home-page .bf-field input:focus-visible,.home-page .bf-field select:focus-visible{outline:none;box-shadow:0 2px 0 var(--gold);border-color:var(--gold)}
+.home-page .bf-field [aria-invalid=true]{border-color:#ecaaa0}
+.home-page .bf-primary,.home-page .bf-secondary{width:auto;min-width:220px;max-width:100%;min-height:50px;border-radius:40px;font-size:13px;padding:15px 26px;background:var(--ink);color:var(--bg);border-color:var(--ink);box-shadow:none}
+.home-page .bf-primary::after{display:none}.home-page .bf-primary:not(:disabled):hover,.home-page .bf-secondary:hover{background:var(--gold);border-color:var(--gold)}
+.home-page .bf-consent{border:0;padding:0;margin-top:24px}.home-page .bf-consent .bf-check{color:#b8b9ae;font-size:12px;line-height:1.6;gap:12px}.home-page .bf-consent input{width:18px;height:18px;flex:none;accent-color:var(--gold)}
+.home-page .bf-confirmation h3{font-family:Spectral,Georgia,serif;font-style:italic;font-weight:400;font-size:32px}.home-page .bf-confirmation p{color:var(--ink)}

@@ -47,3 +47,9 @@
 
 !/motion.js
 !/motion.css
+
+!/design-forms.css
+!/assets/fonts/
+!/assets/fonts/*.woff2
+!/assets/fonts/fonts.css
+!/assets/fonts/OFL*.txt

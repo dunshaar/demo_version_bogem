@@ -62,7 +62,8 @@ function navigateToSection(target, hash) {
   dispatchEvent(new Event('bogema:navigate'));
   if (location.hash !== hash) history.pushState(null, '', hash);
   const start = scrollY;
-  const inset = document.querySelector('.site-header').getBoundingClientRect().height + 16;
+  const header = document.querySelector('.site-header');
+  const inset = getComputedStyle(header).position === 'sticky' ? header.getBoundingClientRect().height + 16 : 24;
   const end = Math.max(0, Math.min(start + target.getBoundingClientRect().top - inset, document.documentElement.scrollHeight - innerHeight));
   const finish = () => {
     navigationFrame = 0;
@@ -85,6 +86,7 @@ function navigateToSection(target, hash) {
   navigationFrame = requestAnimationFrame(step);
 }
 document.querySelectorAll('#menu-dialog nav a, .site-nav a, .header-request, .footer-up').forEach(link => link.addEventListener('click', event => {
+  if (!link.hash) return;
   const target = document.querySelector(link.hash);
   if (!target) return;
   event.preventDefault();
@@ -138,134 +140,60 @@ videoDialog.addEventListener('close', () => {
   error.hidden = true;
 });
 
-// A lineup is a view of the group's offers, never a form selection.
-const lineupShowcase = document.querySelector('.lineup-showcase');
-const lineupOptions = document.querySelector('.lineup-options');
+// Five views follow the same Framer tabs on every screen size.
 const lineupPanel = document.querySelector('#lineup-detail');
-const lineupViewButtons = [...document.querySelectorAll('[data-view-lineup]')];
+const lineupButtons = [...document.querySelectorAll('[data-view-lineup]')];
 const lineupImage = lineupPanel.querySelector('img');
-const mobileLineups = matchMedia('(max-width: 767px)');
 const lessMotion = matchMedia('(prefers-reduced-motion: reduce)');
-let viewedLineup = 'full';
-let mobileLineupOpen = false;
 let visualRequest = 0;
-let panelAnimation;
-let imageAnimation;
-function stopLineupMotion() {
-  panelAnimation?.cancel();
-  imageAnimation?.cancel();
-}
-lessMotion.addEventListener('change', () => { if (lessMotion.matches) stopLineupMotion(); });
-function placeLineupPanel() {
-  const focused = document.activeElement;
-  const restoreFocus = lineupPanel.contains(focused);
-  if (mobileLineups.matches) {
-    lineupOptions.querySelector(`[data-offer="${viewedLineup}"]`).append(lineupPanel);
-  } else {
-    lineupShowcase.prepend(lineupPanel);
-  }
-  if (restoreFocus && document.activeElement !== focused) focused.focus({preventScroll:true});
-}
-function showLineupImage(item, animate) {
+let lineupAnimation;
+function renderLineup(id, animate = false) {
+  const index = LINEUPS.findIndex(item => item.id === id);
+  if (index < 0) return;
+  const item = LINEUPS[index];
   const request = ++visualRequest;
-  const apply = () => {
+  lineupAnimation?.cancel();
+  lineupPanel.dataset.viewedLineup = id;
+  lineupPanel.setAttribute('aria-labelledby', `lineup-view-${id}`);
+  lineupPanel.querySelector('[data-lineup-title]').textContent = item.label;
+  lineupPanel.querySelector('[data-lineup-roles]').textContent = item.roles;
+  lineupPanel.querySelector('[data-lineup-number]').textContent = `${String(index+1).padStart(2,'0')} / Состав`;
+  lineupButtons.forEach(button => {
+    const current = button.dataset.viewLineup === id;
+    button.setAttribute('aria-selected', String(current));
+    button.tabIndex = current ? 0 : -1;
+  });
+  const applyImage = () => {
     if (request !== visualRequest) return;
     lineupImage.src = item.visual.src;
     lineupImage.width = item.visual.width;
     lineupImage.height = item.visual.height;
     lineupImage.alt = item.visual.alt;
-    if (animate && !lineupPanel.hidden && !lessMotion.matches && lineupImage.animate) {
-      imageAnimation?.cancel();
-      imageAnimation = lineupImage.animate([{opacity:.4}, {opacity:1}], {duration:240, easing:'ease-out'});
+    if (animate && !lessMotion.matches && lineupImage.animate) {
+      lineupAnimation = lineupImage.animate([{opacity:.45},{opacity:1}], {duration:220,easing:'ease-out'});
     }
   };
-  if (!animate || lineupImage.getAttribute('src') === item.visual.src) { apply(); return; }
-  const preload = new Image();
-  preload.src = item.visual.src;
-  // Keep the previous image visible until the next real photo is ready.
-  if (preload.decode) preload.decode().then(apply, apply);
-  else { preload.onload = apply; preload.onerror = apply; }
-}
-function syncLineupDisclosure() {
-  const expanded = !mobileLineups.matches || mobileLineupOpen;
-  lineupPanel.hidden = !expanded;
-  for (const button of lineupViewButtons) {
-    const current = expanded && button.dataset.viewLineup === viewedLineup;
-    button.setAttribute('aria-expanded', String(current));
-    button.closest('.lineup-option').classList.toggle('is-viewed', current);
-  }
-}
-function renderViewedLineup(id, animate = false) {
-  const item = LINEUPS.find(lineup => lineup.id === id);
-  if (!item) return;
-  stopLineupMotion();
-  viewedLineup = id;
-  lineupPanel.dataset.viewedLineup = id;
-  lineupPanel.setAttribute('aria-labelledby', `lineup-view-${id}`);
-  showLineupImage(item, animate);
-  lineupPanel.querySelector('[data-lineup-title]').textContent = item.label;
-  lineupPanel.querySelector('[data-lineup-difference]').textContent = item.difference;
-  syncLineupDisclosure();
-  placeLineupPanel();
-  if (animate && !mobileLineups.matches && !lessMotion.matches && lineupPanel.animate) {
-    panelAnimation = lineupPanel.querySelector('.lineup-detail-copy').animate([
-      {opacity:.35, transform:'translateY(6px)'},
-      {opacity:1, transform:'translateY(0)'}
-    ], {duration:230, easing:'ease-out'});
+  if (!animate || lineupImage.getAttribute('src') === item.visual.src) applyImage();
+  else {
+    const preload = new Image(); preload.src = item.visual.src;
+    if (preload.decode) preload.decode().then(applyImage, applyImage);
+    else { preload.onload = applyImage; preload.onerror = applyImage; }
   }
   dispatchEvent(new CustomEvent('bogema:layout'));
 }
-for (const button of lineupViewButtons) button.addEventListener('click', () => {
-  const same = button.dataset.viewLineup === viewedLineup;
-  if (!mobileLineups.matches && same) return;
-  const before = button.getBoundingClientRect().top;
-  if (mobileLineups.matches) mobileLineupOpen = !(same && mobileLineupOpen);
-  renderViewedLineup(button.dataset.viewLineup, true);
-  if (mobileLineups.matches) {
-    // Preserve the tapped row when an earlier panel closes, without animating height.
-    const shift = button.getBoundingClientRect().top - before;
-    if (Math.abs(shift) > 1) window.scrollBy({top:shift, behavior:'instant'});
-    if (mobileLineupOpen && !lessMotion.matches && lineupPanel.animate) {
-      panelAnimation = lineupPanel.animate([{opacity:.4}, {opacity:1}], {duration:160, easing:'ease-out'});
-    }
-  }
+lineupButtons.forEach((button, index) => {
+  button.addEventListener('click', () => renderLineup(button.dataset.viewLineup, true));
+  button.addEventListener('keydown', event => {
+    let next;
+    if (['ArrowRight','ArrowDown'].includes(event.key)) next = (index + 1) % lineupButtons.length;
+    else if (['ArrowLeft','ArrowUp'].includes(event.key)) next = (index + lineupButtons.length - 1) % lineupButtons.length;
+    else if (event.key === 'Home') next = 0;
+    else if (event.key === 'End') next = lineupButtons.length - 1;
+    else return;
+    event.preventDefault();
+    lineupButtons[next].focus({preventScroll:true});
+    renderLineup(lineupButtons[next].dataset.viewLineup, true);
+  });
 });
-const closeLineup = document.createElement('button');
-closeLineup.type = 'button';
-closeLineup.className = 'lineup-collapse';
-closeLineup.textContent = 'Свернуть состав';
-lineupPanel.querySelector('.lineup-detail-copy').append(closeLineup);
-closeLineup.addEventListener('click', () => {
-  const button = lineupViewButtons.find(item => item.dataset.viewLineup === viewedLineup);
-  mobileLineupOpen = false;
-  stopLineupMotion();
-  syncLineupDisclosure();
-  button.focus({preventScroll:true});
-  const top = button.getBoundingClientRect().top;
-  if (top < document.querySelector('.site-header').getBoundingClientRect().bottom || top > innerHeight - button.offsetHeight) {
-    button.scrollIntoView({block:'start', behavior:'instant'});
-  }
-  dispatchEvent(new CustomEvent('bogema:layout'));
-});
-mobileLineups.addEventListener('change', () => {
-  stopLineupMotion();
-  if (lineupPanel.contains(document.activeElement)) {
-    lineupViewButtons.find(button => button.dataset.viewLineup === viewedLineup).focus({preventScroll:true});
-  }
-  syncLineupDisclosure();
-  placeLineupPanel();
-});
-renderViewedLineup(viewedLineup);
-
-// Arrow keys move through the five views without adding anything to a request.
-for (const [index, button] of lineupViewButtons.entries()) button.addEventListener('keydown', event => {
-  let next;
-  if (event.key === 'ArrowDown' || event.key === 'ArrowRight') next = (index + 1) % lineupViewButtons.length;
-  else if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') next = (index - 1 + lineupViewButtons.length) % lineupViewButtons.length;
-  else if (event.key === 'Home') next = 0;
-  else if (event.key === 'End') next = lineupViewButtons.length - 1;
-  else return;
-  event.preventDefault();
-  lineupViewButtons[next].focus({preventScroll:true});
-  lineupViewButtons[next].click();
-});
+lessMotion.addEventListener('change', () => { if (lessMotion.matches) lineupAnimation?.cancel(); });
+renderLineup('solo');

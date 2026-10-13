@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="dark">
-  <meta name="theme-color" content="#111110">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#101110">
   <meta name="robots" content="noindex, nofollow">
   <meta name="description" content="Репертуар группы и трио. Отметьте любимые песни и то, что лучше не играть на вашем празднике.">
   <title>Репертуар Богемы</title>
@@ -27,20 +27,29 @@
   <meta name="twitter:image" content="https://dunshaar.github.io/demo_version_bogem/assets/share-bogema-v1.jpg">
   <meta name="twitter:image:alt" content="Пять музыкантов кавер-группы Богема и логотип группы">
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../styles.css?v=20261011-nav3">
-  <link rel="stylesheet" href="repertoire.css?v=20261011-nav4">
+  <link rel="stylesheet" href="../assets/fonts/fonts.css">
+  <link rel="stylesheet" href="../styles.css?v=20261013-framer">
   <link rel="stylesheet" href="../forms.css">
   <link rel="stylesheet" href="../motion.css">
-  <script type="module" src="repertoire.js?v=20261011-nav4"></script>
+  <link rel="stylesheet" href="repertoire.css?v=20261013-framer">
+  <script type="module" src="repertoire.js?v=20261013-framer1"></script>
   <script src="../motion.js?v=20261011-nav3" defer></script>
   <script src="../forms.js" defer></script>
 </head>
 <body class="repertoire-page">
   <a class="rep-skip" href="#songs">К списку песен</a>
-  <header class="site-header wrap rep-header repertoire-header"><a class="rep-back" href="../index.html"><span aria-hidden="true">←</span> На главную</a><a class="rep-wordmark" href="../index.html" aria-label="Богема, главная"><img src="../assets/logo.svg" width="150" height="62" alt="Богема, кавер-группа"></a><div class="scroll-progress" aria-hidden="true"></div></header>
+  <header class="site-header rep-header repertoire-header">
+    <div class="wrap rep-header-inner">
+      <a class="rep-wordmark" href="../index.html" aria-label="Богема, главная">БОГЕМА</a>
+      <nav class="rep-navigation" aria-label="Навигация"><a class="rep-back" href="../index.html">На главную</a><a class="rep-header-cta" href="#wishes-form">Отправить пожелания</a></nav>
+    </div>
+    <div class="scroll-progress" aria-hidden="true"></div>
+  </header>
   <main>
     <section class="wrap rep-intro" aria-labelledby="page-title">
+      <p class="rep-eyebrow">Богема / Музыкальная коллекция</p>
       <h1 id="page-title">Репертуар</h1>
+      <p class="rep-intro-lead">Ваши любимые песни&nbsp;начинают наш разговор<br> Выберите программу и отметьте настроение будущего вечера</p>
       <div class="rep-program-note"><div class="rep-program-description"><p>У группы и трио разное звучание, поэтому для каждого состава подготовлен свой список песен</p>        <span class="rep-sr-only" id="program-label">Выберите состав</span>
         <div class="rep-tabs" role="tablist" aria-labelledby="program-label">
           <button id="tab-group" type="button" role="tab" aria-selected="true" aria-controls="songs-group" disabled>Группа <span class="rep-sr-only">210</span></button>
@@ -77,7 +86,7 @@
       <div class="rep-result-line rep-sr-only"><p id="results-status" role="status" aria-live="polite"></p></div>
       <p id="catalog-loading" class="rep-small">Подключаем отметки, полный список доступен ниже</p>
       <p id="catalog-error" class="rep-notice" role="alert" hidden>Не удалось подключить отметки. Полный список ниже остаётся доступным <button type="button" class="rep-text-button" id="retry-catalog">Повторить</button></p>
-      <noscript><p class="rep-notice">Ниже весь репертуар обеих программ <br>Для отметок нужен JavaScript <br>Можно <a href="../assets/repertoire.docx" download>скачать исходный общий репертуар DOCX</a></p><style>#catalog-loading,.rep-companion,.rep-tools,.rep-result-line{display:none}</style></noscript>
+      <noscript><p class="rep-notice">Ниже весь репертуар обеих программ <br> Для отметок нужен JavaScript <br> Можно <a href="../assets/repertoire.docx" download>скачать исходный общий репертуар DOCX</a></p><style>#catalog-loading,.rep-companion,.rep-tools,.rep-result-line{display:none}</style></noscript>
       <section id="deprecated-section" class="rep-notice rep-deprecated" hidden aria-labelledby="deprecated-title"><h2 id="deprecated-title">Некоторые песни больше недоступны</h2><p>Эти сохранённые отметки не войдут в заявку</p><ul id="deprecated-songs"></ul></section>
       <p id="wishes-status" class="rep-sr-only" role="status"></p>
       <!-- CATALOG:START -->
@@ -448,7 +457,7 @@
       <div class="rep-copy-tools"><div class="rep-wishes-buttons"><button type="button" class="rep-secondary" id="download-selection" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></svg><span>Скачать пожелания</span></button><button type="button" class="rep-text-button" id="copy-selection" disabled>Скопировать пожелания</button></div><p id="export-status" class="rep-small" role="status"></p><p id="copy-status" class="rep-small" role="status"></p><div id="copy-fallback" hidden><p>Выделите текст и скопируйте его вручную</p><textarea id="copy-text" readonly aria-label="Ваши музыкальные пожелания"></textarea></div></div>
     </section>
     <section class="rep-request" aria-labelledby="wishes-form-title">
-      <div class="rep-request-intro"><p class="rep-request-eyebrow">Ваша программа</p><h2 id="wishes-form-title">Музыка, которую <br>вы выбрали</h2><p>Оставьте имя и телефон, чтобы мы могли обсудить ваши пожелания и составить программу выступления</p><p class="rep-small">В форму попадут отметки «Хочу» и «Не надо» для выбранного состава</p></div>
+      <div class="rep-request-intro"><p class="rep-request-eyebrow">Ваша программа</p><h2 id="wishes-form-title">Музыка начинается с вас</h2><p>Оставьте имя и телефон, чтобы мы могли обсудить ваши пожелания и составить программу выступления</p><p class="rep-small">В форму попадут отметки «Хочу» и «Не надо» для выбранного состава</p></div>
       <div class="rep-request-card" id="wishes-form" data-request-form data-source="repertoire"><noscript>Для отправки пожеланий включите JavaScript в браузере</noscript></div>
     </section>
       </div>
@@ -456,6 +465,6 @@
   </main>
   <dialog class="rep-action-dialog" id="catalog-download-dialog" aria-labelledby="catalog-download-title"><button type="button" class="rep-dialog-close" data-dismiss aria-label="Закрыть">×</button><h2 id="catalog-download-title">Какой репертуар скачать?</h2><p>Выберите состав</p><div class="rep-download-choices"><button type="button" class="rep-secondary" data-download-program="group"><strong>Группа</strong><span data-download-count="group">210 песен</span></button><button type="button" class="rep-secondary" data-download-program="trio"><strong>Трио</strong><span data-download-count="trio">151 песня</span></button></div></dialog>
   <dialog class="rep-action-dialog" id="reset-confirmation" aria-labelledby="reset-title"><button type="button" class="rep-dialog-close" data-dismiss aria-label="Закрыть">×</button><h2 id="reset-title">Сбросить отметки?</h2><p id="reset-description"></p><div class="rep-dialog-actions"><button type="button" class="rep-secondary" id="reset-cancel">Оставить как есть</button><button type="button" class="rep-primary" id="reset-confirm">Сбросить отметки</button></div></dialog>
-  <footer class="wrap rep-footer"><span>Богема · 2026</span><a href="#page-title">Наверх ↑</a></footer>
+  <footer class="rep-footer"><div class="wrap rep-footer-inner"><a href="../index.html">Богема</a><span>Живая музыка&nbsp; Настоящие эмоции</span><a href="#page-title" class="rep-top">Наверх ↑</a></div></footer>
 </body>
 </html>

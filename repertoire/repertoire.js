@@ -212,3 +212,29 @@ if ('ResizeObserver' in window) { const observer = new ResizeObserver(syncSticky
 window.addEventListener('resize', syncStickyOffsets, { passive: true });
 syncStickyOffsets();
 store.subscribe(refresh); refresh(snapshot); store.ready.then(() => refresh(store.getSnapshot()));
+
+// Keep the new header/footer links smooth over a long catalog, with bounded duration.
+let anchorFrame = 0;
+const stopAnchor = () => { cancelAnimationFrame(anchorFrame); anchorFrame = 0; };
+for (const link of document.querySelectorAll('.rep-header-cta, .rep-top')) link.addEventListener('click', event => {
+  const target = document.querySelector(link.hash);
+  if (!target) return;
+  event.preventDefault(); stopAnchor();
+  const headerInset = getComputedStyle(header).position === 'sticky' ? header.offsetHeight : 0;
+  const compact = matchMedia('(max-width:1040px)').matches;
+  const inset = headerInset + (compact && target.id === 'wishes-form' ? companion.offsetHeight : 0) + 24;
+  const start = scrollY;
+  const end = Math.max(0, Math.min(start + target.getBoundingClientRect().top - inset, document.documentElement.scrollHeight - innerHeight));
+  if (location.hash !== link.hash) history.pushState(null, '', link.hash);
+  const finish = () => { anchorFrame = 0; target.setAttribute('tabindex','-1'); target.focus({preventScroll:true}); };
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) { scrollTo({top:end,behavior:'instant'}); finish(); return; }
+  const began = performance.now(), duration = Math.min(850, 450 + Math.abs(end-start)/10);
+  const step = now => {
+    const progress = Math.min(1,(now-began)/duration);
+    scrollTo({top:start+(end-start)*(1-Math.cos(Math.PI*progress))/2,behavior:'instant'});
+    if (progress < 1) anchorFrame = requestAnimationFrame(step); else finish();
+  };
+  anchorFrame = requestAnimationFrame(step);
+});
+for (const name of ['wheel','touchstart','pointerdown']) addEventListener(name,stopAnchor,{passive:true});
+addEventListener('keydown',event=>{ if (['ArrowUp','ArrowDown','PageUp','PageDown','Home','End',' '].includes(event.key)) stopAnchor(); });
