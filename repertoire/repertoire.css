@@ -12,8 +12,8 @@
 .rep-wordmark{display:inline-flex;align-items:center;font-size:22px;line-height:1;font-weight:800;letter-spacing:-1px;text-decoration:none;flex-shrink:0}
 .rep-wordmark img{width:128px;height:auto}
 .rep-navigation{display:flex;align-items:center;gap:32px}
-.rep-return{display:inline-flex;align-items:center;gap:12px;min-height:44px;padding:10px 18px;margin-bottom:40px;border:1px solid var(--rep-line);border-radius:40px;font-size:13px;font-weight:500;text-decoration:none;transition:background .18s,border-color .18s}
-.rep-return svg{width:18px;height:18px}.rep-return:hover{background:#10111008;border-color:#10111060}
+.rep-return{position:fixed;left:max(24px,calc((100vw - 1440px)/2 + 48px));bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:45;display:inline-flex;align-items:center;gap:12px;min-height:44px;padding:10px 18px;border:1px solid #10111035;border-radius:40px;background:#f0ece2;color:#101110;box-shadow:0 4px 18px #10111018;font-size:13px;font-weight:500;text-decoration:none;transition:background .18s,border-color .18s}
+.rep-return svg{width:18px;height:18px}.rep-return:hover{background:#e5dfd1;border-color:#10111060}
 .rep-header-cta{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:10px 20px;border:1px solid #c6b79b;border-radius:40px;font-size:12px;font-weight:500;line-height:1.4;text-align:center;text-decoration:none;transition:background .2s,color .2s}
 .rep-header-cta:hover{color:#101110;background:#c6b79b}
 .rep-header .scroll-progress{background:#c6b79b}
@@ -133,7 +133,7 @@
 }
 @media(max-width:809px){
  .repertoire-page .wrap{padding-inline:20px}.rep-header-inner{padding-block:20px;gap:12px}.rep-wordmark img{width:100px}.rep-navigation{gap:0}.rep-header-cta{min-height:40px;padding:10px 14px;font-size:11px}
- .rep-return{margin-bottom:32px}.rep-intro{padding-top:24px;padding-bottom:40px}.rep-intro h1{font-size:46px;letter-spacing:-2px;margin-block:32px}.rep-intro-lead{font-size:16px;margin-bottom:24px}.rep-intro-lead br{display:none}.rep-intro-lead br:after{content:' '}
+ .rep-return{left:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px))}.rep-intro{padding-top:24px;padding-bottom:40px}.rep-intro h1{font-size:46px;letter-spacing:-2px;margin-block:32px}.rep-intro-lead{font-size:16px;margin-bottom:24px}.rep-intro-lead br{display:none}.rep-intro-lead br:after{content:' '}
  .rep-eyebrow{font-size:10px;letter-spacing:1.2px}.rep-program-note{display:block;margin-bottom:24px}.rep-program-description>p{font-size:13px}.rep-program-sizes{margin-top:26px;gap:32px}.rep-program-sizes strong{font-size:27px}.rep-program-sizes>span{font-size:11px}
  .rep-tabs{margin-top:24px;gap:12px}.rep-tabs button{padding:14px 28px}
  .rep-downloads{margin-bottom:40px}.rep-guide{padding-top:28px}.rep-guide-heading{margin-bottom:24px}.rep-guide-heading h2{font-size:29px}.rep-guide-heading>p{font-size:13px;margin-top:12px}
@@ -151,5 +151,6 @@
 @media(max-width:370px){
  .rep-intro h1{font-size:43px;letter-spacing:-2px}.rep-eyebrow{font-size:9px;letter-spacing:1px}.rep-companion{padding-inline:10px}.rep-counts>div{gap:5px;padding-inline:5px}.rep-counts dt:before{display:none}.rep-counts dd{font-size:18px}.rep-choice-host{padding-left:0}.rep-tabs button{padding-inline:26px}.rep-guide-heading h2{font-size:27px}.rep-download-buttons .rep-secondary{width:100%;font-size:12px}
 }
+.repertoire-page .rep-footer-inner{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
 @media(prefers-reduced-motion:reduce){.repertoire-page *{transition:none!important;scroll-behavior:auto!important}}
-@media print{.rep-header,.rep-intro,.rep-companion,.rep-search,.rep-list-heading,.rep-footer,.rep-choice-host,.rep-deprecated,.rep-copy-tools,.rep-request,.rep-action-dialog{display:none!important}.rep-workspace{display:block}.repertoire-page,.repertoire-page main{color:#000;background:#fff}.rep-song-row{break-inside:avoid;border-color:#ccc}.rep-song-info h3,.rep-song-artist{color:#000}}
+@media print{.rep-return,.rep-header,.rep-intro,.rep-companion,.rep-search,.rep-list-heading,.rep-footer,.rep-choice-host,.rep-deprecated,.rep-copy-tools,.rep-request,.rep-action-dialog{display:none!important}.rep-workspace{display:block}.repertoire-page,.repertoire-page main{color:#000;background:#fff}.rep-song-row{break-inside:avoid;border-color:#ccc}.rep-song-info h3,.rep-song-artist{color:#000}}
