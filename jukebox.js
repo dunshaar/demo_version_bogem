@@ -8,7 +8,7 @@ if (cabinet) {
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   let tracks = [], current = 0, timer, animation, moving = false;
   let visible = false, hovered = false, paused = false, resumeAfter = 0;
-  const interval = 4800, manualDelay = 12000;
+  const interval = 3800, manualDelay = 12000;
   const wrap = value => (value + tracks.length) % tracks.length;
   function render() {
     const fragment = document.createDocumentFragment();
