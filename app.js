@@ -1,4 +1,4 @@
-import { LINEUPS } from './project-data.mjs';
+import { LINEUPS } from './project-data.mjs?v=20261014-ensembles';
 
 const dialogs = [...document.querySelectorAll('dialog')];
 const triggers = new WeakMap();
@@ -96,7 +96,7 @@ for (const type of ['wheel', 'touchstart', 'pointerdown']) addEventListener(type
 document.addEventListener('keydown', event => {
   if (['ArrowUp','ArrowDown','PageUp','PageDown','Home','End',' '].includes(event.key)) cancelSectionNavigation();
 });
-matchMedia('(min-width: 861px)').addEventListener('change', event => { if (event.matches) closeMenu(); });
+matchMedia('(min-width: 1200px)').addEventListener('change', event => { if (event.matches) closeMenu(); });
 
 const videoDialog = document.querySelector('#video-dialog');
 const video = videoDialog.querySelector('video');
@@ -143,15 +143,13 @@ videoDialog.addEventListener('close', () => {
 // Five views follow the same Framer tabs on every screen size.
 const lineupPanel = document.querySelector('#lineup-detail');
 const lineupButtons = [...document.querySelectorAll('[data-view-lineup]')];
-const lineupImage = lineupPanel.querySelector('img');
+const lineupEnsemble = lineupPanel.querySelector('.lineup-ensemble');
 const lessMotion = matchMedia('(prefers-reduced-motion: reduce)');
-let visualRequest = 0;
 let lineupAnimation;
 function renderLineup(id, animate = false) {
   const index = LINEUPS.findIndex(item => item.id === id);
   if (index < 0) return;
   const item = LINEUPS[index];
-  const request = ++visualRequest;
   lineupAnimation?.cancel();
   lineupPanel.dataset.viewedLineup = id;
   lineupPanel.setAttribute('aria-labelledby', `lineup-view-${id}`);
@@ -163,21 +161,23 @@ function renderLineup(id, animate = false) {
     button.setAttribute('aria-selected', String(current));
     button.tabIndex = current ? 0 : -1;
   });
-  const applyImage = () => {
-    if (request !== visualRequest) return;
-    lineupImage.src = item.visual.src;
-    lineupImage.width = item.visual.width;
-    lineupImage.height = item.visual.height;
-    lineupImage.alt = item.visual.alt;
-    if (animate && !lessMotion.matches && lineupImage.animate) {
-      lineupAnimation = lineupImage.animate([{opacity:.45},{opacity:1}], {duration:220,easing:'ease-out'});
+  lineupPanel.querySelector('[data-lineup-difference]').textContent = item.difference;
+  lineupEnsemble.dataset.count = item.players.length;
+  lineupEnsemble.setAttribute('aria-label', item.label);
+  const tiles = item.players.map(player => {
+    const tile = document.createElement('figure'); tile.className = 'lineup-member'; tile.dataset.role = player.key;
+    if (player.src) {
+      const image = document.createElement('img'); image.src = player.src; image.alt = player.label;
+      image.loading = 'lazy'; image.decoding = 'async'; image.style.objectPosition = player.position;
+      tile.append(image);
+    } else {
+      tile.innerHTML = '<svg class="keyboard-illustration" viewBox="0 0 240 160" role="img" aria-label="Иллюстрация клавишных"><rect x="8" y="25" width="224" height="112" rx="10" fill="#36382f" stroke="#c6b79b"/><path d="M25 52h50m90 0h48" stroke="#c6b79b" stroke-width="2"/><circle cx="99" cy="52" r="4" fill="#c6b79b"/><circle cx="118" cy="52" r="4" fill="#c6b79b"/><rect x="24" y="72" width="192" height="48" rx="2" fill="#e9e4d8"/><path d="M48 73v47m24-47v47m24-47v47m24-47v47m24-47v47m24-47v47m24-47v47" stroke="#252720"/><path d="M43 72v28m24-28v28m48-28v28m24-28v28m24-28v28m24-28v28" stroke="#101110" stroke-width="12"/><path d="m65 138-13 16m123-16 13 16" stroke="#c6b79b" stroke-width="3"/></svg>';
     }
-  };
-  if (!animate || lineupImage.getAttribute('src') === item.visual.src) applyImage();
-  else {
-    const preload = new Image(); preload.src = item.visual.src;
-    if (preload.decode) preload.decode().then(applyImage, applyImage);
-    else { preload.onload = applyImage; preload.onerror = applyImage; }
+    const label = document.createElement('figcaption'); label.textContent = player.label; tile.append(label); return tile;
+  });
+  lineupEnsemble.replaceChildren(...tiles);
+  if (animate && !lessMotion.matches && lineupEnsemble.animate) {
+    lineupAnimation = lineupEnsemble.animate([{opacity:.5},{opacity:1}], {duration:220,easing:'ease-out'});
   }
   dispatchEvent(new CustomEvent('bogema:layout'));
 }
