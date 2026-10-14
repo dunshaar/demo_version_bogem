@@ -1,4 +1,4 @@
-// Inline promo only; the separate live-recording dialog keeps its own player.
+// Manual-only inline promo; the separate live-recording dialog keeps its own player.
 (() => {
   'use strict';
   const player = document.querySelector('[data-promo-player]');
@@ -12,11 +12,7 @@
   const seek = player.querySelector('.promo-seek');
   const clock = player.querySelector('.promo-time');
   const status = player.querySelector('.promo-status');
-  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const dialog = document.querySelector('#video-dialog');
-  let visibleEnough = false;
-  let userPaused = false;
-  let autoBlocked = false;
   let finished = false;
   let failed = false;
   let wantPlayback = false;
@@ -29,13 +25,12 @@
   video.muted = true;
   video.playsInline = true;
   video.loop = false;
+  video.autoplay = false;
   poster.src = video.poster;
   poster.hidden = false;
   video.controls = false;
   controls.hidden = false;
 
-  const inView = () => visibleEnough || document.fullscreenElement === player;
-  const canBeActive = () => inView() && !document.hidden && !dialog?.open;
   const time = value => {
     const seconds = Math.max(0, Math.floor(value || 0));
     return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
@@ -73,22 +68,17 @@
     video.pause();
     updateControls();
   }
-  async function start(manual = false) {
+  async function start() {
     if (pending || (!video.paused && !video.ended)) return;
-    if (!manual && (!canBeActive() || userPaused || autoBlocked || reduced.matches || finished || failed)) return;
     if (document.hidden || dialog?.open) return;
-    if (manual) {
-      userPaused = false;
-      autoBlocked = false;
-      if (failed) {
-        failed = false;
-        player.classList.remove('is-error');
-        video.load();
-      }
-      if (finished || video.ended) {
-        video.currentTime = 0;
-        finished = false;
-      }
+    if (failed) {
+      failed = false;
+      player.classList.remove('is-error');
+      video.load();
+    }
+    if (finished || video.ended) {
+      video.currentTime = 0;
+      finished = false;
     }
     ensureSource('auto');
     wantPlayback = true;
@@ -106,21 +96,20 @@
       pending = false;
       wantPlayback = false;
       if (error?.name !== 'AbortError' && !failed) {
-        autoBlocked = true;
         status.textContent = 'Нажмите «Смотреть», чтобы запустить видео';
       }
     }
     updateControls();
   }
-  function syncPlayback() {
-    if (!canBeActive()) pauseForEnvironment();
-    else start();
+  function syncEnvironment() {
+    // Background tabs and another open player pause the promo; neither resumes it.
+    // Scrolling and viewport changes never override the visitor's manual choice.
+    if (document.hidden || dialog?.open) pauseForEnvironment();
   }
   function togglePlay() {
     if (pending || !video.paused) {
-      userPaused = true;
       pauseForEnvironment();
-    } else start(true);
+    } else start();
   }
   playButton.addEventListener('click', togglePlay);
   video.addEventListener('click', togglePlay);
@@ -170,7 +159,7 @@
   fullscreenButton.addEventListener('click', toggleFullscreen);
   document.addEventListener('fullscreenchange', () => {
     fullscreenButton.setAttribute('aria-label', document.fullscreenElement === player ? 'Выйти из полного экрана' : 'На весь экран');
-    syncPlayback();
+    syncEnvironment();
   });
   player.addEventListener('keydown', event => {
     if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey || event.isComposing) return;
@@ -186,30 +175,11 @@
       if (!event.repeat) toggleFullscreen();
     }
   });
-  if ('IntersectionObserver' in window) {
-    // Metadata only near the section; no video request competes with the hero.
-    const warmup = new IntersectionObserver(entries => {
-      if (!entries.some(entry => entry.isIntersecting)) return;
-      if (!reduced.matches) ensureSource('metadata');
-      warmup.disconnect();
-    }, {rootMargin:'240px 0px', threshold:0});
-    warmup.observe(player);
-    const visibility = new IntersectionObserver(entries => {
-      const entry = entries[entries.length - 1];
-      visibleEnough = entry.isIntersecting && entry.intersectionRatio >= .5;
-      syncPlayback();
-    }, {threshold:[0,.5,1]});
-    visibility.observe(player);
-  }
-  // Without an observer, the initial poster and manual controls still work.
-  document.addEventListener('visibilitychange', syncPlayback);
+  // Load the existing file only after Play. There is no viewport-driven playback.
+  document.addEventListener('visibilitychange', syncEnvironment);
   addEventListener('pagehide', pauseForEnvironment);
-  addEventListener('pageshow', syncPlayback);
-  reduced.addEventListener('change', () => {
-    if (reduced.matches) pauseForEnvironment();
-    else syncPlayback();
-  });
-  if (dialog) new MutationObserver(syncPlayback).observe(dialog, {attributes:true, attributeFilter:['open']});
+  addEventListener('pageshow', syncEnvironment);
+  if (dialog) new MutationObserver(syncEnvironment).observe(dialog, {attributes:true, attributeFilter:['open']});
   updateControls();
   updateTime();
 })();

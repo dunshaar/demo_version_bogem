@@ -63,16 +63,18 @@ if (section) {
     toggle.hidden = reduced.matches;
     for (const row of rows) {
       const width = row.sequence.getBoundingClientRect().width;
-      if (width === row.width && Boolean(row.animation) === !reduced.matches) continue;
+      const left = row.viewport.dataset.direction === 'left';
+      const speed = (innerWidth <= 809 ? 34 : 44) * (left ? .9 : .85);
+      if (width === row.width && row.speed === speed && Boolean(row.animation) === !reduced.matches) continue;
       if (row.animation) {
         row.phase = ((row.animation.currentTime || 0) % row.duration) / row.duration;
         row.animation.cancel();
         row.animation = null;
       }
       row.width = width;
+      row.speed = speed;
       if (reduced.matches || !width) continue;
-      const left = row.viewport.dataset.direction === 'left';
-      row.duration = width / (innerWidth <= 809 ? 34 : 44) * 1000;
+      row.duration = width / speed * 1000;
       const start = left ? 0 : -width;
       const end = left ? -width : 0;
       row.animation = row.track.animate([
@@ -95,7 +97,6 @@ if (section) {
     paused = !paused;
     toggle.setAttribute('aria-pressed', String(paused));
     toggle.setAttribute('aria-label', paused ? 'Продолжить движение строк' : 'Приостановить движение строк');
-    toggle.querySelector('span').textContent = paused ? 'Продолжить' : 'Пауза';
     sync();
   });
   hover.addEventListener('change', () => { rows.forEach(row => { row.hovered = false; }); sync(); });
@@ -115,6 +116,8 @@ if (section) {
   if ('ResizeObserver' in window) {
     const observer = new ResizeObserver(measure);
     rows.forEach(row => observer.observe(row.sequence));
-  } else addEventListener('resize', measure, {passive: true});
+  }
+  // The speed breakpoint can change even when the title widths stay identical.
+  addEventListener('resize', measure, {passive: true});
   section.dataset.ribbonsReady = 'true';
 }

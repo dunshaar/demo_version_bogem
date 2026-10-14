@@ -27,13 +27,13 @@
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/fonts/fonts.css"><link rel="stylesheet" href="styles.css?v=20261014-ribbons2"><link rel="stylesheet" href="forms.css?v=20261013-framer1">
   <link rel="stylesheet" href="player.css"><link rel="stylesheet" href="motion.css?v=20261013-framer1">
-  <script src="repertoire-ribbons.js?v=20261015-refinement-v3" type="module"></script>
+  <script src="repertoire-ribbons.js?v=20261015-marquee-v4" type="module"></script>
   <script src="motion.js?v=20261011-nav3" defer></script><script src="player.js" defer></script><script src="app.js?v=20261014-editorial3" type="module"></script><script src="forms.js?v=20261014-unified1" defer></script>
 <link rel="stylesheet" href="design-forms.css?v=20261013-framer1">
 <link rel="stylesheet" href="hero-desktop.css?v=20261014-typebalance1">
 <link rel="stylesheet" href="promo-video.css?v=20261014-inline1">
-<script src="promo-video.js?v=20261014-inline1" defer></script>
-<link rel="stylesheet" href="repertoire-teaser.css?v=20261015-refinement-v3">
+<script src="promo-video.js?v=20261015-manual-v4" defer></script>
+<link rel="stylesheet" href="repertoire-teaser.css?v=20261015-marquee-v4">
 </head>
 <body class="home-page">
 <a class="skip" href="#main">К содержанию</a>
@@ -70,7 +70,6 @@
     <div class="wrap teaser-heading">
       <h2 id="repertoire-title">Как звучит ваш вечер</h2>
       <p class="teaser-subtitle">200+ хитов — от камерного фуршета до большого танцпола.</p>
-      <div class="teaser-controls"><button class="teaser-pause" type="button" data-ribbons-pause aria-label="Приостановить движение строк" aria-pressed="false" hidden><svg class="teaser-icon-pause" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1v10M9 1v10" stroke="currentColor" stroke-width="2"/></svg><svg class="teaser-icon-play" viewBox="0 0 12 12" aria-hidden="true"><path d="m2 1 9 5-9 5Z" fill="currentColor"/></svg><span>Пауза</span></button></div>
     </div>
     <div class="teaser-rows">
       <div class="repertoire-ribbon" data-direction="left" tabindex="0" role="region" aria-label="Песни из репертуара, строка 1">
@@ -156,7 +155,7 @@
       </div>
     </div>
     <div class="wrap teaser-footer">
-      <div class="teaser-link-row"><a href="repertoire/" class="teaser-link">РЕПЕРТУАР <span aria-hidden="true">→</span></a></div>
+      <div class="teaser-link-row"><button class="teaser-pause" type="button" data-ribbons-pause aria-label="Приостановить движение строк" aria-pressed="false" hidden><svg class="teaser-icon-pause" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1v10M9 1v10" stroke="currentColor" stroke-width="2"/></svg><svg class="teaser-icon-play" viewBox="0 0 12 12" aria-hidden="true"><path d="m2 1 9 5-9 5Z" fill="currentColor"/></svg></button><a href="repertoire/" class="teaser-link">РЕПЕРТУАР</a></div>
     </div>
   </section>
   <section id="formats" class="formats-section section wrap" aria-labelledby="formats-title">
