@@ -1,5 +1,3 @@
-import { LINEUPS } from './project-data.mjs?v=20261014-ensembles';
-
 const dialogs = [...document.querySelectorAll('dialog')];
 const triggers = new WeakMap();
 function openDialog(dialog, trigger) {
@@ -106,7 +104,7 @@ const videoTitle = document.querySelector('#video-title');
 const fallback = error.querySelector('.video-fallback');
 const playerStatus = document.querySelector('.bp-status');
 const videos = {
-  promo: { title: 'Промо 2026', src: 'assets/promo.mp4', poster: 'assets/poster-promo.jpg' },
+  promo: { title: 'Промо 2026', src: 'assets/promo.mp4', poster: 'assets/poster-promo-20261014.jpg' },
   'live-2025': { title: 'LIVE 2025 · Группа Богема', src: 'assets/live-2025.mp4', poster: 'assets/poster-live-2025.jpg' },
   'trio-live': { title: 'Live-запись · Богема', src: 'assets/trio-live.mp4', poster: 'assets/poster-trio-live.jpg' },
   'summer-rain': { title: 'Вокалист-гитарист · Летний дождь', src: 'assets/summer-rain.mp4', poster: 'assets/poster-summer-rain.jpg' },
@@ -140,61 +138,3 @@ videoDialog.addEventListener('close', () => {
   video.load();
   error.hidden = true;
 });
-
-// Five views follow the same Framer tabs on every screen size.
-const lineupPanel = document.querySelector('#lineup-detail');
-const lineupButtons = [...document.querySelectorAll('[data-view-lineup]')];
-const lineupEnsemble = lineupPanel.querySelector('.lineup-ensemble');
-const lessMotion = matchMedia('(prefers-reduced-motion: reduce)');
-let lineupAnimation;
-function renderLineup(id, animate = false) {
-  const index = LINEUPS.findIndex(item => item.id === id);
-  if (index < 0) return;
-  const item = LINEUPS[index];
-  lineupAnimation?.cancel();
-  lineupPanel.dataset.viewedLineup = id;
-  lineupPanel.setAttribute('aria-labelledby', `lineup-view-${id}`);
-  lineupPanel.querySelector('[data-lineup-title]').textContent = item.label;
-  lineupPanel.querySelector('[data-lineup-roles]').textContent = item.roles;
-  lineupPanel.querySelector('[data-lineup-number]').textContent = `${String(index+1).padStart(2,'0')} / Состав`;
-  lineupButtons.forEach(button => {
-    const current = button.dataset.viewLineup === id;
-    button.setAttribute('aria-selected', String(current));
-    button.tabIndex = current ? 0 : -1;
-  });
-  lineupPanel.querySelector('[data-lineup-difference]').textContent = item.difference;
-  lineupEnsemble.dataset.count = item.players.length;
-  lineupEnsemble.setAttribute('aria-label', item.label);
-  const tiles = item.players.map(player => {
-    const tile = document.createElement('figure'); tile.className = 'lineup-member'; tile.dataset.role = player.key;
-    if (player.src) {
-      const image = document.createElement('img'); image.src = player.src; image.alt = player.label;
-      image.loading = 'lazy'; image.decoding = 'async'; image.style.objectPosition = player.position;
-      tile.append(image);
-    } else {
-      tile.innerHTML = '<svg class="keyboard-illustration" viewBox="0 0 240 160" role="img" aria-label="Иллюстрация клавишных"><rect x="8" y="25" width="224" height="112" rx="10" fill="#36382f" stroke="#c6b79b"/><path d="M25 52h50m90 0h48" stroke="#c6b79b" stroke-width="2"/><circle cx="99" cy="52" r="4" fill="#c6b79b"/><circle cx="118" cy="52" r="4" fill="#c6b79b"/><rect x="24" y="72" width="192" height="48" rx="2" fill="#e9e4d8"/><path d="M48 73v47m24-47v47m24-47v47m24-47v47m24-47v47m24-47v47m24-47v47" stroke="#252720"/><path d="M43 72v28m24-28v28m48-28v28m24-28v28m24-28v28m24-28v28" stroke="#101110" stroke-width="12"/><path d="m65 138-13 16m123-16 13 16" stroke="#c6b79b" stroke-width="3"/></svg>';
-    }
-    const label = document.createElement('figcaption'); label.textContent = player.label; tile.append(label); return tile;
-  });
-  lineupEnsemble.replaceChildren(...tiles);
-  if (animate && !lessMotion.matches && lineupEnsemble.animate) {
-    lineupAnimation = lineupEnsemble.animate([{opacity:.5},{opacity:1}], {duration:220,easing:'ease-out'});
-  }
-  dispatchEvent(new CustomEvent('bogema:layout'));
-}
-lineupButtons.forEach((button, index) => {
-  button.addEventListener('click', () => renderLineup(button.dataset.viewLineup, true));
-  button.addEventListener('keydown', event => {
-    let next;
-    if (['ArrowRight','ArrowDown'].includes(event.key)) next = (index + 1) % lineupButtons.length;
-    else if (['ArrowLeft','ArrowUp'].includes(event.key)) next = (index + lineupButtons.length - 1) % lineupButtons.length;
-    else if (event.key === 'Home') next = 0;
-    else if (event.key === 'End') next = lineupButtons.length - 1;
-    else return;
-    event.preventDefault();
-    lineupButtons[next].focus({preventScroll:true});
-    renderLineup(lineupButtons[next].dataset.viewLineup, true);
-  });
-});
-lessMotion.addEventListener('change', () => { if (lessMotion.matches) lineupAnimation?.cancel(); });
-renderLineup('solo');

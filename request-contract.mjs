@@ -5,7 +5,7 @@ export const LIMITS = Object.freeze({name:80,rawPhone:50,bodyBytes:131072,respon
 const CHANNELS = new Set(['','phone','telegram','whatsapp','max']);
 const STATUSES = new Set(['want','skip']);
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-const KEY = /^(group|trio)-song-\d{3,6}$/;
+const KEY = /^all-song-\d{3,6}$/;
 const FIELDS = ['schemaVersion','project','requestId','contact','date','consent','catalogVersion','selectionAttached','selections'];
 const clone = value => JSON.parse(JSON.stringify(value));
 const bytes = value => new TextEncoder().encode(value).byteLength;
@@ -40,13 +40,13 @@ export function createFrozenRequest(values,snapshot,attached,requestId=uuid(),{e
   if(errors.length)throw new Error(errors[0][1]);
   if(!UUID.test(requestId))throw new Error('Некорректный номер заявки');
   if(attached&&!snapshot.ready)throw new Error('Пожелания ещё загружаются, попробуйте отправить чуть позже');
-  if(attached&&!['group','trio'].includes(snapshot.program))throw new Error('Выберите состав для пожеланий');
+  if(attached&&!['all'].includes(snapshot.program))throw new Error('Не удалось загрузить репертуар');
   if(attached&&snapshot.deprecated?.some(song=>song.program===snapshot.program)&&!excludeDeprecated)throw new Error('Подтвердите отправку без недоступных песен');
   const records=attached?clone((snapshot.selected||[]).filter(song=>song.program===snapshot.program)):[],seen=new Set();
   if(records.length&&(!Number.isInteger(snapshot.maxSelections)||records.length>snapshot.maxSelections))throw new Error('Число пожеланий превышает размер актуального каталога');
   for(const song of records){
     const key=song.program+':'+song.id;
-    if(!['group','trio'].includes(song.program)||!KEY.test(song.id)||!song.id.startsWith(song.program+'-')||!STATUSES.has(song.status)||seen.has(key))throw new Error('В пожеланиях есть недопустимая или повторная запись');
+    if(!['all'].includes(song.program)||!KEY.test(song.id)||!song.id.startsWith(song.program+'-')||!STATUSES.has(song.status)||seen.has(key))throw new Error('В пожеланиях есть недопустимая или повторная запись');
     seen.add(key);
   }
   if(records.length&&(typeof snapshot.catalogVersion!=='string'||!snapshot.catalogVersion||snapshot.catalogVersion.length>100))throw new Error('Не удалось проверить версию репертуара');
@@ -97,7 +97,7 @@ export function classifyResponse(response,requestId){
   if(response.status==='delivered'&&response.full===true)return {status:'delivered',requestId};
   if(response.status==='accepted'&&response.full===true&&response.durable===true)return {status:'accepted',requestId};
   if(response.status==='rejected'&&response.accepted===false)return {status:'rejected',requestId,retryable:response.retryable===true,message:String(response.message||'Заявка не принята').slice(0,500)};
-  if(response.status==='catalog_changed'&&response.accepted===false&&Array.isArray(response.missing)&&response.missing.every(item=>plain(item)&&['group','trio'].includes(item.program)&&KEY.test(item.id||'')&&item.id.startsWith(item.program+'-'))&&(response.missing.length||typeof response.catalogVersion==='string'))return {status:'catalog_changed',requestId,missing:response.missing.map(({program,id})=>({program,id})),catalogVersion:response.catalogVersion||null};
+  if(response.status==='catalog_changed'&&response.accepted===false&&Array.isArray(response.missing)&&response.missing.every(item=>plain(item)&&['all'].includes(item.program)&&KEY.test(item.id||'')&&item.id.startsWith(item.program+'-'))&&(response.missing.length||typeof response.catalogVersion==='string'))return {status:'catalog_changed',requestId,missing:response.missing.map(({program,id})=>({program,id})),catalogVersion:response.catalogVersion||null};
   if(response.status==='partial'&&plain(response.parts)&&Number.isInteger(response.parts.confirmed)&&Number.isInteger(response.parts.total)&&response.parts.total>response.parts.confirmed&&response.parts.confirmed>0)return {status:'partial',requestId,parts:{confirmed:response.parts.confirmed,total:response.parts.total}};
   return {status:'uncertain',requestId,message:'Проверьте результат перед повторной отправкой'};
 }

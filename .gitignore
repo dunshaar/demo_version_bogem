@@ -54,8 +54,9 @@
 !/assets/fonts/fonts.css
 !/assets/fonts/OFL*.txt
 
-!/jukebox.js
-!/jukebox.css
-!/jukebox-tracks.json
 !/assets/lineup-vocal.jpg
 !/assets/lineup-bass.jpg
+
+!/repertoire-ribbons.js
+!/assets/poster-promo-20261014.jpg
+!/assets/band-lineups-clean.png

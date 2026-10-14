@@ -74,7 +74,7 @@
         const hasChanges=current.length+snapshot.deprecated.length>0;
         q('.bf-attachment').hidden=!hasChanges;
         const want=current.filter(song=>song.status==='want').length,skip=current.filter(song=>song.status==='skip').length;
-        q('.bf-attachment-label').textContent=(prepared&&frozen()?prepared.program:snapshot.program)==='trio'?'Пожелания для трио':'Пожелания для группы';
+        q('.bf-attachment-label').textContent='Музыкальные пожелания';
         q('.bf-selection-counts').textContent='Хочу: '+want+' · Не надо: '+skip+(snapshot.deprecated.length?' · Недоступно: '+snapshot.deprecated.length:'');
         q('.bf-storage-warning').hidden=!snapshot.storage?.message;
         q('.bf-storage-warning').textContent=snapshot.storage?.message||'';
@@ -176,10 +176,10 @@
     const host=document.querySelector('[data-request-form]');if(!host)return;
     mount(host);
     try{
-      const modules=await Promise.all([import(new URL('request-contract.mjs?v=20261014-form1',scriptURL).href),import(new URL('phone-input.mjs',scriptURL).href)]);
+      const modules=await Promise.all([import(new URL('request-contract.mjs?v=20261014-unified1',scriptURL).href),import(new URL('phone-input.mjs',scriptURL).href)]);
       contract=modules[0];config=await loadConfig();modules[1].attachPhoneMask(controller.fields.phone);controller.form.dataset.phoneMask='ready';
       if(repertoire){
-        const preferences=await import(new URL('preferences-store.mjs',scriptURL).href);
+        const preferences=await import(new URL('preferences-store.mjs?v=20261014-unified1',scriptURL).href);
         store=preferences.preferencesStore;formatPreferences=preferences.formatPreferences;currentProgramSnapshot=preferences.currentProgramSnapshot;
         store.subscribe(()=>{
           if(editable()){

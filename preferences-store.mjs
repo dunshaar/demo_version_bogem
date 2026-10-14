@@ -1,8 +1,9 @@
-export const STORAGE_KEY = 'bogema:preferences:v5';
+export const STORAGE_KEY = 'bogema:preferences:v6';
+export const PREVIOUS_STORAGE_KEY = 'bogema:preferences:v5';
 export const LEGACY_STORAGE_KEY = 'bogema:preferences:v3';
 export const STATUS_LABELS = Object.freeze({ want: 'Хочу', maybe: 'Можно', skip: 'Не надо' });
-export const PROGRAMS = Object.freeze(['group', 'trio']);
-const PROGRAM_LABELS = { group: 'Группа', trio: 'Трио' };
+export const PROGRAMS = Object.freeze(['all']);
+const PROGRAM_LABELS = { all: 'Репертуар' };
 const clone = value => JSON.parse(JSON.stringify(value));
 const validID = value => typeof value === 'string' && /^[a-zA-Z0-9_-]{1,120}$/.test(value);
 const keyFor = (program, id) => `${program}:${id}`;
@@ -25,8 +26,8 @@ export function validateCatalog(value) {
 
 export function createPreferencesStore({ catalog = null, storage = null, search = '' } = {}) {
   let data = catalog ? validateCatalog(clone(catalog)) : null;
-  let program = 'group', catalogError = false;
-  let records = new Map(), unavailable = new Set(), urlWarning = '', migrating = false;
+  let program = 'all', catalogError = false;
+  let records = new Map(), unavailable = new Set(), urlWarning = '', migrating = false, legacyProgram = 'group';
   const listeners = new Set();
   const storageState = { read: 'unavailable', write: 'untested', message: '' };
   let catalogVersion = data?.version || null;
@@ -47,13 +48,14 @@ export function createPreferencesStore({ catalog = null, storage = null, search 
     let raw;
     try {
       raw = storage.getItem(STORAGE_KEY); migrating = false;
+      if (raw === null) { raw = storage.getItem(PREVIOUS_STORAGE_KEY); migrating = raw !== null; }
       if (raw === null) { raw = storage.getItem(LEGACY_STORAGE_KEY); migrating = raw !== null; }
       storageState.read = 'ok';
     } catch { storageState.read = 'blocked'; storageMessage(); return false; }
-    if (raw === null) { records = new Map(); program = 'group'; storageMessage(); return true; }
+    if (raw === null) { records = new Map(); program = 'all'; storageMessage(); return true; }
     let saved;
     try { saved = JSON.parse(raw); } catch { storageState.read = 'corrupt'; storageMessage(); return false; }
-    if (!saved || saved.schema !== (migrating ? 3 : 5)) { storageState.read = 'unsupported'; storageMessage(); return false; }
+    if (!saved || !(migrating ? [3, 5] : [6]).includes(saved.schema)) { storageState.read = 'unsupported'; storageMessage(); return false; }
     let invalid = 0;
     const restored = new Map();
     if (!Array.isArray(saved.marks)) invalid++;
@@ -73,34 +75,48 @@ export function createPreferencesStore({ catalog = null, storage = null, search 
       restored.set(key, { program: mark.program, id: mark.id, status: mark.status, snapshot });
     }
     records = restored;
-    if (PROGRAMS.includes(saved.program)) program = saved.program;
-    else if (saved.program !== undefined) invalid++;
+    program = 'all';
+    if (migrating) legacyProgram = saved.program === 'trio' ? 'trio' : 'group';
+    else if (saved.program !== undefined && saved.program !== 'all') invalid++;
     if (typeof saved.catalogVersion === 'string') catalogVersion = saved.catalogVersion;
     storageState.read = invalid ? 'partial' : 'ok';
     storageMessage();
     return true;
   }
-  function applySearch(value) {
-    const params = new URLSearchParams(value);
-    if (params.has('lineup')) {
-      const requested = params.get('lineup');
-      if (PROGRAMS.includes(requested)) { program = requested; urlWarning = ''; }
-      else { program = 'group'; urlWarning = 'Программа в ссылке не найдена, открыт репертуар группы без изменения ваших пожеланий'; }
-    } else { urlWarning = ''; if (!PROGRAMS.includes(program)) program = 'group'; }
+  function migrateRecords() {
+    if (!migrating || !data || !['ok', 'partial'].includes(storageState.read)) return;
+    const aliases = new Map();
+    for (const song of data.lineups.all.songs) for (const key of song.legacyKeys || []) aliases.set(key, song);
+    const converted = new Map();
+    let conflicts = false;
+    // Prefer the last active legacy list when it disagrees with the other list.
+    const marks = [...records.values()].sort((a,b) => Number(b.program === legacyProgram) - Number(a.program === legacyProgram));
+    marks.forEach((mark, index) => {
+      const song = aliases.get(keyFor(mark.program, mark.id));
+      const id = song?.id || `legacy-${index}-${mark.id}`.slice(0,120);
+      const key = keyFor('all', id);
+      if (converted.has(key)) { if (converted.get(key).status !== mark.status) conflicts = true; return; }
+      converted.set(key, {program:'all', id, status:mark.status, snapshot:{title:song?.title || mark.snapshot?.title || null, artist:song?.artist ?? mark.snapshot?.artist ?? null, programLabel:'Репертуар'}});
+    });
+    records = converted; program = 'all'; migrating = false;
+    if (conflicts) urlWarning = 'Сохранённые пожелания объединены. Для песен с разными отметками оставлен выбор из последнего открытого списка, проверьте его';
+    persist();
   }
+  function applySearch() { program = 'all'; }
   function persist() {
+    // Wait for the identity map before replacing a legacy draft. Keep its old key for rollback.
+    if (migrating && !data) return;
     if (!storage || storageState.read === 'blocked' || storageState.read === 'unavailable') { storageState.write = 'blocked'; storageMessage(); return; }
-    const saved = { schema: 5, program, catalogVersion: data?.version || catalogVersion, marks: [...records.values()] };
+    const saved = { schema: 6, program, catalogVersion: data?.version || catalogVersion, marks: [...records.values()] };
     try {
       storage.setItem(STORAGE_KEY, JSON.stringify(saved)); storageState.write = 'ok';
-      // Only retire the old schema after its replacement has actually been saved.
-      if (migrating && typeof storage.removeItem === 'function') { storage.removeItem(LEGACY_STORAGE_KEY); migrating = false; }
+      // Previous keys stay intact so rolling back the website also restores its drafts.
     } catch { storageState.write = 'blocked'; }
     storageMessage();
   }
   function getSnapshot() {
     const selected = [], deprecated = [];
-    const counts = { ...emptyCount(), deprecated: 0, byProgram: { group: emptyCount(), trio: emptyCount() } };
+    const counts = { ...emptyCount(), deprecated: 0, byProgram: { all: emptyCount() } };
     if (data) for (const programID of PROGRAMS) for (const song of data.lineups[programID].songs) {
       const mark = records.get(keyFor(programID, song.id));
       if (!mark || unavailable.has(keyFor(programID, song.id))) continue;
@@ -117,8 +133,7 @@ export function createPreferencesStore({ catalog = null, storage = null, search 
   }
   function notify() { const snapshot = getSnapshot(); for (const callback of listeners) callback(snapshot); }
   function changed() { persist(); notify(); }
-  readSaved(); applySearch(search);
-  if (migrating && ['ok', 'partial'].includes(storageState.read) || storageState.read === 'ok' && PROGRAMS.includes(new URLSearchParams(search).get('lineup'))) persist();
+  readSaved(); applySearch(search); migrateRecords();
   const api = {
     getSnapshot,
     getCatalog: () => { if (!data) return null; const copy = clone(data); for (const key of PROGRAMS) copy.lineups[key].songs = copy.lineups[key].songs.filter(song => !unavailable.has(keyFor(key, song.id))); return copy; },
@@ -141,8 +156,8 @@ export function createPreferencesStore({ catalog = null, storage = null, search 
       changed();
     },
     markUnavailable(items) { for (const item of items) if (validID(item?.program) && validID(item?.id)) unavailable.add(keyFor(item.program, item.id)); notify(); },
-    refreshFromStorage(value = search) { readSaved(); applySearch(value); notify(); },
-    setCatalog(value) { data = validateCatalog(clone(value)); catalogVersion = data.version; catalogError = false; unavailable.clear(); notify(); },
+    refreshFromStorage(value = search) { readSaved(); applySearch(value); migrateRecords(); notify(); },
+    setCatalog(value) { data = validateCatalog(clone(value)); catalogVersion = data.version; catalogError = false; unavailable.clear(); migrateRecords(); notify(); },
     loadCatalog(loader) {
       if (catalogRequest) return catalogRequest;
       catalogError = false;
@@ -168,7 +183,7 @@ export function formatPreferences(snapshot, { includeDeprecated = true } = {}) {
   for (const program of PROGRAMS) {
     const records = selected.filter(item => item.program === program);
     if (!records.length) continue;
-    lines.push('', `ПРОГРАММА: ${records[0].programLabel || PROGRAM_LABELS[program]}`);
+    lines.push('');
     for (const status of ['want', 'skip']) {
       const songs = records.filter(item => item.status === status);
       if (!songs.length) continue;
@@ -186,7 +201,7 @@ export function formatFullCatalog(catalog, program, selected = []) {
   const lineup = catalog?.lineups?.[program];
   if (!lineup) return '';
   const marks = new Map(selected.filter(item => item.program === program).map(item => [item.id, item.status]));
-  return [`БОГЕМА: ПОЛНЫЙ РЕПЕРТУАР: ${lineup.label}`, `Версия: ${catalog.version}`, `Песен: ${lineup.songs.length}\nИтоговую программу согласуем отдельно`, '', ...lineup.songs.map((song, index) => `${index + 1}. ${song.title}, ${song.artist || 'Исполнитель не указан'} [${STATUS_LABELS[marks.get(song.id) || 'maybe']}]`), ''].join('\n');
+  return ['БОГЕМА: ПОЛНЫЙ РЕПЕРТУАР', `Версия: ${catalog.version}`, `Песен: ${lineup.songs.length}\nИтоговую программу согласуем отдельно`, '', ...lineup.songs.map((song, index) => `${index + 1}. ${song.title}, ${song.artist || 'Исполнитель не указан'} [${STATUS_LABELS[marks.get(song.id) || 'maybe']}]`), ''].join('\n');
 }
 let browserStorage = null;
 try { if (typeof window !== 'undefined') browserStorage = globalThis.localStorage || null; } catch { browserStorage = { getItem() { throw new Error('Storage blocked'); }, setItem() { throw new Error('Storage blocked'); } }; }
@@ -201,5 +216,5 @@ if (typeof window !== 'undefined') {
   preferencesStore.reloadCatalog = () => preferencesStore.loadCatalog(load);
   window.addEventListener('popstate', () => preferencesStore.applyUrl(window.location.search));
   window.addEventListener('pageshow', event => { if (event.persisted) preferencesStore.refreshFromStorage(window.location.search); });
-  window.addEventListener('storage', event => { if ([STORAGE_KEY, LEGACY_STORAGE_KEY, null].includes(event.key)) preferencesStore.refreshFromStorage(window.location.search); });
+  window.addEventListener('storage', event => { if ([STORAGE_KEY, PREVIOUS_STORAGE_KEY, LEGACY_STORAGE_KEY, null].includes(event.key)) preferencesStore.refreshFromStorage(window.location.search); });
 }

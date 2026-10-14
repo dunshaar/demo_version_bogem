@@ -1,14 +1,12 @@
-import { preferencesStore as store, STATUS_LABELS, PROGRAMS, currentProgramSnapshot, formatPreferences, formatFullCatalog } from '../preferences-store.mjs';
+import { preferencesStore as store, STATUS_LABELS, PROGRAMS, currentProgramSnapshot, formatPreferences, formatFullCatalog } from '../preferences-store.mjs?v=20261014-unified1';
 
 const $ = selector => document.querySelector(selector);
 const rows = new Map();
-let catalog = null, snapshot = store.getSnapshot(), initialized = false, activeProgram = snapshot.program;
+let catalog = null, snapshot = store.getSnapshot(), initialized = false;
 const keyFor = (program, id) => `${program}:${id}`;
 const element = (tag, text, className) => { const node = document.createElement(tag); if (text !== undefined) node.textContent = text; if (className) node.className = className; return node; };
-const removedParameters = ['q', 'query', 'search', 'category', 'status', 'filter', 'sort', 'page', 'limit'];
+const removedParameters = ['lineup', 'q', 'query', 'search', 'category', 'status', 'filter', 'sort', 'page', 'limit'];
 const cleanURL = new URL(location.href);
-// Record the initially restored program so browser Back restores it too.
-if (!cleanURL.searchParams.has('lineup')) cleanURL.searchParams.set('lineup', snapshot.program);
 for (const key of removedParameters) cleanURL.searchParams.delete(key);
 if (cleanURL.href !== location.href) history.replaceState(null, '', cleanURL);
 
@@ -28,7 +26,7 @@ function initialize() {
   catalog = store.getCatalog(); rows.clear();
   for (const program of PROGRAMS) {
     const section = $(`#songs-${program}`);
-    section.setAttribute('role', 'tabpanel'); section.setAttribute('aria-labelledby', `tab-${program}`);
+    section.setAttribute('aria-labelledby', 'list-title');
     const source = catalog.lineups[program].songs, list = $(`#song-list-${program}`);
     const existing = new Map([...list.querySelectorAll('[data-song-id]')].map(row => [row.dataset.songId, row]));
     const fragment = document.createDocumentFragment();
@@ -49,8 +47,6 @@ function initialize() {
       rows.set(keyFor(program, song.id), row); fragment.append(row);
     });
     list.replaceChildren(fragment);
-    $(`#tab-${program} span`).textContent = source.length;
-    $(`#tab-${program}`).disabled = false;
   }
   $('#download-list').disabled = false; $('#song-search').disabled = false;
   $('#catalog-loading').hidden = true; $('#catalog-error').hidden = true;
@@ -85,9 +81,7 @@ searchInput.addEventListener('keydown', event => { if (event.key === 'Escape') {
 function renderCatalog() {
   if (!initialized) return;
   for (const program of PROGRAMS) {
-    const selected = program === snapshot.program;
-    const tab = $(`#tab-${program}`); tab.setAttribute('aria-selected', String(selected)); tab.tabIndex = selected ? 0 : -1;
-    $(`#songs-${program}`).hidden = !selected;
+    $(`#songs-${program}`).hidden = false;
     for (const song of catalog.lineups[program].songs) {
       const row = rows.get(keyFor(program, song.id)), mark = store.getStatus(program, song.id);
       row.dataset.status = mark;
@@ -97,17 +91,14 @@ function renderCatalog() {
   applySearch();
   const program = snapshot.program, total = catalog.lineups[program].songs.length;
   const counts = snapshot.counts.byProgram[program];
-  $('#companion-program').textContent = catalog.lineups[program].label;
+  $('#companion-program').textContent = 'Ваш выбор';
   $('#companion-total').textContent = total;
   $('#count-want').textContent = counts.want;
   $('#count-maybe').textContent = Math.max(0, total - counts.want - counts.skip);
   $('#count-skip').textContent = counts.skip;
-  $('#list-title').textContent = program === 'group' ? 'Песни группы' : 'Песни трио';
+  $('#list-title').textContent = 'Все песни';
   $('#results-status').textContent = `${catalog.lineups[program].label}, ${total} песен`;
-  const other = program === 'group' ? 'trio' : 'group', otherCount = snapshot.counts.byProgram[other].total;
-  $('#companion-other').hidden = !otherCount;
-  $('#companion-other').textContent = `${other === 'group' ? 'Группа' : 'Трио'}: сохранено отметок ${otherCount}`;
-  if (activeProgram !== program) { activeProgram = program; $('#catalog-export-status').textContent = ''; }
+
 }
 function renderDeprecated() {
   const section = $('#deprecated-section'), content = $('#deprecated-songs');
@@ -124,7 +115,7 @@ function renderDeprecated() {
   }
   content.replaceChildren(fragment);
   if (focusedKey) {
-    const next = [...content.querySelectorAll('button')].find(node => node.dataset.removeKey === focusedKey) || content.querySelector('button') || $(`#tab-${snapshot.program}`);
+    const next = [...content.querySelectorAll('button')].find(node => node.dataset.removeKey === focusedKey) || content.querySelector('button') || $('#song-search');
     next.focus({ preventScroll: true });
   }
 }
@@ -140,27 +131,6 @@ function refresh(value) {
   if (!$('#copy-fallback').hidden) $('#copy-text').value = formatPreferences(snapshot);
   window.dispatchEvent(new Event('bogema:layout'));
 }
-function selectProgram(program, focus = false) {
-  const url = new URL(location.href); url.searchParams.set('lineup', program);
-  if (url.href !== location.href) history.pushState(null, '', url);
-  const workspace = $('.rep-workspace');
-  const belowStart = workspace.getBoundingClientRect().top < header.getBoundingClientRect().height;
-  const changed = program !== snapshot.program;
-  store.setProgram(program);
-  if (changed && belowStart) {
-    const top = window.scrollY + workspace.getBoundingClientRect().top - header.getBoundingClientRect().height - 12;
-    window.scrollTo({ top: Math.max(0, top), behavior: 'instant' });
-  }
-  if (focus) $(`#tab-${program}`).focus({ preventScroll: true });
-}
-PROGRAMS.forEach((program, index) => {
-  const tab = $(`#tab-${program}`);
-  tab.addEventListener('click', () => selectProgram(program));
-  tab.addEventListener('keydown', event => {
-    const target = event.key === 'Home' ? 0 : event.key === 'End' ? 1 : ['ArrowRight', 'ArrowLeft'].includes(event.key) ? 1 - index : null;
-    if (target !== null) { event.preventDefault(); selectProgram(PROGRAMS[target], true); }
-  });
-});
 document.addEventListener('change', event => {
   const control = event.target;
   if (control.matches('.rep-song-choices input')) {
@@ -189,20 +159,20 @@ for (const dialog of actionDialogs) {
   dialog.addEventListener('close', () => {
     document.body.classList.remove('modal-open');
     const trigger = dialogTriggers.get(dialog);
-    (trigger && !trigger.disabled ? trigger : $(`#tab-${snapshot.program}`)).focus({preventScroll:true});
+    (trigger && !trigger.disabled ? trigger : $('#song-search')).focus({preventScroll:true});
   });
 }
 let resetProgram;
 $('#reset-open').addEventListener('click', () => {
   resetProgram = snapshot.program;
-  $('#reset-description').textContent = `Все песни ${resetProgram === 'group' ? 'группы' : 'трио'} снова получат отметку «Можно»`;
+  $('#reset-description').textContent = 'Все песни снова получат отметку «Можно»';
   openActionDialog($('#reset-confirmation'), $('#reset-open'));
   $('#reset-cancel').focus();
 });
 $('#reset-cancel').addEventListener('click', () => $('#reset-confirmation').close());
 $('#reset-confirm').addEventListener('click', () => {
   store.clearMarks(resetProgram); $('#copy-fallback').hidden = true;
-  $('#reset-status').textContent = 'Отметки выбранного состава сброшены, у каждой песни снова «Можно»';
+  $('#reset-status').textContent = 'Отметки сброшены, у каждой песни снова «Можно»';
   $('#reset-confirmation').close();
 });
 $('#copy-selection').addEventListener('click', async () => {
@@ -216,13 +186,8 @@ function download(text, filename, target = '#export-status') {
     setTimeout(() => URL.revokeObjectURL(url), 10000); $(target).textContent = 'Файл TXT подготовлен для скачивания';
   } catch { $(target).textContent = 'Не удалось подготовить файл, попробуйте ещё раз'; }
 }
-$('#download-list').addEventListener('click', () => openActionDialog($('#catalog-download-dialog'), $('#download-list')));
-for (const button of document.querySelectorAll('[data-download-program]')) button.addEventListener('click', () => {
-  const program = button.dataset.downloadProgram;
-  download(formatFullCatalog(catalog, program), `Богема - ${catalog.lineups[program].label} - полный репертуар.txt`, '#catalog-export-status');
-  $('#catalog-download-dialog').close();
-});
-$('#download-selection').addEventListener('click', () => download(formatPreferences(snapshot), `Богема - ${catalog.lineups[snapshot.program].label} - мои пожелания.txt`));
+$('#download-list').addEventListener('click', () => download(formatFullCatalog(catalog, 'all'), 'Богема - полный репертуар.txt', '#catalog-export-status'));
+$('#download-selection').addEventListener('click', () => download(formatPreferences(snapshot), 'Богема - мои пожелания.txt'));
 $('#retry-catalog').addEventListener('click', () => { $('#catalog-loading').hidden = false; $('#catalog-error').hidden = true; store.reloadCatalog(); });
 
 const root = document.documentElement, header = $('.rep-header'), companion = $('#repertoire-companion');
