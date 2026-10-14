@@ -1,88 +1,93 @@
-// Two bounded, continuous song ribbons. Only visible neighbours are rendered;
-// the queue traverses the entire shared repertoire without a second song list.
+// The approved two sets live in the HTML; the full repertoire stays independent.
 const section = document.querySelector('.repertoire-ribbons');
-const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-let songs = [], rows = [], frame = 0, last = null, visible = false;
-const at = index => songs[(index % songs.length + songs.length) % songs.length];
-function songNode(index) {
-  const song = at(index), node = document.createElement('span');
-  node.className = 'repertoire-ribbon-song'; node.dataset.index = index;
-  const title = document.createElement('strong'), artist = document.createElement('span');
-  title.textContent = song.title; artist.textContent = song.artist || '';
-  node.append(title, artist); return node;
-}
-function build() {
-  if (!songs.length) return;
-  const previous = rows;
-  rows = [...section.querySelectorAll('.repertoire-ribbon')].map((viewport, i) => {
-    const track = viewport.firstElementChild, direction = viewport.dataset.direction;
-    const first = Number(previous[i]?.track.firstElementChild?.dataset.index ?? (i ? Math.floor(songs.length / 2) : 0));
-    track.replaceChildren();
-    // Min-width 220 / 280 px means this small queue always overfills the viewport.
-    const count = Math.max(5, Math.ceil(viewport.clientWidth / 220) + 3);
-    for (let n = 0; n < count; n++) track.append(songNode(first + n));
-    const firstWidth = track.firstElementChild.getBoundingClientRect().width;
-    const row = {track, direction, firstWidth, offset:direction === 'right' ? -firstWidth : 0};
-    track.style.transform = `translate3d(${row.offset}px,0,0)`;
-    return row;
-  });
-  last = null;
-}
-function active() { return visible && !document.hidden && !reduced.matches && rows.length; }
-function tick(now) {
-  frame = 0;
-  if (!active()) { last = null; return; }
-  const delta = last === null ? 0 : Math.min(50, now-last); last = now;
-  const distance = delta * .038;
-  for (const row of rows) {
-    const {track, direction} = row;
-    if (direction === 'left') {
-      row.offset -= distance;
-      while (-row.offset >= row.firstWidth && row.firstWidth > 0) {
-        row.offset += row.firstWidth;
-        const next = Number(track.lastElementChild.dataset.index) + 1;
-        track.firstElementChild.remove(); track.append(songNode(next));
-        row.firstWidth = track.firstElementChild.getBoundingClientRect().width;
-      }
-    } else {
-      row.offset += distance;
-      if (row.offset >= 0) {
-        const previous = Number(track.firstElementChild.dataset.index) - 1;
-        track.prepend(songNode(previous)); track.lastElementChild.remove();
-        row.firstWidth = track.firstElementChild.getBoundingClientRect().width;
-        row.offset -= row.firstWidth;
-      }
-    }
-    track.style.transform = `translate3d(${row.offset}px,0,0)`;
-  }
-  frame = requestAnimationFrame(tick);
-}
-function sync() {
-  if (active()) { if (!frame) { last = null; frame = requestAnimationFrame(tick); } }
-  else { cancelAnimationFrame(frame); frame = 0; last = null; }
-}
 if (section) {
-  try {
-    const response = await fetch(new URL('./repertoire/data.json', import.meta.url), {cache:'no-cache'});
-    if (!response.ok) throw new Error('catalog');
-    const catalog = await response.json();
-    songs = catalog.lineups.all.songs;
-    if (!songs.length) throw new Error('empty');
-    await document.fonts.ready;
-    build();
-    if ('IntersectionObserver' in window) {
-      const observer = new IntersectionObserver(entries => { visible = entries[0].isIntersecting; sync(); });
-      observer.observe(section);
-    } else { visible = true; sync(); }
-    let width = section.clientWidth;
-    const resize = () => { if (width !== section.clientWidth) { width = section.clientWidth; build(); sync(); } };
-    if ('ResizeObserver' in window) new ResizeObserver(resize).observe(section);
-    else addEventListener('resize', resize, {passive:true});
-    document.addEventListener('visibilitychange', sync);
-    reduced.addEventListener('change', sync);
-    addEventListener('pagehide', () => { visible = false; sync(); });
-    addEventListener('pageshow', () => {
-      const rect = section.getBoundingClientRect(); visible = rect.bottom > 0 && rect.top < innerHeight; sync();
-    });
-  } catch { /* Keep the static ribbon and the link to the full repertoire usable. */ }
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const hover = matchMedia('(hover: hover) and (pointer: fine)');
+  const toggle = section.querySelector('[data-ribbons-pause]');
+  let visible = false, paused = false;
+  const rows = [...section.querySelectorAll('.repertoire-ribbon')].map(viewport => {
+    const track = viewport.querySelector('.repertoire-ribbon-track');
+    const sequence = track.firstElementChild;
+    const songs = [...sequence.children];
+    // Shuffle exactly once per page load, independently within each approved set.
+    for (let i = songs.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [songs[i], songs[j]] = [songs[j], songs[i]];
+    }
+    sequence.replaceChildren(...songs);
+    const duplicate = sequence.cloneNode(true);
+    duplicate.setAttribute('aria-hidden', 'true');
+    duplicate.classList.add('repertoire-ribbon-duplicate');
+    track.append(duplicate);
+    return {viewport, track, sequence, animation: null, width: 0, duration: 0, phase: 0, hovered: false};
+  });
+
+  function sync() {
+    const active = visible && !document.hidden && !reduced.matches && !paused;
+    for (const row of rows) {
+      if (!row.animation) continue;
+      if (active && !row.hovered && !row.viewport.contains(document.activeElement)) row.animation.play();
+      else row.animation.pause();
+    }
+  }
+
+  function measure() {
+    section.classList.toggle('is-animated', !reduced.matches);
+    toggle.hidden = reduced.matches;
+    for (const row of rows) {
+      const width = row.sequence.getBoundingClientRect().width;
+      if (width === row.width && Boolean(row.animation) === !reduced.matches) continue;
+      if (row.animation) {
+        row.phase = ((row.animation.currentTime || 0) % row.duration) / row.duration;
+        row.animation.cancel();
+        row.animation = null;
+      }
+      row.width = width;
+      if (reduced.matches || !width) continue;
+      const left = row.viewport.dataset.direction === 'left';
+      row.duration = width / (innerWidth <= 809 ? 34 : 44) * 1000;
+      const start = left ? 0 : -width;
+      const end = left ? -width : 0;
+      row.animation = row.track.animate([
+        {transform: `translate3d(${start}px,0,0)`},
+        {transform: `translate3d(${end}px,0,0)`}
+      ], {duration: row.duration, iterations: Infinity, easing: 'linear'});
+      row.animation.currentTime = row.phase * row.duration;
+      row.animation.pause();
+    }
+    sync();
+  }
+
+  for (const row of rows) {
+    row.viewport.addEventListener('pointerenter', () => { row.hovered = hover.matches; sync(); });
+    row.viewport.addEventListener('pointerleave', () => { row.hovered = false; sync(); });
+    row.viewport.addEventListener('focusin', sync);
+    row.viewport.addEventListener('focusout', () => queueMicrotask(sync));
+  }
+  toggle.addEventListener('click', () => {
+    paused = !paused;
+    toggle.setAttribute('aria-pressed', String(paused));
+    toggle.setAttribute('aria-label', paused ? 'Продолжить движение строк' : 'Приостановить движение строк');
+    toggle.querySelector('span').textContent = paused ? 'Продолжить' : 'Пауза';
+    sync();
+  });
+  hover.addEventListener('change', () => { rows.forEach(row => { row.hovered = false; }); sync(); });
+  reduced.addEventListener('change', measure);
+  document.addEventListener('visibilitychange', sync);
+  addEventListener('pagehide', () => { visible = false; sync(); });
+  addEventListener('pageshow', () => {
+    const box = section.getBoundingClientRect();
+    visible = box.bottom > 0 && box.top < innerHeight;
+    sync();
+  });
+  await document.fonts.ready;
+  measure();
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(entries => { visible = entries[0].isIntersecting; sync(); }).observe(section);
+  } else { visible = true; sync(); }
+  if ('ResizeObserver' in window) {
+    const observer = new ResizeObserver(measure);
+    rows.forEach(row => observer.observe(row.sequence));
+  } else addEventListener('resize', measure, {passive: true});
+  section.dataset.ribbonsReady = 'true';
 }
