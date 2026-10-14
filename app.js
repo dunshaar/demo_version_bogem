@@ -58,28 +58,29 @@ menu.addEventListener('focusout', () => {
 function navigateToSection(target, hash) {
   cancelSectionNavigation();
   closeMenu();
-  // Anchor navigation should not compete with native dialog focus or reveal effects.
   dispatchEvent(new Event('bogema:navigate'));
-  if (location.hash !== hash) history.pushState(null, '', hash);
-  const start = scrollY;
+  const start = window.scrollY;
   const header = document.querySelector('.site-header');
   const inset = getComputedStyle(header).position === 'sticky' ? header.getBoundingClientRect().height + 16 : 24;
   const end = Math.max(0, Math.min(start + target.getBoundingClientRect().top - inset, document.documentElement.scrollHeight - innerHeight));
   const finish = () => {
     navigationFrame = 0;
+    if (location.hash !== hash) history.pushState(null, '', hash);
     target.setAttribute('tabindex', '-1');
     target.focus({preventScroll:true});
   };
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches || Math.abs(end - start) < 2) {
-    scrollTo({top:end, behavior:'instant'}); finish(); return;
-  }
-  // Give long journeys enough frames to remain visible, with a gentle start and stop.
-  const duration = Math.min(850, 450 + Math.abs(end - start) / 10);
-  const began = performance.now();
+  if (Math.abs(end - start) < 2) { finish(); return; }
+  // Start the clock on the first painted frame, not before closing the menu.
+  // A delayed mobile frame must not skip the whole journey to its destination.
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const duration = reduced ? 220 : Math.min(1000, 600 + Math.abs(end - start) / 12);
+  let previousFrame, elapsed = 0;
   const step = now => {
-    const progress = Math.min(1, (now - began) / duration);
-    const eased = (1 - Math.cos(Math.PI * progress)) / 2;
-    scrollTo({top:start + (end - start) * eased, behavior:'instant'});
+    if (previousFrame !== undefined) elapsed += Math.min(50, Math.max(0, now - previousFrame));
+    previousFrame = now;
+    const progress = Math.min(1, elapsed / duration);
+    const eased = reduced ? progress : (1 - Math.cos(Math.PI * progress)) / 2;
+    window.scrollTo(0, start + (end - start) * eased);
     if (progress < 1) navigationFrame = requestAnimationFrame(step);
     else finish();
   };
