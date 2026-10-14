@@ -2,7 +2,7 @@
 // the queue traverses the entire shared repertoire without a second song list.
 const section = document.querySelector('.repertoire-ribbons');
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-let songs = [], rows = [], frame = 0, last = null, visible = false, hovered = false;
+let songs = [], rows = [], frame = 0, last = null, visible = false;
 const at = index => songs[(index % songs.length + songs.length) % songs.length];
 function songNode(index) {
   const song = at(index), node = document.createElement('span');
@@ -28,7 +28,7 @@ function build() {
   });
   last = null;
 }
-function active() { return visible && !hovered && !document.hidden && !reduced.matches && rows.length; }
+function active() { return visible && !document.hidden && !reduced.matches && rows.length; }
 function tick(now) {
   frame = 0;
   if (!active()) { last = null; return; }
@@ -70,10 +70,6 @@ if (section) {
     if (!songs.length) throw new Error('empty');
     await document.fonts.ready;
     build();
-    for (const ribbon of section.querySelectorAll('.repertoire-ribbon')) {
-      ribbon.addEventListener('pointerenter', event => { if (event.pointerType !== 'touch') { hovered = true; sync(); } });
-      ribbon.addEventListener('pointerleave', () => { hovered = false; sync(); });
-    }
     if ('IntersectionObserver' in window) {
       const observer = new IntersectionObserver(entries => { visible = entries[0].isIntersecting; sync(); });
       observer.observe(section);
