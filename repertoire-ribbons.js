@@ -1,5 +1,37 @@
 // The approved two sets live in the HTML; the full repertoire stays independent.
-const section = document.querySelector('.repertoire-ribbons');
+// Random circular order with at most two Latin-script titles between Cyrillic ones.
+// Each Cyrillic title anchors a gap with two slots; rotating the result keeps the
+// cycle boundary valid without enforcing a Russian/English alternation pattern.
+export function shuffleRibbon(songs, random = Math.random) {
+  const shuffle = items => {
+    const copy = [...items];
+    for (let i = copy.length - 1; i > 0; i--) {
+      const j = Math.floor(random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+  };
+  const mixed = shuffle(songs);
+  const cyrillic = mixed.filter(song => /[\u0400-\u04ff]/u.test(song.textContent));
+  const latin = mixed.filter(song => !/[\u0400-\u04ff]/u.test(song.textContent));
+  if (!songs.length) return [];
+  if (!cyrillic.length || latin.length > cyrillic.length * 2) {
+    throw new RangeError('The ribbon needs enough Cyrillic titles for a two-Latin-title limit');
+  }
+  const slots = shuffle(cyrillic.flatMap((_, index) => [index, index]));
+  const counts = Array(cyrillic.length).fill(0);
+  slots.slice(0, latin.length).forEach(index => { counts[index]++; });
+  let cursor = 0;
+  const ordered = cyrillic.flatMap((song, index) => {
+    const group = [song, ...latin.slice(cursor, cursor + counts[index])];
+    cursor += counts[index];
+    return group;
+  });
+  const start = Math.floor(random() * ordered.length);
+  return [...ordered.slice(start), ...ordered.slice(0, start)];
+}
+
+const section = globalThis.document?.querySelector('.repertoire-ribbons');
 if (section) {
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const hover = matchMedia('(hover: hover) and (pointer: fine)');
@@ -8,13 +40,8 @@ if (section) {
   const rows = [...section.querySelectorAll('.repertoire-ribbon')].map(viewport => {
     const track = viewport.querySelector('.repertoire-ribbon-track');
     const sequence = track.firstElementChild;
-    const songs = [...sequence.children];
-    // Shuffle exactly once per page load, independently within each approved set.
-    for (let i = songs.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [songs[i], songs[j]] = [songs[j], songs[i]];
-    }
-    sequence.replaceChildren(...songs);
+    // One constrained shuffle per row on load, never on scroll or resize.
+    sequence.replaceChildren(...shuffleRibbon([...sequence.children]));
     const duplicate = sequence.cloneNode(true);
     duplicate.setAttribute('aria-hidden', 'true');
     duplicate.classList.add('repertoire-ribbon-duplicate');
