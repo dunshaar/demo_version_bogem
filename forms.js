@@ -16,6 +16,7 @@
   function render(){if(controller)controller.render();}
   function error(name,message=''){
     const field=controller.fields[name],label=q('[data-error="'+name+'"]');
+    if(!field||!label)return;
     field.setAttribute('aria-invalid',message?'true':'false');label.textContent=message;label.hidden=!message;
   }
   function focusName(){controller.fields.name.focus({preventScroll:true});}
@@ -42,8 +43,8 @@
         <div class="bf-fields">
           <div class="bf-field"><label for="bf-name">Имя</label><input id="bf-name" name="name" type="text" autocomplete="name" required maxlength="80" aria-describedby="bf-name-error"><p class="bf-field-error" id="bf-name-error" data-error="name" hidden></p></div>
           <div class="bf-field"><label for="bf-phone">Телефон</label><input id="bf-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required maxlength="50" placeholder="+7 (___) ___-__-__" aria-describedby="bf-phone-error"><p class="bf-field-error" id="bf-phone-error" data-error="phone" hidden></p></div>
-          <div class="bf-field"><label for="bf-channel">Как с вами связаться <span class="bf-optional">Необязательно</span></label><select id="bf-channel" name="preferredChannel" aria-describedby="bf-channel-error"><option value="">Выберите способ</option><option value="phone">Звонок</option><option value="telegram">Telegram</option><option value="whatsapp">WhatsApp</option><option value="max">MAX</option></select><p class="bf-field-error" id="bf-channel-error" data-error="preferredChannel" hidden></p></div>
-          <div class="bf-field bf-field-date"><label for="bf-date">Дата мероприятия <span class="bf-optional">Если известна</span></label><input id="bf-date" name="date" type="date" aria-describedby="bf-date-error"><p class="bf-field-error" id="bf-date-error" data-error="date" hidden></p></div>
+          ${repertoire?'':`<div class="bf-field"><label for="bf-channel">Как с вами связаться <span class="bf-optional">Необязательно</span></label><select id="bf-channel" name="preferredChannel" aria-describedby="bf-channel-error"><option value="">Выберите способ</option><option value="phone">Звонок</option><option value="telegram">Telegram</option><option value="whatsapp">WhatsApp</option><option value="max">MAX</option></select><p class="bf-field-error" id="bf-channel-error" data-error="preferredChannel" hidden></p></div>
+          <div class="bf-field bf-field-date"><label for="bf-date">Дата мероприятия <span class="bf-optional">Если известна</span></label><input id="bf-date" name="date" type="date" aria-describedby="bf-date-error"><p class="bf-field-error" id="bf-date-error" data-error="date" hidden></p></div>`}
         </div>
         ${repertoire?`<section class="bf-attachment bf-attachment-required" hidden>
           <div class="bf-attachment-controls"><span class="bf-attachment-label">Ваши пожелания</span><button type="button" class="bf-secondary bf-preview-selection" aria-expanded="false" aria-controls="bf-selection-preview">Список песен</button></div>
@@ -60,12 +61,12 @@
       <section class="bf-confirmation" tabindex="-1" hidden><h3 class="bf-confirmation-title">${repertoire?"Пожелания отправлены":"Заявка отправлена"}</h3><p>${repertoire?"Спасибо! Свяжемся с вами, чтобы обсудить выбранные песни и согласовать программу":"Спасибо! Свяжемся с вами, чтобы обсудить выступление и подтвердить дату"}</p><button class="bf-secondary bf-new" type="button">${repertoire?"Отправить ещё":"Новая заявка"}</button></section>
     </div>`;
     host.replaceChildren(form);
-    const fields=Object.fromEntries(['name','phone','preferredChannel','date','consent'].map(name=>[name,form.elements.namedItem(name)]));
+    const fields=Object.fromEntries(['name','phone','preferredChannel','date','consent'].map(name=>[name,form.elements.namedItem(name)]).filter(([,field])=>field));
     controller={form,fields,render(){
       const snapshot=snap(),locked=!editable(),success=['demo_complete','accepted','delivered'].includes(phase);
       form.dataset.state=phase;form.dataset.mode=config.mode;
       form.setAttribute('aria-busy',String(phase==='pending'));
-      for(const name of Object.keys(draft)){if(name==='consent')fields[name].checked=draft[name];else if(fields[name].value!==draft[name])fields[name].value=draft[name];fields[name].disabled=locked;}
+      for(const name of Object.keys(fields)){if(name==='consent')fields[name].checked=draft[name];else if(fields[name].value!==draft[name])fields[name].value=draft[name];fields[name].disabled=locked;}
       q('.bf-editable-fields').hidden=success;
       q('.bf-consent').hidden=success;
       if(repertoire){
@@ -96,7 +97,7 @@
       q('.bf-confirmation').hidden=!success;
       q('.bf-confirmation-title').textContent=repertoire?(phase==='accepted'?'Пожелания приняты':'Пожелания отправлены'):(phase==='accepted'?'Заявка принята':'Заявка отправлена');
     }};
-    for(const name of Object.keys(draft)){
+    for(const name of Object.keys(fields)){
       const update=()=>{if(editable()){draft[name]=name==='consent'?fields[name].checked:fields[name].value;error(name);changed();}};
       fields[name].addEventListener('input',update);fields[name].addEventListener('change',update);
     }
@@ -129,7 +130,7 @@
   function submit(){
     if(!editable()||(config.mode!=='demo'&&!config.enabled))return;
     for(const name of Object.keys(draft))error(name);
-    const checked=contract.validateContact(draft,controller.fields.date.validity.valid);
+    const checked=contract.validateContact(draft,controller.fields.date?.validity.valid??true);
     if(checked.errors.length){for(const [name,message]of checked.errors)error(name,message);notice='Проверьте выделенные поля';render();controller.fields[checked.errors[0][0]].focus();return;}
     if(repertoire&&!snap().selected.length){notice='Отметьте хотя бы одну песню как «Хочу» или «Не надо», затем отправьте пожелания';render();q('.bf-status').scrollIntoView({block:'center',behavior:'auto'});return;}
     if(repertoire&&snap().deprecated.length&&excludeConfirmed!==exclusionKey()){
@@ -175,7 +176,7 @@
     const host=document.querySelector('[data-request-form]');if(!host)return;
     mount(host);
     try{
-      const modules=await Promise.all([import(new URL('request-contract.mjs',scriptURL).href),import(new URL('phone-input.mjs',scriptURL).href)]);
+      const modules=await Promise.all([import(new URL('request-contract.mjs?v=20261014-form1',scriptURL).href),import(new URL('phone-input.mjs',scriptURL).href)]);
       contract=modules[0];config=await loadConfig();modules[1].attachPhoneMask(controller.fields.phone);controller.form.dataset.phoneMask='ready';
       if(repertoire){
         const preferences=await import(new URL('preferences-store.mjs',scriptURL).href);

@@ -52,12 +52,36 @@ function initialize() {
     $(`#tab-${program} span`).textContent = source.length;
     $(`#tab-${program}`).disabled = false;
   }
-  $('#download-list').disabled = false;
+  $('#download-list').disabled = false; $('#song-search').disabled = false;
   $('#catalog-loading').hidden = true; $('#catalog-error').hidden = true;
   document.documentElement.classList.add('repertoire-ready');
   document.documentElement.dataset.repertoireReady = 'true';
   initialized = true;
 }
+// Promote matching songs without hiding rows or changing stored selections.
+const searchInput = $('#song-search'), searchClear = $('#search-clear');
+const searchText = value => value.toLocaleLowerCase('ru-RU').replace(/ё/g, 'е').normalize('NFKC');
+function applySearch() {
+  if (!initialized) return;
+  const terms = searchText(searchInput.value).trim().split(/\s+/).filter(Boolean);
+  const program = snapshot.program, songs = catalog.lineups[program].songs;
+  const matches = [], remaining = [];
+  for (const song of songs) {
+    const row = rows.get(keyFor(program, song.id));
+    const matched = terms.length > 0 && terms.every(term => searchText(`${song.title} ${song.artist || ''}`).includes(term));
+    row.classList.toggle('rep-search-match', matched);
+    (matched ? matches : remaining).push(row);
+  }
+  const list = $(`#song-list-${program}`), ordered = [...matches, ...remaining];
+  if (ordered.some((row, index) => list.children[index] !== row)) list.append(...ordered);
+  searchClear.hidden = !searchInput.value;
+  $('#search-status').textContent = terms.length ? (matches.length ? `Найдено: ${matches.length} · Остальные песни ниже` : 'Совпадений нет · Весь репертуар ниже') : '';
+}
+searchInput.addEventListener('input', applySearch);
+function clearSearch() { searchInput.value = ''; applySearch(); searchInput.focus({preventScroll:true}); }
+searchClear.addEventListener('click', clearSearch);
+searchInput.addEventListener('keydown', event => { if (event.key === 'Escape') { event.preventDefault(); clearSearch(); } });
+
 function renderCatalog() {
   if (!initialized) return;
   for (const program of PROGRAMS) {
@@ -70,6 +94,7 @@ function renderCatalog() {
       for (const input of row.querySelectorAll('input[type=radio]')) input.checked = input.value === mark;
     }
   }
+  applySearch();
   const program = snapshot.program, total = catalog.lineups[program].songs.length;
   const counts = snapshot.counts.byProgram[program];
   $('#companion-program').textContent = catalog.lineups[program].label;

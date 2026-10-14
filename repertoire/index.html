@@ -28,25 +28,26 @@
   <meta name="twitter:image:alt" content="Пять музыкантов кавер-группы Богема и логотип группы">
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../assets/fonts/fonts.css">
-  <link rel="stylesheet" href="../styles.css?v=20261013-framer">
+  <link rel="stylesheet" href="../styles.css?v=20261014-nav">
   <link rel="stylesheet" href="../forms.css">
   <link rel="stylesheet" href="../motion.css">
-  <link rel="stylesheet" href="repertoire.css?v=20261013-framer">
-  <script type="module" src="repertoire.js?v=20261013-framer1"></script>
+  <link rel="stylesheet" href="repertoire.css?v=20261014-search1">
+  <script type="module" src="repertoire.js?v=20261014-search1"></script>
   <script src="../motion.js?v=20261011-nav3" defer></script>
-  <script src="../forms.js" defer></script>
+  <script src="../forms.js?v=20261014-form1" defer></script>
 </head>
 <body class="repertoire-page">
   <a class="rep-skip" href="#songs">К списку песен</a>
   <header class="site-header rep-header repertoire-header">
     <div class="wrap rep-header-inner">
-      <a class="rep-wordmark" href="../index.html" aria-label="Богема, главная">БОГЕМА</a>
-      <nav class="rep-navigation" aria-label="Навигация"><a class="rep-back" href="../index.html">На главную</a><a class="rep-header-cta" href="#wishes-form">Отправить пожелания</a></nav>
+      <a class="rep-wordmark" href="../index.html" aria-label="Богема, главная"><img src="../assets/logo.svg" width="5776" height="1824" alt="Богема"></a>
+      <nav class="rep-navigation" aria-label="Навигация"><a class="rep-header-cta" href="#wishes-form">Отправить пожелания</a></nav>
     </div>
     <div class="scroll-progress" aria-hidden="true"></div>
   </header>
   <main>
     <section class="wrap rep-intro" aria-labelledby="page-title">
+      <a class="rep-return" href="../#repertoire"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m10 5-7 7 7 7M3 12h18"/></svg><span>Вернуться на сайт</span></a>
       <p class="rep-eyebrow">Богема / Музыкальная коллекция</p>
       <h1 id="page-title">Репертуар</h1>
       <p class="rep-intro-lead">Ваши любимые песни&nbsp;начинают наш разговор<br> Выберите программу и отметьте настроение будущего вечера</p>
@@ -83,6 +84,11 @@
       <div class="rep-main-column">
     <section class="rep-catalog" id="songs" aria-labelledby="list-title">
       <div class="rep-list-heading"><h2 id="list-title">Песни группы</h2><span>Ваш выбор</span></div>
+      <div class="rep-search">
+        <label for="song-search">Найти песню</label>
+        <div class="rep-search-field"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><input id="song-search" type="search" placeholder="Песня или исполнитель" autocomplete="off" maxlength="100" aria-describedby="search-status" disabled><button id="search-clear" type="button" aria-label="Очистить поиск" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
+        <p id="search-status" role="status" aria-live="polite" aria-atomic="true"></p>
+      </div>
       <div class="rep-result-line rep-sr-only"><p id="results-status" role="status" aria-live="polite"></p></div>
       <p id="catalog-loading" class="rep-small">Подключаем отметки, полный список доступен ниже</p>
       <p id="catalog-error" class="rep-notice" role="alert" hidden>Не удалось подключить отметки. Полный список ниже остаётся доступным <button type="button" class="rep-text-button" id="retry-catalog">Повторить</button></p>

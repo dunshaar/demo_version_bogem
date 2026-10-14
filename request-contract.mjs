@@ -25,7 +25,7 @@ export function validateContact(values,dateValidity=true) {
   const data={name:String(values.name??'').trim(),phone:normalizePhone(values.phone),date:String(values.date??''),preferredChannel:String(values.preferredChannel??''),consent:values.consent===true},errors=[];
   if(!data.name)errors.push(['name','Введите имя']);
   else if(data.name.length>LIMITS.name)errors.push(['name','Имя: не больше 80 символов']);
-  if(String(values.phone??'').length>LIMITS.rawPhone||!data.phone)errors.push(['phone','Введите номер полностью: +7 и 10 цифр']);
+  if(String(values.phone??'').length>LIMITS.rawPhone||!data.phone)errors.push(['phone','Номер телефона введён неправильно']);
   if(!dateValidity||!validDate(data.date))errors.push(['date','Проверьте дату или оставьте поле пустым']);
   if(!CHANNELS.has(data.preferredChannel))errors.push(['preferredChannel','Выберите способ связи из списка']);
   if(!data.consent)errors.push(['consent','Подтвердите согласие на обработку персональных данных']);
