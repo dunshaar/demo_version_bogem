@@ -1,9 +1,8 @@
 // Two bounded, continuous song ribbons. Only visible neighbours are rendered;
 // the queue traverses the entire shared repertoire without a second song list.
 const section = document.querySelector('.repertoire-ribbons');
-const pause = section?.querySelector('.ribbons-pause');
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-let songs = [], rows = [], frame = 0, last = null, visible = false, paused = false, hovered = false;
+let songs = [], rows = [], frame = 0, last = null, visible = false, hovered = false;
 const at = index => songs[(index % songs.length + songs.length) % songs.length];
 function songNode(index) {
   const song = at(index), node = document.createElement('span');
@@ -29,7 +28,7 @@ function build() {
   });
   last = null;
 }
-function active() { return visible && !paused && !hovered && !document.hidden && !reduced.matches && rows.length; }
+function active() { return visible && !hovered && !document.hidden && !reduced.matches && rows.length; }
 function tick(now) {
   frame = 0;
   if (!active()) { last = null; return; }
@@ -70,16 +69,7 @@ if (section) {
     songs = catalog.lineups.all.songs;
     if (!songs.length) throw new Error('empty');
     await document.fonts.ready;
-    build(); pause.hidden = reduced.matches;
-    pause.addEventListener('click', () => {
-      paused = !paused;
-      pause.setAttribute('aria-pressed', String(paused));
-      pause.setAttribute('aria-label', paused ? 'Продолжить бегущие строки' : 'Приостановить бегущие строки');
-      pause.querySelector('span').textContent = paused ? 'Продолжить' : 'Пауза';
-      pause.querySelector('.ribbons-pause-icon').toggleAttribute('hidden', paused);
-      pause.querySelector('.ribbons-play-icon').toggleAttribute('hidden', !paused);
-      sync();
-    });
+    build();
     for (const ribbon of section.querySelectorAll('.repertoire-ribbon')) {
       ribbon.addEventListener('pointerenter', event => { if (event.pointerType !== 'touch') { hovered = true; sync(); } });
       ribbon.addEventListener('pointerleave', () => { hovered = false; sync(); });
@@ -93,7 +83,7 @@ if (section) {
     if ('ResizeObserver' in window) new ResizeObserver(resize).observe(section);
     else addEventListener('resize', resize, {passive:true});
     document.addEventListener('visibilitychange', sync);
-    reduced.addEventListener('change', () => { pause.hidden = reduced.matches; sync(); });
+    reduced.addEventListener('change', sync);
     addEventListener('pagehide', () => { visible = false; sync(); });
     addEventListener('pageshow', () => {
       const rect = section.getBoundingClientRect(); visible = rect.bottom > 0 && rect.top < innerHeight; sync();
