@@ -84,7 +84,7 @@ function navigateToSection(target, hash) {
   };
   navigationFrame = requestAnimationFrame(step);
 }
-document.querySelectorAll('#menu-dialog nav a, .site-nav a, .header-request, .footer-up').forEach(link => link.addEventListener('click', event => {
+document.querySelectorAll('#menu-dialog nav a, .site-nav a, .desktop-hero-nav a, .header-request, .footer-up').forEach(link => link.addEventListener('click', event => {
   if (!link.hash) return;
   const target = document.querySelector(link.hash);
   if (!target) return;
