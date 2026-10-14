@@ -31,6 +31,8 @@
   <script src="motion.js?v=20261011-nav3" defer></script><script src="player.js" defer></script><script src="app.js?v=20261014-editorial3" type="module"></script><script src="forms.js?v=20261014-unified1" defer></script>
 <link rel="stylesheet" href="design-forms.css?v=20261013-framer1">
 <link rel="stylesheet" href="hero-desktop.css?v=20261014-typebalance1">
+<link rel="stylesheet" href="promo-video.css?v=20261014-inline1">
+<script src="promo-video.js?v=20261014-inline1" defer></script>
 </head>
 <body class="home-page">
 <a class="skip" href="#main">К содержанию</a>
@@ -46,10 +48,22 @@
     <div class="hero-wordmark"><h1 id="hero-title">БО<span class="hero-kern-g">Г</span>ЕМА</h1></div>
     <div class="hero-composition"><p class="hero-tagline">Стильный саундтрек к вашему празднику</p><p class="hero-positioning"><strong>COVER BAND</strong><span>для ярких событий<br>которые не должны<br>проходить фоном</span></p><picture class="hero-image"><source media="(min-width:1024px)" srcset="assets/hero-editorial-20261014.jpg" width="1643" height="957"><img src="assets/hero.webp" width="2000" height="1165" alt="Пять музыкантов кавер-группы Богема" fetchpriority="high"></picture></div>
   </section>
-  <section id="promo" class="promo-section wrap" aria-labelledby="promo-title">
-    <h2 class="promo-label" id="promo-title">Богема / вживую</h2>
-    <button class="promo-cover" type="button" data-video="promo" aria-label="Смотреть промо группы Богема, 3 минуты 26 секунд"><img src="assets/poster-promo-20261014.jpg" width="800" height="450" loading="lazy" alt="Кавер-группа Богема на сцене"><span class="media-play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 11 7-11 7Z" fill="currentColor"/></svg></span><span class="video-duration">03:26</span></button>
-
+  <section id="promo" class="promo-section" aria-label="Промо кавер-группы Богема">
+    <div class="promo-inline" data-promo-player role="group" aria-label="Видеоплеер промо" tabindex="0">
+      <video data-src="assets/promo.mp4" poster="assets/poster-promo-20261014.jpg" width="1280" height="720" muted playsinline preload="none" aria-label="Проморолик кавер-группы Богема"></video>
+      <img class="promo-poster" alt="" aria-hidden="true" hidden>
+      <div class="promo-controls" hidden>
+        <input class="promo-seek" type="range" min="0" max="1" value="0" step="0.1" disabled aria-label="Перемотка промо">
+        <div class="promo-control-row">
+          <button class="promo-play" type="button" aria-label="Воспроизвести промо"><svg class="promo-icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 4 14 8-14 8Z" fill="currentColor"/></svg><svg class="promo-icon-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5v14M17 5v14" stroke="currentColor" stroke-width="4"/></svg><span>Смотреть</span></button>
+          <span class="promo-time" aria-hidden="true"></span>
+          <button class="promo-sound" type="button" aria-label="Включить звук" aria-pressed="false"><svg class="promo-icon-muted" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m11 4-6 5H2v6h3l6 5V4Zm5 5 6 6m0-6-6 6" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><svg class="promo-icon-sound" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m11 4-6 5H2v6h3l6 5V4ZM15 8a6 6 0 0 1 0 8m3-12a11 11 0 0 1 0 16" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Звук выкл.</span></button>
+          <button class="promo-fullscreen" type="button" aria-label="На весь экран"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 3H3v6m12-6h6v6M3 15v6h6m12-6v6h-6" stroke="currentColor" stroke-width="1.8"/></svg></button>
+        </div>
+      </div>
+      <p class="promo-status" role="status" aria-live="polite"></p>
+      <noscript><a href="assets/promo.mp4">Смотреть видео</a></noscript>
+    </div>
   </section>
   <section id="formats" class="formats-section section wrap" aria-labelledby="formats-title">
     <div class="section-heading"><span class="eyebrow">02 / Выберите своё звучание</span><h2 id="formats-title">Один характер <span>Пять составов</span></h2></div>
