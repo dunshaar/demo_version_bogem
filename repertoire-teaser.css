@@ -7,6 +7,9 @@
   overflow: hidden;
   padding-block: clamp(64px, 6.7vw, 104px) clamp(64px, 6.7vw, 104px);
 }
+@media (min-width: 1000px) {
+  #repertoire.repertoire-ribbons {padding-top: calc(clamp(64px, 6.7vw, 104px) - 40px)}
+}
 #repertoire .teaser-heading {position: relative; padding-bottom: clamp(88px, 8.3vw, 128px)}
 #repertoire h2 {font-size: var(--type-section-title); line-height: var(--leading-title); letter-spacing: var(--tracking-title); font-weight: var(--weight-regular)}
 #repertoire .teaser-subtitle {margin-top: 22px; font-size: var(--type-section-copy); font-weight: var(--weight-regular); line-height: var(--leading-copy); letter-spacing: var(--tracking-copy); color: #56564e; max-width: 660px; text-wrap: pretty}
@@ -34,7 +37,7 @@
 #repertoire .teaser-pause svg {width: 16px; height: 16px}
 #repertoire .teaser-icon-play, #repertoire .teaser-pause[aria-pressed=true] .teaser-icon-pause {display: none}
 #repertoire .teaser-pause[aria-pressed=true] .teaser-icon-play {display: block}
-#repertoire .teaser-link {display: inline-block; margin-left: auto; padding-block: 0 20px; min-height: 44px; font-size: clamp(16px, 1.35vw, 20px); font-weight: var(--weight-regular); line-height: 1.25; letter-spacing: var(--tracking-link); text-decoration-line: underline; text-decoration-thickness: 1px; text-underline-offset: 7px; transition: color .18s}
+#repertoire .teaser-link {color: var(--accent-brass-deep); display: inline-block; margin-left: auto; padding-block: 0 20px; min-height: 44px; font-size: clamp(16px, 1.35vw, 20px); font-weight: var(--weight-regular); line-height: 1.25; letter-spacing: var(--tracking-link); text-decoration-line: underline; text-decoration-thickness: 1px; text-underline-offset: 7px; transition: color .18s}
 #repertoire .teaser-link:focus-visible {text-decoration-thickness: 2px}
 #repertoire .teaser-link:focus-visible, #repertoire .teaser-pause:focus-visible {outline: 2px solid #746246; outline-offset: 5px}
 @media (hover: hover) {#repertoire .teaser-link:hover, #repertoire .teaser-pause:hover {color: #7a603f} #repertoire .teaser-link:hover {text-decoration-thickness: 2px}}
