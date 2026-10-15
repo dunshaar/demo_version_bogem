@@ -1,0 +1,74 @@
+/* One quiet closing section. Scoped to the landing; shared form logic stays intact. */
+.home-page #contact.final-contact {
+  background: var(--surface-dark);
+  color: var(--ink);
+  padding-block: clamp(48px, 5vw, 72px) clamp(56px, 6vw, 88px);
+}
+.final-contact-inner {display: grid; gap: clamp(48px, 5vw, 72px)}
+.final-opening {min-width: 0}
+.final-events {font-size: clamp(13px, 1.1vw, 16px); line-height: 1.7; letter-spacing: .035em; color: #b8b5ab; text-transform: uppercase; text-wrap: pretty}
+.final-overview, .final-booking {display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr); gap: clamp(40px, 6vw, 88px); align-items: start}
+.home-page #contact.final-contact h2 {font-family: var(--font-sans); font-size: clamp(36px, 4.45vw, 68px); font-weight: var(--weight-regular); line-height: 1.08; letter-spacing: -.045em}
+.final-terms {display: grid; gap: 24px; min-width: 0; margin: 0; scroll-margin-top: 100px}
+.final-terms dt {font-size: 18px; font-weight: var(--weight-medium); line-height: 1.4; letter-spacing: var(--tracking-copy)}
+.final-terms dd {margin: 8px 0 0; color: #b8b5ab; font-size: 15px; line-height: 1.65; letter-spacing: -.01em; text-wrap: pretty}
+.final-terms dd br {display: block; content: ''; margin-top: 6px}
+.final-booking {padding-top: clamp(40px, 4.5vw, 64px); border-top: 1px solid var(--line)}
+.final-contacts, .final-form {min-width: 0}
+.final-person {display: flex; align-items: center; gap: 24px; margin-bottom: 32px}
+.final-person img {width: 108px; height: 108px; flex: none; border-radius: 50%; object-fit: cover; object-position: 48% 28%}
+.final-person-name {font-size: 28px; line-height: 1.15; letter-spacing: var(--tracking-title)}
+.final-person-role {margin-top: 8px; font-size: 14px; line-height: 1.5; color: #b8b5ab}
+.final-phone {display: inline-block; font-size: clamp(26px, 2.6vw, 38px); line-height: 1.3; letter-spacing: -.035em; white-space: nowrap}
+.final-contact-links {display: flex; align-items: flex-start; flex-direction: column; gap: 12px; margin-top: 24px; font-size: 16px; line-height: 1.6}
+.final-contact-links a {text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 6px; text-decoration-color: #f0ece247}
+.final-contact-links a span {margin-left: 10px; color: #b8b5ab}
+.final-contacts a {transition: color .18s}
+.final-contacts a:hover {color: var(--accent-brass)}
+.final-form {scroll-margin-top: 100px}
+#contact #request-form {scroll-margin-top: 100px}
+#contact.final-contact .bf-heading {position: static; width: auto; height: auto; clip-path: none; overflow: visible; margin: 0 0 28px; font-size: 26px; font-weight: var(--weight-regular); line-height: 1.3; letter-spacing: var(--tracking-title)}
+#contact.final-contact .bf-fields {grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 24px}
+#contact.final-contact .bf-field label {font-size: 13px; letter-spacing: 0; font-weight: var(--weight-regular); text-transform: none; color: var(--ink); gap: 4px 10px}
+#contact.final-contact .bf-optional {font-size: 11px; color: #b8b5ab}
+#contact.final-contact .bf-field input, #contact.final-contact .bf-field select {border-radius: 0; border-bottom-color: #f0ece247}
+#contact.final-contact .bf-field input:focus-visible, #contact.final-contact .bf-field select:focus-visible {border-color: var(--accent-brass); box-shadow: 0 1px 0 var(--accent-brass)}
+#contact.final-contact .bf-field [aria-invalid=true] {border-color: #ecaaa0}
+#contact.final-contact .bf-consent {margin-top: 28px}
+#contact.final-contact .bf-primary, #contact.final-contact .bf-secondary {border-radius: 0; background: transparent; border: 1px solid var(--accent-brass); color: var(--ink); box-shadow: none; font-size: 15px; font-weight: var(--weight-regular)}
+#contact.final-contact .bf-primary {width: 100%; min-height: 56px; margin-top: 28px}
+#contact.final-contact .bf-primary:not(:disabled):hover, #contact.final-contact .bf-secondary:hover {background: var(--accent-brass); border-color: var(--accent-brass); color: var(--surface-dark)}
+#contact.final-contact .bf-consent input {accent-color: var(--accent-brass)}
+.final-footer {background: var(--surface-dark); color: #a8a39a; font-size: 12px; line-height: 1.5}
+.final-footer-inner {display: flex; align-items: center; gap: 32px; padding-block: 24px; position: relative}
+.final-footer-inner::before {content: ''; position: absolute; top: 0; left: var(--pad); right: var(--pad); border-top: 1px solid var(--line)}
+.final-footer-inner>a:first-child {margin-right: auto; color: var(--ink); letter-spacing: .025em}
+.final-footer-inner>a:first-child span {color: #a8a39a}
+.final-footer .footer-up {min-height: 44px; display: inline-flex; align-items: center; font-size: 13px; padding: 0}
+.final-footer a:hover {color: var(--accent-brass)}
+@media (max-width: 1199px) and (min-width: 810px) {
+  #contact.final-contact .bf-fields {grid-template-columns: minmax(0, 1fr); gap: 22px}
+  .final-overview, .final-booking {grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px}
+}
+@media (max-width: 809px) {
+  .final-contact-inner {gap: 36px}
+  .final-overview, .final-booking {grid-template-columns: minmax(0, 1fr); gap: 36px}
+  .home-page #contact.final-contact h2 {font-size: clamp(28px, 7.5vw, 52px)}
+  .final-terms {gap: 20px}
+  .final-terms dt {font-size: 17px}
+  .final-terms dd {font-size: 15px}
+  .final-booking {padding-top: 36px; gap: 40px}
+  .final-person {gap: 20px; margin-bottom: 24px}
+  .final-person img {width: 88px; height: 88px}
+  .final-person-name {font-size: 26px}
+  .final-phone {font-size: clamp(25px, 6.7vw, 34px)}
+  .final-contact-links {margin-top: 20px; font-size: 15px}
+  .final-form {border-top: 1px solid var(--line); padding-top: 36px}
+  .final-footer-inner {flex-wrap: wrap; gap: 8px 20px; padding-block: 20px}
+}
+@media (max-width: 540px) {
+  #contact.final-contact .bf-fields {grid-template-columns: minmax(0, 1fr); gap: 24px}
+  .final-footer-inner>a:first-child {flex-basis: 100%; margin: 0 0 8px}
+  .final-footer .footer-up {margin-left: auto}
+}
+@media (prefers-reduced-motion: reduce) {.final-contacts a {transition: none}}
