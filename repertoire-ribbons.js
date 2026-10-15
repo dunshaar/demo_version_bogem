@@ -46,15 +46,52 @@ if (section) {
     duplicate.setAttribute('aria-hidden', 'true');
     duplicate.classList.add('repertoire-ribbon-duplicate');
     track.append(duplicate);
-    return {viewport, track, sequence, animation: null, width: 0, duration: 0, phase: 0, hovered: false};
+    return {viewport, track, sequence, animation: null, width: 0, duration: 0, phase: 0, hovered: false, rate: 1, targetRate: 1, rateFrame: 0};
   });
+
+  function cancelRateTransition(row) {
+    cancelAnimationFrame(row.rateFrame);
+    row.rateFrame = 0;
+  }
+
+  function settleRate(row, target) {
+    cancelRateTransition(row);
+    row.targetRate = target;
+    row.rate = target;
+    row.animation?.updatePlaybackRate(target);
+  }
+
+  function transitionRate(row, target) {
+    if (row.targetRate === target && (row.rateFrame || row.rate === target)) return;
+    cancelRateTransition(row);
+    row.targetRate = target;
+    if (!row.animation || row.rate === target) { settleRate(row, target); return; }
+    const from = row.rate;
+    const started = performance.now();
+    const step = now => {
+      const progress = Math.min(1, (now - started) / 420);
+      const eased = progress * progress * (3 - 2 * progress);
+      row.rate = from + (target - from) * eased;
+      // Change playback speed on the same animation, preserving its current time.
+      row.animation.updatePlaybackRate(row.rate);
+      row.rateFrame = progress < 1 ? requestAnimationFrame(step) : 0;
+    };
+    row.rateFrame = requestAnimationFrame(step);
+  }
 
   function sync() {
     const active = visible && !document.hidden && !reduced.matches && !paused;
     for (const row of rows) {
       if (!row.animation) continue;
-      if (active && !row.hovered && !row.viewport.contains(document.activeElement)) row.animation.play();
-      else row.animation.pause();
+      const targetRate = row.hovered ? .4 : 1;
+      if (active && !row.viewport.contains(document.activeElement)) {
+        if (row.animation.playState !== 'running') row.animation.play();
+        transitionRate(row, targetRate);
+      } else {
+        // Hover never overrides manual, keyboard, offscreen or background pause.
+        row.animation.pause();
+        settleRate(row, targetRate);
+      }
     }
   }
 
@@ -64,9 +101,13 @@ if (section) {
     for (const row of rows) {
       const width = row.sequence.getBoundingClientRect().width;
       const left = row.viewport.dataset.direction === 'left';
-      const speed = (innerWidth <= 809 ? 34 : 44) * (left ? .9 : .85);
+      // Relative to the published v5 speeds, not the original marquee.
+      const publishedSpeed = innerWidth <= 809 ? (left ? 30.6 : 28.9) : (left ? 39.6 : 37.4);
+      const speed = publishedSpeed * (left ? 1.25 : 1.15);
       if (width === row.width && row.speed === speed && Boolean(row.animation) === !reduced.matches) continue;
       if (row.animation) {
+        cancelRateTransition(row);
+        row.targetRate = null;
         row.phase = ((row.animation.currentTime || 0) % row.duration) / row.duration;
         row.animation.cancel();
         row.animation = null;
@@ -81,6 +122,7 @@ if (section) {
         {transform: `translate3d(${start}px,0,0)`},
         {transform: `translate3d(${end}px,0,0)`}
       ], {duration: row.duration, iterations: Infinity, easing: 'linear'});
+      row.animation.playbackRate = row.rate;
       row.animation.currentTime = row.phase * row.duration;
       row.animation.pause();
     }
