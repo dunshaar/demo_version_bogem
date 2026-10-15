@@ -46,7 +46,17 @@
 #formats .lineups-selector:has(input[value="05"]:checked) [data-lineup-description="05"] {display: block}
 #formats .lineups-selector:has(input[value="06"]:checked) [data-lineup-description="06"] {display: block}
 #formats .lineups-photo {width: 100%; margin: 0}
-#formats .lineups-photo img {display: block; width: 100%; height: auto}
+/* Feather only the outer edge; the original JPEG and opaque centre stay intact. */
+#formats .lineups-photo img {
+  --photo-feather: clamp(12px, 2.2vw, 32px);
+  display: block;
+  width: 100%;
+  height: auto;
+  mask-image:
+    linear-gradient(90deg, transparent 1px, #000 var(--photo-feather), #000 calc(100% - var(--photo-feather)), transparent calc(100% - 1px)),
+    linear-gradient(transparent 1px, #000 var(--photo-feather), #000 calc(100% - var(--photo-feather)), transparent calc(100% - 1px));
+  mask-composite: intersect;
+}
 @media (max-width: 809px) {
   #formats .lineups-editorial {grid-template-columns: minmax(0, 1fr); gap: 36px}
   #formats h2 {font-size: clamp(28px, 7.8vw, 54px)}
