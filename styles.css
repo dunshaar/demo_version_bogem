@@ -2,6 +2,9 @@
 /* Shared neutral type system, using the approved Hero interface family.
    Hero sizes, artwork and the existing mobile tagline remain independent. */
 :root{
+  --surface-dark:#151613;
+  --surface-light:#eee8de;
+  --accent-brass:#c89a5c;
   --font-sans:Manrope,Arial,Helvetica,sans-serif;
   --weight-regular:400;
   --weight-medium:500;

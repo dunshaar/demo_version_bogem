@@ -101,9 +101,13 @@ if (section) {
     for (const row of rows) {
       const width = row.sequence.getBoundingClientRect().width;
       const left = row.viewport.dataset.direction === 'left';
-      // Relative to the published v5 speeds, not the original marquee.
-      const publishedSpeed = innerWidth <= 809 ? (left ? 30.6 : 28.9) : (left ? 39.6 : 37.4);
-      const speed = publishedSpeed * (left ? 1.25 : 1.15);
+      // Published fc30699: 49.5 / 43.01 px/s (mobile: 38.25 / 33.235).
+      // Upper +10%; lower at least +15% and 5% faster than upper, as required.
+      // +15% alone would still leave the lower row slower than the upper row.
+      const publishedUpper = innerWidth <= 809 ? 38.25 : 49.5;
+      const publishedLower = innerWidth <= 809 ? 33.235 : 43.01;
+      const upperSpeed = publishedUpper * 1.1;
+      const speed = left ? upperSpeed : Math.max(publishedLower * 1.15, upperSpeed * 1.05);
       if (width === row.width && row.speed === speed && Boolean(row.animation) === !reduced.matches) continue;
       if (row.animation) {
         cancelRateTransition(row);

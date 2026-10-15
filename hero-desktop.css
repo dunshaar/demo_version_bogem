@@ -1,10 +1,11 @@
 /* Desktop art direction only. The existing mobile hero remains unchanged. */
 @font-face{font-family:"Manrope Hero";src:url("assets/fonts/manrope-hero-variable.ttf") format("truetype");font-style:normal;font-weight:200 800;font-display:swap}
 .hero-positioning,.desktop-hero-nav{display:none}
+.home-page .hero{background:var(--surface-dark)}
 @media(min-width:1024px){
   .home-page .site-header{
     position:static;
-    background:#151613;
+    background:var(--surface-dark);
     color:#f2eee7;
     min-height:82px;
     padding:19px max(clamp(32px,3.5vw,64px),calc((100vw - 1536px)/2));
@@ -21,7 +22,7 @@
     --hero-content:min(calc(100vw - 2 * var(--hero-gutter)),1536px);
     max-width:none;
     padding:12px max(var(--hero-gutter),calc((100vw - 1536px)/2)) 48px;
-    background:linear-gradient(#151613 calc(100% - 48px),#101110);
+    background:var(--surface-dark);
     color:#f2eee7;
     overflow:hidden;
   }
@@ -32,7 +33,8 @@
   .home-page .hero-tagline{display:none}
   .home-page .hero-positioning{position:relative;z-index:2;display:flex;flex-direction:column;align-items:flex-start;align-self:end;gap:16px;grid-column:1;font-family:Manrope,Arial,sans-serif;font-style:normal;letter-spacing:-.03em;padding:0 0 clamp(16px,1.5vw,24px)}
   .home-page .hero-positioning strong{color:#f2eee7;font-size:clamp(24px,2.5vw,38px);font-weight:700;letter-spacing:.06em;line-height:1.1}
-  .home-page .hero-positioning span{color:#f2eee7;opacity:.8;font-size:clamp(20px,1.85vw,27px);font-weight:400;letter-spacing:-.02em;line-height:1.14}
+  .home-page .hero-positioning span{color:rgb(242 238 231 / .8);opacity:1;font-size:clamp(20px,1.85vw,27px);font-weight:400;letter-spacing:-.02em;line-height:1.14}
+  .home-page .hero-positioning-accent{font:inherit;color:var(--accent-brass)}
   .home-page .hero-image{--photo-base-height:clamp(340px,calc(100svh - 154px - var(--hero-content) * .187),660px);position:relative;grid-column:2;order:initial;aspect-ratio:auto;width:100%;height:var(--photo-base-height);background:transparent;overflow:visible;display:block}
   .home-page .hero-image img{position:absolute;right:0;bottom:-8px;width:auto;height:calc(min(var(--photo-base-height),(var(--hero-content) - 28px) * .75 * 957 / 1643) * 1.23);max-width:none;max-height:none;object-fit:contain;mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent),linear-gradient(transparent,#000 16%,#000 91%,transparent);mask-composite:intersect}
 }

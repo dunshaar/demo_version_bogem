@@ -1,6 +1,6 @@
 /* Repertoire teaser plus the colour transition into the existing lineups. */
 #repertoire.repertoire-ribbons {
-  background: #eee8de;
+  background: var(--surface-light);
   color: #151613;
   color-scheme: light;
   font-family: var(--font-sans);
@@ -29,12 +29,12 @@
 #repertoire .repertoire-ribbon-duplicate {display: none}
 #repertoire.is-animated .repertoire-ribbon-duplicate {display: flex}
 #repertoire .teaser-footer {padding-top: clamp(72px, 7.8vw, 120px)}
-#repertoire .teaser-link-row {display: flex; justify-content: space-between; align-items: center; gap: 24px; border-top: 1px solid #15161330; padding-top: clamp(24px, 2.5vw, 38px)}
+#repertoire .teaser-link-row {display: flex; justify-content: space-between; align-items: center; gap: 24px; border-top: 1px solid #15161330; padding-top: clamp(12px, 1.2vw, 18px)}
 #repertoire .teaser-pause {display: inline-flex; align-items: center; justify-content: center; flex: none; width: 44px; min-height: 44px; padding: 12px; border: 0; border-radius: 0; background: transparent; color: #626055; transition: color .18s}
 #repertoire .teaser-pause svg {width: 16px; height: 16px}
 #repertoire .teaser-icon-play, #repertoire .teaser-pause[aria-pressed=true] .teaser-icon-pause {display: none}
 #repertoire .teaser-pause[aria-pressed=true] .teaser-icon-play {display: block}
-#repertoire .teaser-link {display: inline-block; margin-left: auto; padding-block: 8px 12px; min-height: 44px; font-size: var(--type-repertoire-link); font-weight: var(--weight-regular); line-height: 1.25; letter-spacing: var(--tracking-link); text-decoration-line: underline; text-decoration-thickness: 1px; text-underline-offset: 10px; transition: color .18s}
+#repertoire .teaser-link {display: inline-block; margin-left: auto; padding-block: 8px 12px; min-height: 44px; font-size: clamp(16px, 1.35vw, 20px); font-weight: var(--weight-regular); line-height: 1.25; letter-spacing: var(--tracking-link); text-decoration-line: underline; text-decoration-thickness: 1px; text-underline-offset: 7px; transition: color .18s}
 #repertoire .teaser-link:focus-visible {text-decoration-thickness: 2px}
 #repertoire .teaser-link:focus-visible, #repertoire .teaser-pause:focus-visible {outline: 2px solid #746246; outline-offset: 5px}
 @media (hover: hover) {#repertoire .teaser-link:hover, #repertoire .teaser-pause:hover {color: #7a603f} #repertoire .teaser-link:hover {text-decoration-thickness: 2px}}
@@ -53,7 +53,7 @@
 /* Full-width background, retaining the original 1440px content grid. */
 #formats {
   --line: #15161330;
-  background: #eee8de;
+  background: var(--surface-light);
   color: #151613;
   color-scheme: light;
   max-width: none;
