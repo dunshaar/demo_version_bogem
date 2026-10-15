@@ -98,3 +98,20 @@
  .repertoire-ribbon-song{min-width:220px;padding:20px 32px}
  .repertoire-ribbon-song strong{font-size:20px}.repertoire-ribbon-song>span{font-size:10px}
 }
+
+/* Final visual system, scoped to the landing page; the song catalogue is independent. */
+.home-page {--bg:var(--surface-dark)}
+.home-page .site-header {background:var(--surface-dark)}
+.home-page :is(#live,#details,#contact),.home-page .site-footer {background:var(--surface-dark)}
+.home-page :is(#live,#details,#contact) {padding-block:clamp(64px,6.7vw,104px)}
+.home-page :is(#live,#details,#contact) h2 {
+  font-family:var(--font-sans);
+  font-size:var(--type-section-title);
+  font-weight:var(--weight-regular);
+  line-height:var(--leading-title);
+  letter-spacing:var(--tracking-title);
+}
+.home-page .contact-copy .serif-accent {font-size:var(--type-section-copy);line-height:var(--leading-copy);letter-spacing:var(--tracking-copy);color:var(--ink)}
+.home-page :is(.details-lead,.live-heading>p,.contact-copy>p:not(.serif-accent)) {font-size:clamp(16px,1.2vw,18px);line-height:1.55;letter-spacing:var(--tracking-copy)}
+.home-page .performance-details h3 {font-size:18px;font-weight:var(--weight-medium)}
+.home-page .performance-details p {font-size:15px;line-height:1.6}

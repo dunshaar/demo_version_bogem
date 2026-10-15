@@ -83,7 +83,7 @@ if (section) {
     const active = visible && !document.hidden && !reduced.matches && !paused;
     for (const row of rows) {
       if (!row.animation) continue;
-      const targetRate = row.hovered ? .4 : 1;
+      const targetRate = row.hovered ? .65 : 1;
       if (active && !row.viewport.contains(document.activeElement)) {
         if (row.animation.playState !== 'running') row.animation.play();
         transitionRate(row, targetRate);
@@ -101,12 +101,12 @@ if (section) {
     for (const row of rows) {
       const width = row.sequence.getBoundingClientRect().width;
       const left = row.viewport.dataset.direction === 'left';
-      // v7 starts from published b554f39: upper +15%; lower keeps its pace.
-      // This makes the energetic upper row about 9.5% faster than the lower.
+      // Final refinement starts from published v7 (1a56f21): both rows +10%.
+      // Keep the energetic upper row about 9.5% faster than the lower.
       const compact = innerWidth <= 809;
-      const publishedUpper = compact ? 42.075 : 54.45;
+      const publishedUpper = compact ? 48.38625 : 62.6175;
       const publishedLower = compact ? 44.17875 : 57.1725;
-      const speed = left ? publishedUpper * 1.15 : publishedLower;
+      const speed = (left ? publishedUpper : publishedLower) * 1.1;
       if (width === row.width && row.speed === speed && Boolean(row.animation) === !reduced.matches) continue;
       if (row.animation) {
         cancelRateTransition(row);
