@@ -67,6 +67,22 @@
   #formats .lineups-photo {
     transform-origin: center bottom;
     transform: translateY(calc(var(--lineups-top-trim) - var(--lineups-photo-rise))) scale(1.06);
+    /* Preserve the approved frame and grid height while enlarging the photo
+       within it. The upper background is cropped; the lower edge cannot move. */
+    position: relative;
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent, #000 8px, #000 calc(100% - 8px), transparent),
+      linear-gradient(transparent, #000 6px, #000 94%, transparent);
+    mask-composite: intersect;
+  }
+  #formats .lineups-photo img {
+    position: absolute;
+    max-width: none;
+    width: 125%;
+    left: -16%;
+    top: -10%;
+    mask-image: none;
   }
 }
 @media (max-width: 999px) {
