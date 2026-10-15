@@ -54,6 +54,12 @@
   height: auto;
   mask-image: linear-gradient(#000 94%, transparent);
 }
+/* Lift the entire photograph; reclaim the existing bottom space in its section.
+   At narrower desktop sizes 80px keeps clear of the preceding repertoire controls. */
+@media (min-width: 1000px) {
+  #formats {--lineups-photo-rise: clamp(80px, 7vw, 100px); padding-bottom: 0}
+  #formats .lineups-photo {transform: translateY(calc(-1 * var(--lineups-photo-rise)))}
+}
 @media (max-width: 999px) {
   #formats .lineups-editorial {grid-template-columns: minmax(0, 1fr); gap: 36px}
   #formats h2 {font-size: clamp(28px, 7.8vw, 54px)}
