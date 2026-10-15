@@ -101,13 +101,12 @@ if (section) {
     for (const row of rows) {
       const width = row.sequence.getBoundingClientRect().width;
       const left = row.viewport.dataset.direction === 'left';
-      // Published fc30699: 49.5 / 43.01 px/s (mobile: 38.25 / 33.235).
-      // Upper +10%; lower at least +15% and 5% faster than upper, as required.
-      // +15% alone would still leave the lower row slower than the upper row.
-      const publishedUpper = innerWidth <= 809 ? 38.25 : 49.5;
-      const publishedLower = innerWidth <= 809 ? 33.235 : 43.01;
-      const upperSpeed = publishedUpper * 1.1;
-      const speed = left ? upperSpeed : Math.max(publishedLower * 1.15, upperSpeed * 1.05);
+      // v7 starts from published b554f39: upper +15%; lower keeps its pace.
+      // This makes the energetic upper row about 9.5% faster than the lower.
+      const compact = innerWidth <= 809;
+      const publishedUpper = compact ? 42.075 : 54.45;
+      const publishedLower = compact ? 44.17875 : 57.1725;
+      const speed = left ? publishedUpper * 1.15 : publishedLower;
       if (width === row.width && row.speed === speed && Boolean(row.animation) === !reduced.matches) continue;
       if (row.animation) {
         cancelRateTransition(row);

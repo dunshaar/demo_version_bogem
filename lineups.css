@@ -1,5 +1,5 @@
 /* Only the approved lineups section. Native radios also work without JavaScript. */
-#formats {--lineups-brass: #9a713d; color: #24211e}
+#formats {--lineups-brass: var(--accent-brass-deep); color: #24211e}
 #formats .lineups-editorial {
   display: grid;
   grid-template-columns: minmax(0, .96fr) minmax(0, 1.04fr);
