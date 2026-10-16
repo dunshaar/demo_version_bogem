@@ -17,8 +17,9 @@
 }
 .performance-summary-grid {
   display: grid;
-  /* Ratios follow the longest approved lines: 254 / 275 / 370px in Manrope 14px. */
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr) minmax(0, 1.46fr);
+  /* Size columns to their copy; distribute free space equally between them. */
+  grid-template-columns: max-content max-content minmax(0, max-content);
+  justify-content: space-between;
   column-gap: clamp(24px, 2.3vw, 32px);
   row-gap: 4px;
   border-top: 1px solid #15161330;
@@ -41,6 +42,7 @@
   color: #56564e;
   letter-spacing: 0;
 }
+.performance-summary-item:last-child h3 { text-wrap: balance; }
 .performance-summary-line { display: block; }
 .home-page .booking-footer #contact h2 { color: var(--ink); margin-bottom: 8px; }
 .booking-events {
