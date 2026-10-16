@@ -94,7 +94,8 @@
   cursor: pointer;
   transition: background-color .18s, border-color .18s;
 }
-.booking-action:hover { background: #d2a975; border-color: #d2a975; }
+.booking-action:not(.booking-action-unavailable):hover { background: #d2a975; border-color: #d2a975; }
+.booking-action-unavailable { cursor: default; }
 .callback-form { margin-top: 24px; scroll-margin-top: 24px; }
 .callback-field { margin-bottom: 18px; }
 .callback-field label { display: block; margin-bottom: 6px; font-size: 14px; line-height: 1.5; }

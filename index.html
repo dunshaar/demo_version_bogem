@@ -25,17 +25,17 @@
   <meta name="twitter:image" content="https://dunshaar.github.io/demo_version_bogem/assets/share-bogema-v1.jpg">
   <meta name="twitter:image:alt" content="Пять музыкантов кавер-группы Богема и логотип группы">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/fonts/fonts.css"><link rel="stylesheet" href="styles.css?v=20261016-light-v3"><link rel="stylesheet" href="forms.css?v=20261013-framer1">
+  <link rel="stylesheet" href="assets/fonts/fonts.css"><link rel="stylesheet" href="styles.css?v=20261017-hero-cleanup"><link rel="stylesheet" href="forms.css?v=20261013-framer1">
   <link rel="stylesheet" href="player.css"><link rel="stylesheet" href="motion.css?v=20261013-framer1">
   <script src="repertoire-ribbons.js?v=20261015-final-visual" type="module"></script>
   <script src="motion.js?v=20261011-nav3" defer></script><script src="player.js" defer></script><script src="app.js?v=20261014-editorial3" type="module"></script><script src="callback-form.js?v=20261016-footer-v2" type="module"></script>
 <link rel="stylesheet" href="design-forms.css?v=20261015-type-v5">
-<link rel="stylesheet" href="hero-desktop.css?v=20261016-lower-wordmark">
+<link rel="stylesheet" href="hero-desktop.css?v=20261017-canva-v5">
 <link rel="stylesheet" href="promo-video.css?v=20261015-visual-v6">
 <script src="promo-video.js?v=20261015-manual-v4" defer></script>
 <link rel="stylesheet" href="repertoire-teaser.css?v=20261015-spacing-accent">
 <link rel="stylesheet" href="lineups.css?v=20261016-whole-photo">
-<link rel="stylesheet" href="footer-booking.css?v=20261016-balanced-info">
+<link rel="stylesheet" href="footer-booking.css?v=20261017-builder-inactive">
 </head>
 <body class="home-page">
 <a class="skip" href="#main">К содержанию</a>
@@ -47,9 +47,9 @@
   <nav class="desktop-hero-nav" aria-label="Основная навигация"><a class="hero-contact-link" href="#contact">КАВЕР-ГРУППА</a><span class="hero-evening-link" aria-disabled="true">СОБЕРИ СВОЙ ВЕЧЕР</span></nav>
 </header>
 <main id="main">
-  <section class="hero wrap" aria-labelledby="hero-title">
-    <div class="hero-composition"><p class="hero-positioning"><span class="hero-category">КАВЕР-ГРУППА</span><span class="hero-teaser">Энергия и эстетика живого звучания</span></p><picture class="hero-image"><source media="(min-width:1024px)" srcset="assets/hero-editorial-20261014.jpg" width="1643" height="957"><img src="assets/hero.webp" width="2000" height="1165" alt="Пять музыкантов кавер-группы Богема" fetchpriority="high"></picture></div>
-    <div class="hero-wordmark"><h1 id="hero-title">БО<span class="hero-kern-g">Г</span>ЕМА</h1></div>
+  <section class="hero" aria-labelledby="hero-title">
+    <picture class="hero-image"><img src="assets/hero-editorial-20261014.jpg" width="1643" height="957" alt="Пять музыкантов кавер-группы Богема" fetchpriority="high"></picture>
+    <h1 id="hero-title" class="hero-wordmark"><span class="visually-hidden">БОГЕМА</span><svg viewBox="-1 0 5776 1104" aria-hidden="true" focusable="false"><use href="assets/hero-wordmark.svg#wordmark"/></svg></h1>
   </section>
   <section id="promo" class="promo-section" aria-label="Промо кавер-группы Богема">
     <div class="promo-inline" data-promo-player role="group" aria-label="Видеоплеер промо" tabindex="0">
@@ -212,7 +212,7 @@
         </address>
       </div>
       <div class="booking-actions">
-        <a class="booking-action" href="repertoire/">СОБРАТЬ СВОЙ ВЕЧЕР</a>
+        <span class="booking-action booking-action-unavailable" aria-disabled="true">СОБРАТЬ СВОЙ ВЕЧЕР</span>
         <!-- No delivery endpoint or approved legal documents are configured.
              method=dialog and type=button prevent accidental native transmission. -->
         <form id="request-form" class="callback-form" method="dialog" novalidate aria-label="Заявка на обратный звонок" aria-describedby="callback-availability">
