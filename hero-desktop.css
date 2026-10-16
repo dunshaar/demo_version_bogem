@@ -36,7 +36,7 @@
   .home-page .hero-positioning{position:relative;z-index:2;align-self:end;grid-column:1;margin-bottom:28px;gap:12px;font-size:clamp(24.3px,1.89vw,29.7px)}
   .home-page .hero-teaser{font-size:21.6px;white-space:nowrap}
   .home-page .hero-image{--photo-base-height:clamp(340px,calc(100svh - 154px - var(--hero-content) * .187),660px);--photo-image-height:calc(min(var(--photo-base-height),(var(--hero-content) - 28px) * .75 * 957 / 1643) * 1.23);position:relative;grid-column:2;order:initial;aspect-ratio:auto;width:100%;height:var(--photo-base-height);background:transparent;overflow:visible;display:block}
-  .home-page .hero-image img{position:absolute;right:0;bottom:62px;width:auto;height:var(--photo-image-height);max-width:none;max-height:none;object-fit:contain;mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent),linear-gradient(transparent,#000 16%,#000 91%,transparent);mask-composite:intersect}
+  .home-page .hero-image img{position:absolute;right:0;bottom:62px;width:auto;height:var(--photo-image-height);max-width:none;max-height:none;object-fit:contain;mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent),linear-gradient(transparent,#000 5%,#000 91%,transparent),radial-gradient(ellipse 80% 120% at 50% 120%,#000 97%,transparent 100%);mask-composite:intersect}
   /* Original photo repeated only over the five head contours: letters stay behind faces. */
   .home-page .hero-image::after{content:"";position:absolute;right:0;bottom:62px;width:calc(var(--photo-image-height) * 1643 / 957);height:var(--photo-image-height);z-index:2;background:url("assets/hero-editorial-20261014.jpg") center / 100% 100% no-repeat;clip-path:url(#hero-heads);pointer-events:none}
 }
