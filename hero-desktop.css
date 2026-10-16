@@ -1,5 +1,4 @@
-/* Canva Hero v5: one centered photograph and the existing vector wordmark.
-   At 1662 px: photo 1194 x 695 at y145, wordmark starts at y750. */
+/* Approved Canva composition. V6 removes only 20–25 px above the desktop composition. */
 .home-page{--hero-stage:min(100vw,1920px)}
 .home-page .site-header{
   position:static;
@@ -27,7 +26,7 @@
 .desktop-hero-nav .hero-evening-link{color:var(--accent-brass);cursor:default}
 .home-page .hero{
   display:flex;flex-direction:column;align-items:center;
-  padding:calc(var(--hero-stage) * .041516) 0 calc(var(--hero-stage) * .032);
+  padding:calc(var(--hero-stage) * .041516 - clamp(20px,1.45vw,25px)) 0 calc(var(--hero-stage) * .032);
   background:var(--surface-dark);color:#f2eee7;overflow:hidden;
 }
 .home-page .hero-image{display:block;width:calc(var(--hero-stage) * .718412);margin:0;flex:none}

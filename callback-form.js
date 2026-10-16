@@ -32,7 +32,15 @@ if (form) {
     setError(consent, !consent.checked ? 'Подтвердите согласие на обработку персональных данных' : '');
     status.hidden = true;
     if (invalidPhone || !consent.checked) return;
-    status.textContent = 'Заявка не отправлена: обратный звонок пока недоступен. Позвоните нам или напишите в Telegram.';
+    const call = document.createElement('a');
+    call.href = 'tel:+79006363727';
+    call.textContent = 'Позвоните нам';
+    const telegram = document.createElement('a');
+    telegram.href = 'https://t.me/DonSe6astian';
+    telegram.target = '_blank';
+    telegram.rel = 'noopener noreferrer';
+    telegram.textContent = 'напишите в Telegram';
+    status.replaceChildren('Заявка не отправлена. ', call, ' или ', telegram, '.');
     status.hidden = false;
     status.focus({preventScroll: true});
   };

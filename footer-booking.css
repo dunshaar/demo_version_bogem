@@ -31,8 +31,7 @@
   grid-row: span 2;
   min-width: 0;
 }
-.performance-summary-item h3,
-.home-page .booking-footer #contact h2 {
+.performance-summary-item h3 {
   font: 500 18px/1.4 var(--font-sans);
   letter-spacing: 0;
   margin: 0;
@@ -44,7 +43,6 @@
 }
 .performance-summary-item:last-child h3 { text-wrap: balance; }
 .performance-summary-line { display: block; }
-.home-page .booking-footer #contact h2 { color: var(--ink); margin-bottom: 8px; }
 .booking-events {
   display: flex;
   justify-content: space-between;
@@ -57,9 +55,11 @@
   font-weight: 400;
   line-height: 1.6;
 }
-.booking-event-list { max-width: 560px; text-wrap: balance; }
+.booking-event-copy { min-width: 0; }
+.booking-event-list { color: #f2eee7; text-wrap: pretty; }
+.booking-event-subtitle { margin-top: 4px; font-size: 14px; color: #a8a39a; text-wrap: pretty; }
 .booking-event-list span { white-space: nowrap; }
-.booking-region { flex: none; white-space: nowrap; font-size: 52px; line-height: 1; letter-spacing: -.03em; }
+.booking-region { flex: none; white-space: nowrap; font: 400 clamp(36px, 2.5vw, 42px)/1.1 var(--font-sans); letter-spacing: 0; }
 .home-page .booking-footer #contact {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -72,10 +72,12 @@
   display: grid;
   justify-items: start;
   font: 400 14px/1.6 var(--font-sans);
-  color: #c6c2b9;
+  color: #f2eee7;
 }
-.booking-addresses address a { display: flex; align-items: center; min-height: 34px; max-width: 100%; overflow-wrap: anywhere; }
-.booking-addresses address a:hover { color: var(--ink); }
+.booking-addresses address a { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 .4em; min-height: 34px; max-width: 100%; overflow-wrap: anywhere; }
+.booking-contact-label { color: #888888; white-space: nowrap; }
+.booking-contact-value { color: #f2eee7; }
+.booking-addresses address a:hover .booking-contact-value { text-decoration: underline; text-underline-offset: 4px; }
 .booking-actions { min-width: 0; }
 .booking-action {
   display: flex;
@@ -94,11 +96,12 @@
   cursor: pointer;
   transition: background-color .18s, border-color .18s;
 }
-.booking-action:not(.booking-action-unavailable):hover { background: #d2a975; border-color: #d2a975; }
+.booking-action-secondary { background: transparent; color: #f2eee7; border-color: #77776f; }
+.booking-action-secondary:hover { background: #f2eee708; border-color: #f2eee7; }
+.booking-action-secondary:focus-visible { outline: 2px solid #f2eee7; outline-offset: 3px; }
 .booking-action-unavailable { cursor: default; }
 .callback-form { margin-top: 24px; scroll-margin-top: 24px; }
 .callback-field { margin-bottom: 18px; }
-.callback-field label { display: block; margin-bottom: 6px; font-size: 14px; line-height: 1.5; }
 .callback-field input {
   display: block;
   width: 100%;
@@ -121,8 +124,8 @@
 .callback-consent input[aria-invalid=true] { outline: 1px solid #ecaaa0; outline-offset: 2px; }
 .booking-document-unavailable { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: #a8a39a88; }
 .callback-error { margin-top: 6px; font-size: 12px; line-height: 1.5; color: #ecaaa0; }
-.callback-availability { margin-top: 12px; color: #a8a39a; font-size: 12px; line-height: 1.6; }
 .callback-status { margin-top: 12px; color: var(--ink); font-size: 14px; line-height: 1.5; }
+.callback-status a { text-decoration: underline; text-underline-offset: 3px; }
 .booking-legal {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -139,9 +142,9 @@
 @media(max-width: 809px) {
   .home-page .booking-footer { padding-block: 28px 24px; }
   .booking-events { flex-wrap: wrap; justify-content: flex-start; gap: 16px 24px; font-size: 14px; }
+  .booking-event-copy { flex-basis: 100%; }
   .booking-region { font-size: 36px; }
-  .performance-summary-item h3,
-  .home-page .booking-footer #contact h2 { font-size: 17px; }
+  .performance-summary-item h3 { font-size: 17px; }
   .home-page .booking-footer #contact { grid-template-columns: minmax(0, 1fr); padding-block: 28px; row-gap: 28px; }
   .booking-addresses address a { min-height: 44px; }
   .callback-form { scroll-margin-top: 84px; }
