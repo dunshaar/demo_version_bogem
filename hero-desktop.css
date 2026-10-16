@@ -1,6 +1,7 @@
-/* Desktop art direction only. The existing mobile hero remains unchanged. */
+/* Hero art direction. Photo and composition adjustments are desktop-only. */
 @font-face{font-family:"Manrope Hero";src:url("assets/fonts/manrope-hero-variable.ttf") format("truetype");font-style:normal;font-weight:200 800;font-display:swap}
-.hero-positioning,.desktop-hero-nav{display:none}
+.desktop-hero-nav{display:none}
+.home-page .hero-positioning{display:block;margin:0;padding:0;color:#a8a39a;font:400 12px/1.4 var(--font-sans);letter-spacing:.1em}
 .home-page .hero{background:var(--surface-dark)}
 @media(min-width:1024px){
   .home-page .site-header{
@@ -21,7 +22,7 @@
     --hero-gutter:clamp(32px,3.5vw,64px);
     --hero-content:min(calc(100vw - 2 * var(--hero-gutter)),1536px);
     max-width:none;
-    padding:12px max(var(--hero-gutter),calc((100vw - 1536px)/2)) 48px;
+    padding:0 max(var(--hero-gutter),calc((100vw - 1536px)/2)) 48px;
     background:var(--surface-dark);
     color:#f2eee7;
     overflow:hidden;
@@ -29,11 +30,8 @@
   .home-page .hero-wordmark{height:calc(var(--hero-content)*.187);aspect-ratio:auto;margin:0;z-index:1}
   .home-page .hero h1{position:static;font-family:"Manrope Hero",Manrope,Arial,sans-serif;font-size:calc(var(--hero-content)*.262);font-weight:300;line-height:.82;letter-spacing:-.045em;white-space:nowrap;margin-left:-.018em}
   .home-page .hero-kern-g{margin-right:.018em}
-  .home-page .hero-composition{position:relative;display:grid;grid-template-columns:minmax(0,.25fr) minmax(0,.75fr);gap:28px;align-items:center;margin-top:12px}
-  .home-page .hero-tagline{display:none}
-  .home-page .hero-positioning{position:relative;z-index:2;display:flex;flex-direction:column;align-items:flex-start;align-self:end;gap:24px;margin-bottom:-4px;grid-column:1;font-family:Manrope,Arial,sans-serif;font-style:normal;letter-spacing:-.03em;padding:0}
-  .home-page .hero-positioning strong{color:#f2eee7;font-size:clamp(24px,2.5vw,38px);font-weight:700;letter-spacing:.06em;line-height:1.1}
-  .home-page .hero-positioning span{color:var(--accent-brass-deep);opacity:1;font-size:clamp(18.048px,1.66944vw,24.3648px);font-weight:400;letter-spacing:-.02em;line-height:1.04}
+  .home-page .hero-composition{position:relative;display:grid;grid-template-columns:minmax(0,.25fr) minmax(0,.75fr);gap:28px;align-items:center;margin-top:0}
+  .home-page .hero-positioning{position:relative;z-index:2;align-self:end;grid-column:1;margin-bottom:-4px;font-size:13px}
   .home-page .hero-image{--photo-base-height:clamp(340px,calc(100svh - 154px - var(--hero-content) * .187),660px);position:relative;grid-column:2;order:initial;aspect-ratio:auto;width:100%;height:var(--photo-base-height);background:transparent;overflow:visible;display:block}
   .home-page .hero-image img{position:absolute;right:0;bottom:-8px;width:auto;height:calc(min(var(--photo-base-height),(var(--hero-content) - 28px) * .75 * 957 / 1643) * 1.23);max-width:none;max-height:none;object-fit:contain;mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent),linear-gradient(transparent,#000 16%,#000 91%,transparent);mask-composite:intersect}
 }
