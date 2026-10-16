@@ -17,9 +17,10 @@
 }
 .performance-summary-grid {
   display: grid;
-  grid-template-columns: minmax(0, .27fr) minmax(0, .34fr) minmax(0, .39fr);
+  /* Ratios follow the longest approved lines: 254 / 275 / 370px in Manrope 14px. */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr) minmax(0, 1.46fr);
   column-gap: clamp(24px, 2.3vw, 32px);
-  row-gap: 8px;
+  row-gap: 4px;
   border-top: 1px solid #15161330;
   padding-top: 26px;
 }
@@ -40,6 +41,7 @@
   color: #56564e;
   letter-spacing: 0;
 }
+.performance-summary-line { display: block; }
 .home-page .booking-footer #contact h2 { color: var(--ink); margin-bottom: 8px; }
 .booking-events {
   display: flex;
@@ -145,9 +147,10 @@
   .booking-documents { text-align: left; }
 }
 
-@media(max-width: 999px) {
+@media(max-width: 1023px) {
   .home-page #details.performance-summary { padding-bottom: 28px; }
   .performance-summary-grid { grid-template-columns: minmax(0, 1fr); row-gap: 28px; padding-top: 24px; }
-  .performance-summary-item { grid-template-rows: auto auto; grid-row: auto; row-gap: 8px; }
+  .performance-summary-item { grid-template-rows: auto auto; grid-row: auto; row-gap: 4px; }
   .performance-summary-item p { max-width: 560px; }
+  .performance-summary-line { display: inline; }
 }
