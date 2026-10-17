@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="light dark">
-  <meta name="theme-color" content="#101110">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#F2F2F0">
   <meta name="robots" content="noindex, nofollow">
   <meta name="description" content="Репертуар Богемы. Отметьте любимые песни и то, что лучше не играть на вашем празднике.">
   <title>Репертуар Богемы</title>
@@ -28,289 +28,478 @@
   <meta name="twitter:image:alt" content="Пять музыкантов кавер-группы Богема и логотип группы">
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../assets/fonts/fonts.css">
-  <link rel="stylesheet" href="../styles.css?v=20261014-unified1">
-  <link rel="stylesheet" href="../forms.css">
-  <link rel="stylesheet" href="../motion.css">
-  <link rel="stylesheet" href="repertoire.css?v=20261014-unified1">
-  <script type="module" src="repertoire.js?v=20261014-unified1"></script>
-  <script src="../motion.js?v=20261011-nav3" defer></script>
-  <script src="../forms.js?v=20261014-unified1" defer></script>
+  <link rel="stylesheet" href="repertoire.css?v=20261017-approved210">
 </head>
-<body class="repertoire-page">
-  <a class="rep-skip" href="#songs">К списку песен</a>
-  <header class="site-header rep-header repertoire-header">
-    <div class="wrap rep-header-inner">
-      <a class="rep-wordmark" href="../index.html" aria-label="Богема, главная"><img src="../assets/logo.svg" width="5776" height="1824" alt="Богема"></a>
-      <nav class="rep-navigation" aria-label="Навигация"><a class="rep-header-cta" href="#wishes-form">Отправить пожелания</a></nav>
-    </div>
-    <div class="scroll-progress" aria-hidden="true"></div>
-  </header>
-  <main>
-    <section class="wrap rep-intro" aria-labelledby="page-title">
-      <a class="rep-return" href="../#repertoire"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m10 5-7 7 7 7M3 12h18"/></svg><span>Вернуться на сайт</span></a>
-      <p class="rep-eyebrow">Богема / Музыкальная коллекция</p>
-      <h1 id="page-title">Репертуар</h1>
-      <p class="rep-intro-lead">Ваши любимые песни&nbsp;начинают наш разговор<br> Отметьте песни, которые создадут настроение вашего вечера</p>
-      <div class="rep-downloads"><div class="rep-download-buttons"><button type="button" class="rep-secondary" id="download-list" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></svg><span>Скачать репертуар</span></button></div><p id="catalog-export-status" class="rep-small" role="status"></p></div>
-      <div class="rep-guide" aria-labelledby="guide-title">
-        <div class="rep-guide-heading"><h2 id="guide-title">Выбирайте музыку под себя</h2><p>Отметьте любимые песни и те, которые лучше не играть</p></div>
-        <div class="rep-guide-values">
-          <div class="rep-guide-option rep-guide-want"><span class="rep-guide-symbol" aria-hidden="true">✓</span><div><strong>Хочу</strong><p>Очень хочу услышать эту песню</p></div></div>
-          <div class="rep-guide-option rep-guide-maybe"><span class="rep-guide-symbol" aria-hidden="true">○</span><div><strong>Можно</strong><p>Песня подходит, выбор за музыкантами</p></div></div>
-          <div class="rep-guide-option rep-guide-skip"><span class="rep-guide-symbol" aria-hidden="true">×</span><div><strong>Не надо</strong><p>Не включать в программу</p></div></div>
-        </div>
-        <div class="rep-guide-foot"><p>У всех песен уже стоит «Можно»</p><p>Отметьте только то, что важно для вас</p></div>
-      </div>
-      <p class="rep-notice" id="storage-status" role="status" hidden></p>
-      <p class="rep-notice" id="program-notice" role="status" hidden></p>
-    </section>
-    <div class="wrap rep-workspace">
-      <aside class="rep-companion" id="repertoire-companion" aria-labelledby="companion-title">
-        <div class="rep-companion-heading"><p id="companion-title"><span id="companion-program">Ваш выбор</span></p><p class="rep-companion-total"><strong id="companion-total">210</strong><span>песен</span></p></div>
+<body>
 
-        <dl class="rep-counts" aria-label="Ваши музыкальные пожелания">
-          <div class="rep-count-want"><dt>Хочу</dt><dd id="count-want">0</dd></div>
-          <div class="rep-count-maybe"><dt>Можно</dt><dd id="count-maybe">210</dd></div>
-          <div class="rep-count-skip"><dt>Не надо</dt><dd id="count-skip">0</dd></div>
-        </dl>
-        <button type="button" class="rep-text-button rep-reset" id="reset-open" aria-haspopup="dialog" aria-controls="reset-confirmation" disabled>Сбросить отметки</button><p id="reset-status" class="rep-sr-only" role="status"></p>
-      </aside>
-      <div class="rep-main-column">
-    <section class="rep-catalog" id="songs" aria-labelledby="list-title">
-      <div class="rep-list-heading"><h2 id="list-title">Все песни</h2><span>Ваш выбор</span></div>
-      <div class="rep-search">
-        <label for="song-search">Найти песню</label>
-        <div class="rep-search-field"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><input id="song-search" type="search" placeholder="Песня или исполнитель" autocomplete="off" maxlength="100" aria-describedby="search-status" disabled><button id="search-clear" type="button" aria-label="Очистить поиск" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
-        <p id="search-status" role="status" aria-live="polite" aria-atomic="true"></p>
-      </div>
-      <div class="rep-result-line rep-sr-only"><p id="results-status" role="status" aria-live="polite"></p></div>
-      <p id="catalog-loading" class="rep-small">Подключаем отметки, полный список доступен ниже</p>
-      <p id="catalog-error" class="rep-notice" role="alert" hidden>Не удалось подключить отметки. Полный список ниже остаётся доступным <button type="button" class="rep-text-button" id="retry-catalog">Повторить</button></p>
-      <noscript><p class="rep-notice">Ниже весь репертуар <br> Для отметок нужен JavaScript <br> Можно <a href="../assets/repertoire.docx" download>скачать исходный общий репертуар DOCX</a></p><style>#catalog-loading,.rep-companion,.rep-tools,.rep-result-line{display:none}</style></noscript>
-      <section id="deprecated-section" class="rep-notice rep-deprecated" hidden aria-labelledby="deprecated-title"><h2 id="deprecated-title">Некоторые песни больше недоступны</h2><p>Эти сохранённые отметки не войдут в заявку</p><ul id="deprecated-songs"></ul></section>
-      <p id="wishes-status" class="rep-sr-only" role="status"></p>
-      <!-- CATALOG:START -->
-<section class="rep-program-list" id="songs-all" aria-labelledby="list-title"><h2 class="rep-static-title">210 песен</h2><ol id="song-list-all" class="rep-song-list"><li class="rep-song-row" data-song-id="all-song-001" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">01</span><h3>Остров</h3><span class="rep-song-artist">Л. Агутин</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-002" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">02</span><h3>Хоп хэй ла-ла-лэй</h3><span class="rep-song-artist">Л. Агутин</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-003" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">03</span><h3>На сиреневой Луне</h3><span class="rep-song-artist">Л. Агутин</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-004" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">04</span><h3>Половина сердца</h3><span class="rep-song-artist">Л. Агутин</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-005" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">05</span><h3>Парень чернокожий</h3><span class="rep-song-artist">Л. Агутин</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-006" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">06</span><h3>Всё в твоих руках</h3><span class="rep-song-artist">Л. Агутин</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-007" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">07</span><h3>Лететь</h3><span class="rep-song-artist">А-мега</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-008" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">08</span><h3>Тик-так</h3><span class="rep-song-artist">А-Студио</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-009" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">09</span><h3>Ещё люблю</h3><span class="rep-song-artist">А-Студио</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-010" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">10</span><h3>Так же как все</h3><span class="rep-song-artist">А-Студио</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-011" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">11</span><h3>Улетаю</h3><span class="rep-song-artist">А-Студио</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-012" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">12</span><h3>Царица</h3><span class="rep-song-artist">Анна Асти</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-013" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">13</span><h3>По барам</h3><span class="rep-song-artist">Анна Асти</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-014" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">14</span><h3>На тебе как на войне</h3><span class="rep-song-artist">Агата Кристи</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-015" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">15</span><h3>Сказочная тайга</h3><span class="rep-song-artist">Агата Кристи</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-016" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">16</span><h3>Младший Лейтенант</h3><span class="rep-song-artist">И. Аллегрова</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-017" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">17</span><h3>С днём рождения</h3><span class="rep-song-artist">И. Аллегрова</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-018" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">18</span><h3>Угонщица</h3><span class="rep-song-artist">И. Аллегрова</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-019" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">19</span><h3>Мечта сбывается</h3><span class="rep-song-artist">Ю. Антонов</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-020" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">20</span><h3>Я вспоминаю (Летящей походкой)</h3><span class="rep-song-artist">Ю. Антонов</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-021" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">21</span><h3>Вася</h3><span class="rep-song-artist">Браво</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-022" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">22</span><h3>Дорога в облака</h3><span class="rep-song-artist">Браво</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-023" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">23</span><h3>Любите, девушки</h3><span class="rep-song-artist">Браво</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-024" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">24</span><h3>Московский бит</h3><span class="rep-song-artist">Браво</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-025" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">25</span><h3>Ветер знает</h3><span class="rep-song-artist">Браво</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-026" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">26</span><h3>Оранжевый галстук</h3><span class="rep-song-artist">Браво</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-027" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">27</span><h3>Как жаль</h3><span class="rep-song-artist">Браво</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-028" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">28</span><h3>Я то, что надо</h3><span class="rep-song-artist">Браво</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-029" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">29</span><h3>Ленинградский рок-н-ролл</h3><span class="rep-song-artist">Браво</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-030" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">30</span><h3>Молния</h3><span class="rep-song-artist">Дима Билан</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-031" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">31</span><h3>Держи</h3><span class="rep-song-artist">Дима Билан</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-032" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">32</span><h3>Звенит январская вьюга</h3><span class="rep-song-artist">Нина Бродская/Анна Асти</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-033" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">33</span><h3>За 4 моря</h3><span class="rep-song-artist">Блестящие</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-034" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">34</span><h3>Посмотри в глаза</h3><span class="rep-song-artist">Н. Ветлицкая / BearWolf</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-035" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">35</span><h3>Попытка №5</h3><span class="rep-song-artist">ВИАгра</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-036" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">36</span><h3>Люди встречаются</h3><span class="rep-song-artist">ВИА «Весёлые ребята»</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-037" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">37</span><h3>Ночь</h3><span class="rep-song-artist">А. Губин</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-038" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">38</span><h3>Девушки как звезды</h3><span class="rep-song-artist">А. Губин</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-039" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">39</span><h3>Зима в сердце</h3><span class="rep-song-artist">Гости из будущего / Моя Мишель</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-040" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">40</span><h3>Босая</h3><span class="rep-song-artist">Две Маши</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-041" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">41</span><h3>Мама, я танцую</h3><span class="rep-song-artist">Две Маши</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-042" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">42</span><h3>Солнышко</h3><span class="rep-song-artist">Демо</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-043" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">43</span><h3>Батарейка</h3><span class="rep-song-artist">Жуки</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-044" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">44</span><h3>Танкист</h3><span class="rep-song-artist">Жуки</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-045" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">45</span><h3>Районы-кварталы</h3><span class="rep-song-artist">Звери</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-046" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">46</span><h3>До скорой встречи</h3><span class="rep-song-artist">Звери</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-047" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">47</span><h3>Такая сильная любовь</h3><span class="rep-song-artist">Звери</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-048" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">48</span><h3>Летняя ночь (Девочки-мальчики)</h3><span class="rep-song-artist">Звери</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-049" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">49</span><h3>Трава у дома</h3><span class="rep-song-artist">Земляне</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-050" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">50</span><h3>Почему</h3><span class="rep-song-artist">Земфира</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-051" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">51</span><h3>Искала</h3><span class="rep-song-artist">Земфира</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-052" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">52</span><h3>Beverly Hills</h3><span class="rep-song-artist">Зиверт</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-053" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">53</span><h3>Life</h3><span class="rep-song-artist">Зиверт</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-054" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">54</span><h3>Wake Up</h3><span class="rep-song-artist">Зиверт</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-055" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">55</span><h3>Паруса</h3><span class="rep-song-artist">Зиверт</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-056" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">56</span><h3>Тополиный пух</h3><span class="rep-song-artist">Иванушки Int.</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-057" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">57</span><h3>Видели ночь</h3><span class="rep-song-artist">Кино / Zdob Si Zdub</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-058" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">58</span><h3>Лесник</h3><span class="rep-song-artist">Король и шут</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-059" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">59</span><h3>Кукла колдуна</h3><span class="rep-song-artist">Король и шут</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-060" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">60</span><h3>Прыгну со скалы</h3><span class="rep-song-artist">Король и шут</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-061" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">61</span><h3>Матушка</h3><span class="rep-song-artist">Т. Куртукова</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-062" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">62</span><h3>Плывет веночек</h3><span class="rep-song-artist">Н. Кадышева</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-063" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">63</span><h3>Широка Река</h3><span class="rep-song-artist">Н. Кадышева</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-064" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">64</span><h3>Город, которого нет</h3><span class="rep-song-artist">И. Корнелюк</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-065" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">65</span><h3>Дожди</h3><span class="rep-song-artist">И. Корнелюк</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-066" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">66</span><h3>Эй, красотка</h3><span class="rep-song-artist">В. Кузьмин</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-067" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">67</span><h3>Сказка в моей жизни</h3><span class="rep-song-artist">В. Кузьмин</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-068" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">68</span><h3>Хали-гали паратрупер</h3><span class="rep-song-artist">Леприконсы</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-069" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">69</span><h3>Ау</h3><span class="rep-song-artist">Ляпис Трубецкой</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-070" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">70</span><h3>WWW</h3><span class="rep-song-artist">Ленинград</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-071" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">71</span><h3>Рыба моей мечты</h3><span class="rep-song-artist">Ленинград</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-072" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">72</span><h3>В Питере пить</h3><span class="rep-song-artist">Ленинград</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-073" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">73</span><h3>Экспонат</h3><span class="rep-song-artist">Ленинград</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-074" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">74</span><h3>Полёт на дельтаплане</h3><span class="rep-song-artist">В. Леонтьев</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-075" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">75</span><h3>Белые розы</h3><span class="rep-song-artist">Ласковый май</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-076" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">76</span><h3>Седая ночь</h3><span class="rep-song-artist">Ласковый май</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-077" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">77</span><h3>За тех, кто в море</h3><span class="rep-song-artist">Машина Времени</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-078" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">78</span><h3>Текила-любовь</h3><span class="rep-song-artist">В. Меладзе</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-079" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">79</span><h3>Салют, Вера</h3><span class="rep-song-artist">В. Меладзе</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-080" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">80</span><h3>Я это ты</h3><span class="rep-song-artist">М. Насыров</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-081" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">81</span><h3>Владивосток 2000</h3><span class="rep-song-artist">Мумий Тролль</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-082" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">82</span><h3>Медведица</h3><span class="rep-song-artist">Мумий Тролль</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-083" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">83</span><h3>Музыка нас связала</h3><span class="rep-song-artist">Мираж</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-084" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">84</span><h3>У самого синего моря</h3><span class="rep-song-artist">Мистер Твистер</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-085" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">85</span><h3>Что ты имела ввиду</h3><span class="rep-song-artist">Несчастный случай</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-086" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">86</span><h3>Люби меня, люби</h3><span class="rep-song-artist">Отпетые мошенники</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-087" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">87</span><h3>Крошка моя</h3><span class="rep-song-artist">Руки вверх</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-088" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">88</span><h3>Алёшка</h3><span class="rep-song-artist">Руки вверх</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-089" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">89</span><h3>Ничего не говори</h3><span class="rep-song-artist">Рок-острова</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-090" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">90</span><h3>Любовь на пятом этаже</h3><span class="rep-song-artist">Секрет / М. Леонидов</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-091" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">91</span><h3>Виденье</h3><span class="rep-song-artist">Секрет / М. Леонидов</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-092" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">92</span><h3>Не дай ему уйти</h3><span class="rep-song-artist">Секрет / М. Леонидов</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-093" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">93</span><h3>Между нами любовь</h3><span class="rep-song-artist">Серебро</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-094" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">94</span><h3>Моя бабушка курит трубку</h3><span class="rep-song-artist">Г. Сукачёв</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-095" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">95</span><h3>Моё сердце</h3><span class="rep-song-artist">Сплин</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-096" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">96</span><h3>Седьмой лепесток</h3><span class="rep-song-artist">А. Токарев</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-097" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">97</span><h3>Город-сказка</h3><span class="rep-song-artist">Танцы минус</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-098" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">98</span><h3>10 капель</h3><span class="rep-song-artist">Танцы минус</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-099" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">99</span><h3>Половинка</h3><span class="rep-song-artist">Танцы минус</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-100" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">100</span><h3>Солнце Монако</h3><span class="rep-song-artist">Л. Чеботина</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-101" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">101</span><h3>Счастье</h3><span class="rep-song-artist">А. Чумаков</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-102" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">102</span><h3>Тут и там</h3><span class="rep-song-artist">А. Чумаков</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-103" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">103</span><h3>17 лет</h3><span class="rep-song-artist">Чайф</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-104" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">104</span><h3>Рок-н-ролл этой ночи</h3><span class="rep-song-artist">Чайф</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-105" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">105</span><h3>Отшумели летние дожди</h3><span class="rep-song-artist">Шура</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-106" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">106</span><h3>Ты не верь слезам</h3><span class="rep-song-artist">Шура</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-107" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">107</span><h3>Три полоски</h3><span class="rep-song-artist">Animal Jazz</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-108" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">108</span><h3>Простая песня</h3><span class="rep-song-artist">IOWA</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-109" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">109</span><h3>Улыбайся</h3><span class="rep-song-artist">IOWA</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-110" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">110</span><h3>Мама</h3><span class="rep-song-artist">IOWA</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-111" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">111</span><h3>Ума Турман (Я так ждала тебя, Вова)</h3><span class="rep-song-artist">Uma2rman</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-112" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">112</span><h3>Take On Me</h3><span class="rep-song-artist">A-Ha</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-113" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">113</span><h3>Gimme! Gimme! Gimme!</h3><span class="rep-song-artist">ABBA</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-114" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">114</span><h3>Dancing Queen</h3><span class="rep-song-artist">ABBA</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-115" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">115</span><h3>All That She Wants</h3><span class="rep-song-artist">Ace of Bace</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-116" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">116</span><h3>Beautiful Life</h3><span class="rep-song-artist">Ace of Bace</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-117" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">117</span><h3>Let’s Get It Started</h3><span class="rep-song-artist">Black-Eyed Peas</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-118" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">118</span><h3>Flowers</h3><span class="rep-song-artist">Miley Cyrus</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-119" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">119</span><h3>Cold Heart (feat. Elton John)</h3><span class="rep-song-artist">Dua Lipa</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-120" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">120</span><h3>Don’t Start Now</h3><span class="rep-song-artist">Dua Lipa</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-121" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">121</span><h3>Levitating</h3><span class="rep-song-artist">Dua Lipa</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-122" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">122</span><h3>Sweet Dreams</h3><span class="rep-song-artist">Eurythmics</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-123" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">123</span><h3>No Roots</h3><span class="rep-song-artist">Alice Merton</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-124" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">124</span><h3>Get Lucky</h3><span class="rep-song-artist">Daft Punk</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-125" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">125</span><h3>I Will Survive</h3><span class="rep-song-artist">Gloria Gaynor</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-126" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">126</span><h3>Wicked Game</h3><span class="rep-song-artist">Chris Isaak</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-127" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">127</span><h3>Billy Jean</h3><span class="rep-song-artist">Michael Jackson</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-128" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">128</span><h3>Black or White</h3><span class="rep-song-artist">Michael Jackson</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-129" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">129</span><h3>La Camisa Negra</h3><span class="rep-song-artist">Juanes</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-130" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">130</span><h3>Let’s Get Loud</h3><span class="rep-song-artist">Jennifer Lopez</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-131" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">131</span><h3>Shallow</h3><span class="rep-song-artist">Lady Gaga</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-132" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">132</span><h3>Cancion Del Mariachi (OST Desperado)</h3><span class="rep-song-artist">Los Lobos</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-133" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">133</span><h3>Locked Out of Heaven</h3><span class="rep-song-artist">Bruno Mars</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-134" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">134</span><h3>Uptown Funk</h3><span class="rep-song-artist">Bruno Mars</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-135" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">135</span><h3>Careless Whisper</h3><span class="rep-song-artist">George Michael</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-136" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">136</span><h3>Livin’ La Vida Loca</h3><span class="rep-song-artist">Ricky Martin</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-137" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">137</span><h3>This Love</h3><span class="rep-song-artist">Maroon 5</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-138" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">138</span><h3>I&#x27;ll Always Love You</h3><span class="rep-song-artist">D. Parton / W.Houston</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-139" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">139</span><h3>Kiss Me</h3><span class="rep-song-artist">Sixpence None the Richer</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-140" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">140</span><h3>Englishman In New York</h3><span class="rep-song-artist">Sting</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-141" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">141</span><h3>I&#x27;m a Believer</h3><span class="rep-song-artist">Smash Mouth</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-142" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">142</span><h3>All Star</h3><span class="rep-song-artist">Smash Mouth</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-143" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">143</span><h3>Whenever, Wherever</h3><span class="rep-song-artist">Shakira</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-144" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">144</span><h3>Venus («Шизгара»)</h3><span class="rep-song-artist">Shocking Blue</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-145" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">145</span><h3>Perfect</h3><span class="rep-song-artist">Ed Sheeran</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-146" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">146</span><h3>Shape of You</h3><span class="rep-song-artist">Ed Sheeran</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-147" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">147</span><h3>Amore No</h3><span class="rep-song-artist">Adriano Celentano</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-148" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">148</span><h3>Mon Mec A Moi</h3><span class="rep-song-artist">Patricia Kaas</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-149" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">149</span><h3>Je Veux</h3><span class="rep-song-artist">Zaz</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-150" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">150</span><h3>I Don&#x27;t Wanna Miss a Thing (OST «Армагеддон»)</h3><span class="rep-song-artist">Aerosmith</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-151" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">151</span><h3>Cryin’</h3><span class="rep-song-artist">Aerosmith</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-152" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">152</span><h3>Highway to Hell</h3><span class="rep-song-artist">AC/DC</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-153" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">153</span><h3>It’s My Life</h3><span class="rep-song-artist">Bon Jovi</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-154" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">154</span><h3>Zombie</h3><span class="rep-song-artist">Cranberries</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-155" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">155</span><h3>Who&#x27;ll Stop the Rain</h3><span class="rep-song-artist">Creedence</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-156" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">156</span><h3>Have You Ever Seen The Rain</h3><span class="rep-song-artist">Creedence</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-157" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">157</span><h3>Personal Jesus</h3><span class="rep-song-artist">Depeche Mode</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-158" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">158</span><h3>Enjoy the Silence</h3><span class="rep-song-artist">Depeche Mode</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-159" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">159</span><h3>Hotel California</h3><span class="rep-song-artist">Eagles</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-160" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">160</span><h3>Knockin’ On Heaven’s Door</h3><span class="rep-song-artist">Guns’n’Roses</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-161" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">161</span><h3>Don’t Cry</h3><span class="rep-song-artist">Guns’n’Roses</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-162" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">162</span><h3>I Was Born For Lovin&#x27; You</h3><span class="rep-song-artist">Kiss</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-163" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">163</span><h3>Sweet Home Alabama</h3><span class="rep-song-artist">Lynyrd Skynyrd</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-164" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">164</span><h3>Numb</h3><span class="rep-song-artist">Linkin Park</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-165" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">165</span><h3>Nothing Else Matters</h3><span class="rep-song-artist">Metallica</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-166" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">166</span><h3>Enter Sandman</h3><span class="rep-song-artist">Metallica</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-167" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">167</span><h3>Smells Like Teen Spirit</h3><span class="rep-song-artist">Nirvana</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-168" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">168</span><h3>Crazy Little Thing Called Love</h3><span class="rep-song-artist">Queen</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-169" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">169</span><h3>Creep</h3><span class="rep-song-artist">Radiohead</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-170" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">170</span><h3>After Dark</h3><span class="rep-song-artist">Tito and Tarantula</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-171" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">171</span><h3>Rock Around the Clock</h3><span class="rep-song-artist">Bill Haley</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-172" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">172</span><h3>I Saw Her Standing There</h3><span class="rep-song-artist">The Beatles</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-173" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">173</span><h3>Can’t Buy Me Love</h3><span class="rep-song-artist">The Beatles</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-174" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">174</span><h3>Drive My Car</h3><span class="rep-song-artist">The Beatles</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-175" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">175</span><h3>Get Back</h3><span class="rep-song-artist">The Beatles</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-176" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">176</span><h3>Back In The USSR</h3><span class="rep-song-artist">The Beatles</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-177" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">177</span><h3>Layla</h3><span class="rep-song-artist">Eric Clapton</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-178" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">178</span><h3>Change the World</h3><span class="rep-song-artist">Eric Clapton</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-179" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">179</span><h3>Johnny B. Goode</h3><span class="rep-song-artist">Chuck Berry</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-180" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">180</span><h3>You Never Can Tell</h3><span class="rep-song-artist">Chuck Berry</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-181" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">181</span><h3>I Feel Good</h3><span class="rep-song-artist">James Brown</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-182" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">182</span><h3>Hit the Road Jack</h3><span class="rep-song-artist">Ray Charles</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-183" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">183</span><h3>What I&#x27;d Say</h3><span class="rep-song-artist">Ray Charles</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-184" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">184</span><h3>I Got a Woman</h3><span class="rep-song-artist">Ray Charles</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-185" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">185</span><h3>Hallelujah I Love Her So</h3><span class="rep-song-artist">Ray Charles</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-186" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">186</span><h3>Route 66</h3><span class="rep-song-artist">Nat King Cole</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-187" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">187</span><h3>Let’s Twist Again</h3><span class="rep-song-artist">Chubby Checker</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-188" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">188</span><h3>Great Balls of Fire</h3><span class="rep-song-artist">Jerry Lee Lewis</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-189" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">189</span><h3>Sway</h3><span class="rep-song-artist">Dean Martin</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-190" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">190</span><h3>Pretty Woman</h3><span class="rep-song-artist">Roy Orbisson</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-191" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">191</span><h3>Blue Suede Shoes</h3><span class="rep-song-artist">Elvis Presley</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-192" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">192</span><h3>A Little Less Conversation</h3><span class="rep-song-artist">Elvis Presley</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-193" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">193</span><h3>Can’t Help Fallin’ In Love</h3><span class="rep-song-artist">Elvis Presley</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-194" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">194</span><h3>Runaway</h3><span class="rep-song-artist">Del Shannon</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-195" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">195</span><h3>Wanna Be Americano</h3><span class="rep-song-artist">Brian Setzer &amp; The Stray Cats</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-196" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">196</span><h3>Stray Cat Strut</h3><span class="rep-song-artist">Brian Setzer &amp; The Stray Cats</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-197" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">197</span><h3>Rock This Town</h3><span class="rep-song-artist">Brian Setzer &amp; The Stray Cats</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-198" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">198</span><h3>Rumble in Brighton</h3><span class="rep-song-artist">Brian Setzer &amp; The Stray Cats</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-199" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">199</span><h3>Ubangi Stomp (OST «Жмурки»)</h3><span class="rep-song-artist">Brian Setzer &amp; The Stray Cats</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-200" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">200</span><h3>La Bamba</h3><span class="rep-song-artist">Richie Valens</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-201" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">201</span><h3>Isn’t She Lovely</h3><span class="rep-song-artist">Stevie Wonder</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-202" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">202</span><h3>Very Superstitious</h3><span class="rep-song-artist">Stevie Wonder</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-203" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">203</span><h3>Just The Two of Us</h3><span class="rep-song-artist">Grover Washington</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-204" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">204</span><h3>Let it Snow</h3><span class="rep-song-artist">Frank Sinatra</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-205" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">205</span><h3>Jingle Bell Rock</h3><span class="rep-song-artist">Bobby Helms</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-206" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">206</span><h3>Last Christmas</h3><span class="rep-song-artist">Wham!</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-207" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">207</span><h3>Blue Christmas</h3><span class="rep-song-artist">Elvis Presley</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-208" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">208</span><h3>Последний час декабря</h3><span class="rep-song-artist">Секрет</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-209" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">209</span><h3>Расскажи Снегурочка</h3><span class="rep-song-artist">Ну, погоди!</span></div><div class="rep-choice-host"></div></li>
-<li class="rep-song-row" data-song-id="all-song-210" data-program="all"><div class="rep-song-info"><span class="rep-song-number" aria-hidden="true">210</span><h3>Снег идет</h3><span class="rep-song-artist">М. Кристаллинская / Ж. Агузарова</span></div><div class="rep-choice-host"></div></li></ol></section>
-      <!-- CATALOG:END -->
-      <div class="rep-copy-tools"><div class="rep-wishes-buttons"><button type="button" class="rep-secondary" id="download-selection" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></svg><span>Скачать пожелания</span></button><button type="button" class="rep-text-button" id="copy-selection" disabled>Скопировать пожелания</button></div><p id="export-status" class="rep-small" role="status"></p><p id="copy-status" class="rep-small" role="status"></p><div id="copy-fallback" hidden><p>Выделите текст и скопируйте его вручную</p><textarea id="copy-text" readonly aria-label="Ваши музыкальные пожелания"></textarea></div></div>
-    </section>
-    <section class="rep-request" aria-labelledby="wishes-form-title">
-      <div class="rep-request-intro"><p class="rep-request-eyebrow">Ваша программа</p><h2 id="wishes-form-title">Музыка начинается с вас</h2><p>Оставьте имя и телефон, чтобы мы могли обсудить ваши пожелания и составить программу выступления</p><p class="rep-small">В форму попадут отметки «Хочу» и «Не надо»</p></div>
-      <div class="rep-request-card" id="wishes-form" data-request-form data-source="repertoire"><noscript>Для отправки пожеланий включите JavaScript в браузере</noscript></div>
-    </section>
-      </div>
-    </div>
-  </main>
-  <dialog class="rep-action-dialog" id="reset-confirmation" aria-labelledby="reset-title"><button type="button" class="rep-dialog-close" data-dismiss aria-label="Закрыть">×</button><h2 id="reset-title">Сбросить отметки?</h2><p id="reset-description"></p><div class="rep-dialog-actions"><button type="button" class="rep-secondary" id="reset-cancel">Оставить как есть</button><button type="button" class="rep-primary" id="reset-confirm">Сбросить отметки</button></div></dialog>
-  <footer class="rep-footer"><div class="wrap rep-footer-inner"><a href="../index.html">Богема</a><span>Живая музыка&nbsp; Настоящие эмоции</span><a href="#page-title" class="rep-top">Наверх ↑</a></div></footer>
+<main class="catalog">
+  <nav class="rep-top" aria-label="Возврат на главную"><a class="rep-brand" href="../">БОГЕМА</a><a href="../">← НА ГЛАВНУЮ</a></nav>
+  <header class="rep-intro"><h1>РЕПЕРТУАР</h1><p>Саундтрек вашего вечера</p></header>
+<section aria-label="Синглы и топ-чарты, 31 композиция" class="collection" id="section-01">
+<header class="section-head"><h2>СИНГЛЫ И ТОП-ЧАРТЫ</h2><span class="section-index">01 / 06</span></header><div class="hairline"></div>
+<div class="song-columns">
+      <div class="column">
+        <article class="song" data-song-id="all-song-012"><div class="song-title">Царица</div><div class="song-artist">ANNA ASTI</div></article>
+
+        <article class="song" data-song-id="all-song-120"><div class="song-title">Don’t Start Now</div><div class="song-artist">DUA LIPA</div></article>
+
+        <article class="song" data-song-id="all-song-123"><div class="song-title">No Roots</div><div class="song-artist">ALICE MERTON</div></article>
+
+        <article class="song" data-song-id="all-song-146"><div class="song-title">Shape of You</div><div class="song-artist">ED SHEERAN</div></article>
+
+        <article class="song" data-song-id="all-song-052"><div class="song-title">Beverly Hills</div><div class="song-artist">ZIVERT</div></article>
+
+        <article class="song" data-song-id="all-song-054"><div class="song-title">Wake Up</div><div class="song-artist">ZIVERT</div></article>
+
+        <article class="song" data-song-id="all-song-030"><div class="song-title">Молния</div><div class="song-artist">ДИМА БИЛАН</div></article>
+
+        <article class="song" data-song-id="all-song-040"><div class="song-title">Босая</div><div class="song-artist">ДВЕ МАШИ</div></article>
+
+        <article class="song" data-song-id="all-song-100"><div class="song-title">Солнце Монако</div><div class="song-artist">Л. ЧЕБОТИНА</div></article>
+
+        <article class="song" data-song-id="all-song-110"><div class="song-title">Мама</div><div class="song-artist">IOWA</div></article>
+
+        <article class="song" data-song-id="all-song-133"><div class="song-title">Locked Out of Heaven</div><div class="song-artist">BRUNO MARS</div></article>
+</div>
+      <div class="column">
+        <article class="song" data-song-id="all-song-013"><div class="song-title">По барам</div><div class="song-artist">ANNA ASTI</div></article>
+
+        <article class="song" data-song-id="all-song-121"><div class="song-title">Levitating</div><div class="song-artist">DUA LIPA</div></article>
+
+        <article class="song" data-song-id="all-song-124"><div class="song-title">Get Lucky</div><div class="song-artist">DAFT PUNK</div></article>
+
+        <article class="song" data-song-id="all-song-158"><div class="song-title">Enjoy the Silence</div><div class="song-artist">DEPECHE MODE</div></article>
+
+        <article class="song" data-song-id="all-song-053"><div class="song-title">Life</div><div class="song-artist">ZIVERT</div></article>
+
+        <article class="song" data-song-id="all-song-055"><div class="song-title">Паруса</div><div class="song-artist">ZIVERT</div></article>
+
+        <article class="song" data-song-id="all-song-031"><div class="song-title">Держи</div><div class="song-artist">ДИМА БИЛАН</div></article>
+
+        <article class="song" data-song-id="all-song-041"><div class="song-title">Мама, я танцую</div><div class="song-artist">ДВЕ МАШИ</div></article>
+
+        <article class="song" data-song-id="all-song-108"><div class="song-title">Простая песня</div><div class="song-artist">IOWA</div></article>
+
+        <article class="song" data-song-id="all-song-093"><div class="song-title">Между нами любовь</div><div class="song-artist">СЕРЕБРО</div></article>
+</div>
+      <div class="column">
+        <article class="song" data-song-id="all-song-119"><div class="song-title">Cold Heart (feat. Elton John)</div><div class="song-artist">DUA LIPA</div></article>
+
+        <article class="song" data-song-id="all-song-118"><div class="song-title">Flowers</div><div class="song-artist">MILEY CYRUS</div></article>
+
+        <article class="song" data-song-id="all-song-137"><div class="song-title">This Love</div><div class="song-artist">MAROON 5</div></article>
+
+        <article class="song" data-song-id="all-song-039"><div class="song-title">Зима в сердце</div><div class="song-artist">ГОСТИ ИЗ БУДУЩЕГО / МОЯ МИШЕЛЬ</div></article>
+
+        <article class="song" data-song-id="all-song-011"><div class="song-title">Улетаю</div><div class="song-artist">А-СТУДИО</div></article>
+
+        <article class="song" data-song-id="all-song-109"><div class="song-title">Улыбайся</div><div class="song-artist">IOWA</div></article>
+
+        <article class="song" data-song-id="all-song-117"><div class="song-title">Let’s Get It Started</div><div class="song-artist">BLACK-EYED PEAS</div></article>
+
+        <article class="song" data-song-id="all-song-143"><div class="song-title">Whenever, Wherever</div><div class="song-artist">SHAKIRA</div></article>
+
+        <article class="song" data-song-id="all-song-130"><div class="song-title">Let’s Get Loud</div><div class="song-artist">JENNIFER LOPEZ</div></article>
+
+        <article class="song" data-song-id="all-song-134"><div class="song-title">Uptown Funk</div><div class="song-artist">BRUNO MARS</div></article>
+</div></div>
+
+</section>
+
+<section aria-label="Чистый драйв, 67 композиций" class="collection" id="section-02">
+<header class="section-head"><h2>ЧИСТЫЙ ДРАЙВ</h2><span class="section-index">02 / 06</span></header><div class="hairline"></div>
+<div class="song-columns">
+      <div class="column">
+        <article class="song" data-song-id="all-song-001"><div class="song-title">Остров</div><div class="song-artist">Л. АГУТИН</div></article>
+
+        <article class="song" data-song-id="all-song-002"><div class="song-title">Хоп хэй ла-ла-лэй</div><div class="song-artist">Л. АГУТИН</div></article>
+
+        <article class="song" data-song-id="all-song-005"><div class="song-title">Парень чернокожий</div><div class="song-artist">Л. АГУТИН</div></article>
+
+        <article class="song" data-song-id="all-song-112"><div class="song-title">Take On Me</div><div class="song-artist">A-HA</div></article>
+
+        <article class="song" data-song-id="all-song-008"><div class="song-title">Тик-так</div><div class="song-artist">А-СТУДИО</div></article>
+
+        <article class="song" data-song-id="all-song-010"><div class="song-title">Так же как все</div><div class="song-artist">А-СТУДИО</div></article>
+
+        <article class="song" data-song-id="all-song-016"><div class="song-title">Младший Лейтенант</div><div class="song-artist">И. АЛЛЕГРОВА</div></article>
+
+        <article class="song" data-song-id="all-song-113"><div class="song-title">Gimme! Gimme! Gimme!</div><div class="song-artist">ABBA</div></article>
+
+        <article class="song" data-song-id="all-song-017"><div class="song-title">С днём рождения</div><div class="song-artist">И. АЛЛЕГРОВА</div></article>
+
+        <article class="song" data-song-id="all-song-018"><div class="song-title">Угонщица</div><div class="song-artist">И. АЛЛЕГРОВА</div></article>
+
+        <article class="song" data-song-id="all-song-019"><div class="song-title">Мечта сбывается</div><div class="song-artist">Ю. АНТОНОВ</div></article>
+
+        <article class="song" data-song-id="all-song-114"><div class="song-title">Dancing Queen</div><div class="song-artist">ABBA</div></article>
+
+        <article class="song" data-song-id="all-song-020"><div class="song-title">Я вспоминаю (Летящей походкой)</div><div class="song-artist">Ю. АНТОНОВ</div></article>
+
+        <article class="song" data-song-id="all-song-022"><div class="song-title">Дорога в облака</div><div class="song-artist">БРАВО</div></article>
+
+        <article class="song" data-song-id="all-song-028"><div class="song-title">Я то, что надо</div><div class="song-artist">БРАВО</div></article>
+
+        <article class="song" data-song-id="all-song-115"><div class="song-title">All That She Wants</div><div class="song-artist">ACE OF BACE</div></article>
+
+        <article class="song" data-song-id="all-song-033"><div class="song-title">За 4 моря</div><div class="song-artist">БЛЕСТЯЩИЕ</div></article>
+
+        <article class="song" data-song-id="all-song-034"><div class="song-title">Посмотри в глаза</div><div class="song-artist">Н. ВЕТЛИЦКАЯ / BEARWOLF</div></article>
+
+        <article class="song" data-song-id="all-song-035"><div class="song-title">Попытка №5</div><div class="song-artist">ВИАГРА</div></article>
+
+        <article class="song" data-song-id="all-song-116"><div class="song-title">Beautiful Life</div><div class="song-artist">ACE OF BACE</div></article>
+
+        <article class="song" data-song-id="all-song-038"><div class="song-title">Девушки как звезды</div><div class="song-artist">А. ГУБИН</div></article>
+
+        <article class="song" data-song-id="all-song-042"><div class="song-title">Солнышко</div><div class="song-artist">ДЕМО</div></article>
+</div>
+      <div class="column">
+        <article class="song" data-song-id="all-song-044"><div class="song-title">Танкист</div><div class="song-artist">ЖУКИ</div></article>
+
+        <article class="song" data-song-id="all-song-122"><div class="song-title">Sweet Dreams</div><div class="song-artist">EURYTHMICS</div></article>
+
+        <article class="song" data-song-id="all-song-045"><div class="song-title">Районы-кварталы</div><div class="song-artist">ЗВЕРИ</div></article>
+
+        <article class="song" data-song-id="all-song-046"><div class="song-title">До скорой встречи</div><div class="song-artist">ЗВЕРИ</div></article>
+
+        <article class="song" data-song-id="all-song-047"><div class="song-title">Такая сильная любовь</div><div class="song-artist">ЗВЕРИ</div></article>
+
+        <article class="song" data-song-id="all-song-125"><div class="song-title">I Will Survive</div><div class="song-artist">GLORIA GAYNOR</div></article>
+
+        <article class="song" data-song-id="all-song-048"><div class="song-title">Летняя ночь (Девочки-мальчики)</div><div class="song-artist">ЗВЕРИ</div></article>
+
+        <article class="song" data-song-id="all-song-049"><div class="song-title">Трава у дома</div><div class="song-artist">ЗЕМЛЯНЕ</div></article>
+
+        <article class="song" data-song-id="all-song-056"><div class="song-title">Тополиный пух</div><div class="song-artist">ИВАНУШКИ INT.</div></article>
+
+        <article class="song" data-song-id="all-song-127"><div class="song-title">Billy Jean</div><div class="song-artist">MICHAEL JACKSON</div></article>
+
+        <article class="song" data-song-id="all-song-061"><div class="song-title">Матушка</div><div class="song-artist">Т. КУРТУКОВА</div></article>
+
+        <article class="song" data-song-id="all-song-062"><div class="song-title">Плывет веночек</div><div class="song-artist">Н. КАДЫШЕВА</div></article>
+
+        <article class="song" data-song-id="all-song-063"><div class="song-title">Широка Река</div><div class="song-artist">Н. КАДЫШЕВА</div></article>
+
+        <article class="song" data-song-id="all-song-128"><div class="song-title">Black or White</div><div class="song-artist">MICHAEL JACKSON</div></article>
+
+        <article class="song" data-song-id="all-song-066"><div class="song-title">Эй, красотка</div><div class="song-artist">В. КУЗЬМИН</div></article>
+
+        <article class="song" data-song-id="all-song-068"><div class="song-title">Хали-гали паратрупер</div><div class="song-artist">ЛЕПРИКОНСЫ</div></article>
+
+        <article class="song" data-song-id="all-song-070"><div class="song-title">WWW</div><div class="song-artist">ЛЕНИНГРАД</div></article>
+
+        <article class="song" data-song-id="all-song-129"><div class="song-title">La Camisa Negra</div><div class="song-artist">JUANES</div></article>
+
+        <article class="song" data-song-id="all-song-071"><div class="song-title">Рыба моей мечты</div><div class="song-artist">ЛЕНИНГРАД</div></article>
+
+        <article class="song" data-song-id="all-song-072"><div class="song-title">В Питере пить</div><div class="song-artist">ЛЕНИНГРАД</div></article>
+
+        <article class="song" data-song-id="all-song-073"><div class="song-title">Экспонат</div><div class="song-artist">ЛЕНИНГРАД</div></article>
+
+        <article class="song" data-song-id="all-song-132"><div class="song-title">Cancion Del Mariachi (OST Desperado)</div><div class="song-artist">LOS LOBOS</div></article>
+</div>
+      <div class="column">
+        <article class="song" data-song-id="all-song-074"><div class="song-title">Полёт на дельтаплане</div><div class="song-artist">В. ЛЕОНТЬЕВ</div></article>
+
+        <article class="song" data-song-id="all-song-075"><div class="song-title">Белые розы</div><div class="song-artist">ЛАСКОВЫЙ МАЙ</div></article>
+
+        <article class="song" data-song-id="all-song-076"><div class="song-title">Седая ночь</div><div class="song-artist">ЛАСКОВЫЙ МАЙ</div></article>
+
+        <article class="song" data-song-id="all-song-136"><div class="song-title">Livin’ La Vida Loca</div><div class="song-artist">RICKY MARTIN</div></article>
+
+        <article class="song" data-song-id="all-song-077"><div class="song-title">За тех, кто в море</div><div class="song-artist">МАШИНА ВРЕМЕНИ</div></article>
+
+        <article class="song" data-song-id="all-song-078"><div class="song-title">Текила-любовь</div><div class="song-artist">В. МЕЛАДЗЕ</div></article>
+
+        <article class="song" data-song-id="all-song-083"><div class="song-title">Музыка нас связала</div><div class="song-artist">МИРАЖ</div></article>
+
+        <article class="song" data-song-id="all-song-141"><div class="song-title">I'm a Believer</div><div class="song-artist">SMASH MOUTH</div></article>
+
+        <article class="song" data-song-id="all-song-085"><div class="song-title">Что ты имела ввиду</div><div class="song-artist">НЕСЧАСТНЫЙ СЛУЧАЙ</div></article>
+
+        <article class="song" data-song-id="all-song-086"><div class="song-title">Люби меня, люби</div><div class="song-artist">ОТПЕТЫЕ МОШЕННИКИ</div></article>
+
+        <article class="song" data-song-id="all-song-087"><div class="song-title">Крошка моя</div><div class="song-artist">РУКИ ВВЕРХ</div></article>
+
+        <article class="song" data-song-id="all-song-142"><div class="song-title">All Star</div><div class="song-artist">SMASH MOUTH</div></article>
+
+        <article class="song" data-song-id="all-song-088"><div class="song-title">Алёшка</div><div class="song-artist">РУКИ ВВЕРХ</div></article>
+
+        <article class="song" data-song-id="all-song-089"><div class="song-title">Ничего не говори</div><div class="song-artist">РОК-ОСТРОВА</div></article>
+
+        <article class="song" data-song-id="all-song-090"><div class="song-title">Любовь на пятом этаже</div><div class="song-artist">СЕКРЕТ / М. ЛЕОНИДОВ</div></article>
+
+        <article class="song" data-song-id="all-song-155"><div class="song-title">Who'll Stop the Rain</div><div class="song-artist">CREEDENCE</div></article>
+
+        <article class="song" data-song-id="all-song-091"><div class="song-title">Виденье</div><div class="song-artist">СЕКРЕТ / М. ЛЕОНИДОВ</div></article>
+
+        <article class="song" data-song-id="all-song-102"><div class="song-title">Тут и там</div><div class="song-artist">А. ЧУМАКОВ</div></article>
+
+        <article class="song" data-song-id="all-song-105"><div class="song-title">Отшумели летние дожди</div><div class="song-artist">ШУРА</div></article>
+
+        <article class="song" data-song-id="all-song-156"><div class="song-title">Have You Ever Seen The Rain</div><div class="song-artist">CREEDENCE</div></article>
+
+        <article class="song" data-song-id="all-song-106"><div class="song-title">Ты не верь слезам</div><div class="song-artist">ШУРА</div></article>
+
+        <article class="song" data-song-id="all-song-111"><div class="song-title">Ума Турман (Я так ждала тебя, Вова)</div><div class="song-artist">UMA2RMAN</div></article>
+
+        <article class="song" data-song-id="all-song-201"><div class="song-title">Isn’t She Lovely</div><div class="song-artist">STEVIE WONDER</div></article>
+</div></div>
+
+</section>
+
+<section aria-label="Стадионный рок, 31 композиция" class="collection" id="section-03"><header class="section-head"><h2>СТАДИОННЫЙ РОК</h2><span class="section-index">03 / 06</span></header><div class="hairline"></div><div class="song-columns rock-song-columns">
+      <div class="column">
+        <article class="song" data-song-id="all-song-014"><div class="song-title">На тебе как на войне</div><div class="song-artist">АГАТА КРИСТИ</div></article>
+
+        <article class="song" data-song-id="all-song-015"><div class="song-title">Сказочная тайга</div><div class="song-artist">АГАТА КРИСТИ</div></article>
+
+        <article class="song" data-song-id="all-song-043"><div class="song-title">Батарейка</div><div class="song-artist">ЖУКИ</div></article>
+
+        <article class="song" data-song-id="all-song-050"><div class="song-title">Почему</div><div class="song-artist">ЗЕМФИРА</div></article>
+
+        <article class="song" data-song-id="all-song-051"><div class="song-title">Искала</div><div class="song-artist">ЗЕМФИРА</div></article>
+
+        <article class="song" data-song-id="all-song-057"><div class="song-title">Видели ночь</div><div class="song-artist">КИНО / ZDOB SI ZDUB</div></article>
+
+        <article class="song" data-song-id="all-song-058"><div class="song-title">Лесник</div><div class="song-artist">КОРОЛЬ И ШУТ</div></article>
+
+        <article class="song" data-song-id="all-song-059"><div class="song-title">Кукла колдуна</div><div class="song-artist">КОРОЛЬ И ШУТ</div></article>
+
+        <article class="song" data-song-id="all-song-060"><div class="song-title">Прыгну со скалы</div><div class="song-artist">КОРОЛЬ И ШУТ</div></article>
+
+        <article class="song" data-song-id="all-song-069"><div class="song-title">Ау</div><div class="song-artist">ЛЯПИС ТРУБЕЦКОЙ</div></article>
+</div>
+      <div class="column">
+        <article class="song" data-song-id="all-song-081"><div class="song-title">Владивосток 2000</div><div class="song-artist">МУМИЙ ТРОЛЛЬ</div></article>
+
+        <article class="song" data-song-id="all-song-082"><div class="song-title">Медведица</div><div class="song-artist">МУМИЙ ТРОЛЛЬ</div></article>
+
+        <article class="song" data-song-id="all-song-094"><div class="song-title">Моя бабушка курит трубку</div><div class="song-artist">Г. СУКАЧЁВ</div></article>
+
+        <article class="song" data-song-id="all-song-095"><div class="song-title">Моё сердце</div><div class="song-artist">СПЛИН</div></article>
+
+        <article class="song" data-song-id="all-song-097"><div class="song-title">Город-сказка</div><div class="song-artist">ТАНЦЫ МИНУС</div></article>
+
+        <article class="song" data-song-id="all-song-099"><div class="song-title">Половинка</div><div class="song-artist">ТАНЦЫ МИНУС</div></article>
+
+        <article class="song" data-song-id="all-song-103"><div class="song-title">17 лет</div><div class="song-artist">ЧАЙФ</div></article>
+
+        <article class="song" data-song-id="all-song-104"><div class="song-title">Рок-н-ролл этой ночи</div><div class="song-artist">ЧАЙФ</div></article>
+
+        <article class="song" data-song-id="all-song-107"><div class="song-title">Три полоски</div><div class="song-artist">ANIMAL JAZZ</div></article>
+
+        <article class="song" data-song-id="all-song-152"><div class="song-title">Highway to Hell</div><div class="song-artist">AC/DC</div></article>
+</div>
+      <div class="column">
+        <article class="song" data-song-id="all-song-153"><div class="song-title">It’s My Life</div><div class="song-artist">BON JOVI</div></article>
+
+        <article class="song" data-song-id="all-song-154"><div class="song-title">Zombie</div><div class="song-artist">CRANBERRIES</div></article>
+
+        <article class="song" data-song-id="all-song-157"><div class="song-title">Personal Jesus</div><div class="song-artist">DEPECHE MODE</div></article>
+
+        <article class="song" data-song-id="all-song-177"><div class="song-title">Layla</div><div class="song-artist">ERIC CLAPTON</div></article>
+
+        <article class="song" data-song-id="all-song-160"><div class="song-title">Knockin’ On Heaven’s Door</div><div class="song-artist">GUNS N’ ROSES</div></article>
+
+        <article class="song" data-song-id="all-song-162"><div class="song-title">I Was Born For Lovin' You</div><div class="song-artist">KISS</div></article>
+
+        <article class="song" data-song-id="all-song-164"><div class="song-title">Numb</div><div class="song-artist">LINKIN PARK</div></article>
+
+        <article class="song" data-song-id="all-song-163"><div class="song-title">Sweet Home Alabama</div><div class="song-artist">LYNYRD SKYNYRD</div></article>
+
+        <article class="song" data-song-id="all-song-166"><div class="song-title">Enter Sandman</div><div class="song-artist">METALLICA</div></article>
+
+        <article class="song" data-song-id="all-song-167"><div class="song-title">Smells Like Teen Spirit</div><div class="song-artist">NIRVANA</div></article>
+
+        <article class="song" data-song-id="all-song-169"><div class="song-title">Creep</div><div class="song-artist">RADIOHEAD</div></article>
+</div></div>
+</section>
+
+<section aria-label="ВИНТАЖНЫЙ ГЛЯНЕЦ, 40 композиций" class="collection" id="section-04"><header class="section-head"><h2>ВИНТАЖНЫЙ ГЛЯНЕЦ</h2><span class="section-index">04 / 06</span></header><div class="hairline"></div><div class="song-columns balanced-song-columns">
+      <div class="column">
+        <article class="song" data-song-id="all-song-021"><div class="song-title">Вася</div><div class="song-artist">БРАВО</div></article>
+
+        <article class="song" data-song-id="all-song-023"><div class="song-title">Любите, девушки</div><div class="song-artist">БРАВО</div></article>
+
+        <article class="song" data-song-id="all-song-024"><div class="song-title">Московский бит</div><div class="song-artist">БРАВО</div></article>
+
+        <article class="song" data-song-id="all-song-026"><div class="song-title">Оранжевый галстук</div><div class="song-artist">БРАВО</div></article>
+
+        <article class="song" data-song-id="all-song-029"><div class="song-title">Ленинградский рок-н-ролл</div><div class="song-artist">БРАВО</div></article>
+
+        <article class="song" data-song-id="all-song-036"><div class="song-title">Люди встречаются</div><div class="song-artist">ВИА «ВЕСЁЛЫЕ РЕБЯТА»</div></article>
+
+        <article class="song" data-song-id="all-song-084"><div class="song-title">У самого синего моря</div><div class="song-artist">МИСТЕР ТВИСТЕР</div></article>
+
+        <article class="song" data-song-id="all-song-171"><div class="song-title">Rock Around the Clock</div><div class="song-artist">BILL HALEY</div></article>
+
+        <article class="song" data-song-id="all-song-172"><div class="song-title">I Saw Her Standing There</div><div class="song-artist">THE BEATLES</div></article>
+
+        <article class="song" data-song-id="all-song-173"><div class="song-title">Can’t Buy Me Love</div><div class="song-artist">THE BEATLES</div></article>
+
+        <article class="song" data-song-id="all-song-174"><div class="song-title">Drive My Car</div><div class="song-artist">THE BEATLES</div></article>
+
+        <article class="song" data-song-id="all-song-175"><div class="song-title">Get Back</div><div class="song-artist">THE BEATLES</div></article>
+
+        <article class="song" data-song-id="all-song-176"><div class="song-title">Back In The USSR</div><div class="song-artist">THE BEATLES</div></article>
+</div>
+      <div class="column">
+        <article class="song" data-song-id="all-song-179"><div class="song-title">Johnny B. Goode</div><div class="song-artist">CHUCK BERRY</div></article>
+
+        <article class="song" data-song-id="all-song-180"><div class="song-title">You Never Can Tell</div><div class="song-artist">CHUCK BERRY</div></article>
+
+        <article class="song" data-song-id="all-song-181"><div class="song-title">I Feel Good</div><div class="song-artist">JAMES BROWN</div></article>
+
+        <article class="song" data-song-id="all-song-182"><div class="song-title">Hit the Road Jack</div><div class="song-artist">RAY CHARLES</div></article>
+
+        <article class="song" data-song-id="all-song-183"><div class="song-title">What I'd Say</div><div class="song-artist">RAY CHARLES</div></article>
+
+        <article class="song" data-song-id="all-song-184"><div class="song-title">I Got a Woman</div><div class="song-artist">RAY CHARLES</div></article>
+
+        <article class="song" data-song-id="all-song-185"><div class="song-title">Hallelujah I Love Her So</div><div class="song-artist">RAY CHARLES</div></article>
+
+        <article class="song" data-song-id="all-song-186"><div class="song-title">Route 66</div><div class="song-artist">NAT KING COLE</div></article>
+
+        <article class="song" data-song-id="all-song-187"><div class="song-title">Let’s Twist Again</div><div class="song-artist">CHUBBY CHECKER</div></article>
+
+        <article class="song" data-song-id="all-song-188"><div class="song-title">Great Balls of Fire</div><div class="song-artist">JERRY LEE LEWIS</div></article>
+
+        <article class="song" data-song-id="all-song-189"><div class="song-title">Sway</div><div class="song-artist">DEAN MARTIN</div></article>
+
+        <article class="song" data-song-id="all-song-168"><div class="song-title">Crazy Little Thing Called Love</div><div class="song-artist">QUEEN</div></article>
+
+        <article class="song" data-song-id="all-song-190"><div class="song-title">Pretty Woman</div><div class="song-artist">ROY ORBISSON</div></article>
+</div>
+      <div class="column">
+        <article class="song" data-song-id="all-song-191"><div class="song-title">Blue Suede Shoes</div><div class="song-artist">ELVIS PRESLEY</div></article>
+
+        <article class="song" data-song-id="all-song-192"><div class="song-title">A Little Less Conversation</div><div class="song-artist">ELVIS PRESLEY</div></article>
+
+        <article class="song" data-song-id="all-song-194"><div class="song-title">Runaway</div><div class="song-artist">DEL SHANNON</div></article>
+
+        <article class="song" data-song-id="all-song-195"><div class="song-title">Wanna Be Americano</div><div class="song-artist">BRIAN SETZER &amp; THE STRAY CATS</div></article>
+
+        <article class="song" data-song-id="all-song-196"><div class="song-title">Stray Cat Strut</div><div class="song-artist">BRIAN SETZER &amp; THE STRAY CATS</div></article>
+
+        <article class="song" data-song-id="all-song-197"><div class="song-title">Rock This Town</div><div class="song-artist">BRIAN SETZER &amp; THE STRAY CATS</div></article>
+
+        <article class="song" data-song-id="all-song-198"><div class="song-title">Rumble in Brighton</div><div class="song-artist">BRIAN SETZER &amp; THE STRAY CATS</div></article>
+
+        <article class="song" data-song-id="all-song-199"><div class="song-title">Ubangi Stomp (OST «Жмурки»)</div><div class="song-artist">BRIAN SETZER &amp; THE STRAY CATS</div></article>
+
+        <article class="song" data-song-id="all-song-200"><div class="song-title">La Bamba</div><div class="song-artist">RICHIE VALENS</div></article>
+
+        <article class="song" data-song-id="all-song-202"><div class="song-title">Superstition</div><div class="song-artist">STEVIE WONDER</div></article>
+
+        <article class="song" data-song-id="all-song-144"><div class="song-title">Venus («Шизгара»)</div><div class="song-artist">SHOCKING BLUE</div></article>
+
+        <article class="song" data-song-id="all-song-147"><div class="song-title">Amore No</div><div class="song-artist">ADRIANO CELENTANO</div></article>
+
+        <article class="song" data-song-id="all-song-149"><div class="song-title">Je Veux</div><div class="song-artist">ZAZ</div></article>
+
+        <article class="song" data-song-id="all-song-170"><div class="song-title">After Dark</div><div class="song-artist">TITO &amp; TARANTULA</div></article>
+</div></div>
+</section>
+<section aria-label="ЛАУНЖ И ЛИРИКА, 33 композиций" class="collection" id="section-05"><header class="section-head"><h2>ЛАУНЖ И ЛИРИКА</h2><span class="section-index">05 / 06</span></header><div class="hairline"></div><div class="song-columns balanced-song-columns">
+      <div class="column">
+        <article class="song" data-song-id="all-song-003"><div class="song-title">На сиреневой Луне</div><div class="song-artist">Л. АГУТИН</div></article>
+
+        <article class="song" data-song-id="all-song-004"><div class="song-title">Половина сердца</div><div class="song-artist">Л. АГУТИН</div></article>
+
+        <article class="song" data-song-id="all-song-006"><div class="song-title">Всё в твоих руках</div><div class="song-artist">Л. АГУТИН</div></article>
+
+        <article class="song" data-song-id="all-song-007"><div class="song-title">Лететь</div><div class="song-artist">А-МЕГА</div></article>
+
+        <article class="song" data-song-id="all-song-009"><div class="song-title">Ещё люблю</div><div class="song-artist">А-СТУДИО</div></article>
+
+        <article class="song" data-song-id="all-song-025"><div class="song-title">Ветер знает</div><div class="song-artist">БРАВО</div></article>
+
+        <article class="song" data-song-id="all-song-027"><div class="song-title">Как жаль</div><div class="song-artist">БРАВО</div></article>
+
+        <article class="song" data-song-id="all-song-037"><div class="song-title">Ночь</div><div class="song-artist">А. ГУБИН</div></article>
+
+        <article class="song" data-song-id="all-song-064"><div class="song-title">Город, которого нет</div><div class="song-artist">И. КОРНЕЛЮК</div></article>
+
+        <article class="song" data-song-id="all-song-065"><div class="song-title">Дожди</div><div class="song-artist">И. КОРНЕЛЮК</div></article>
+
+        <article class="song" data-song-id="all-song-067"><div class="song-title">Сказка в моей жизни</div><div class="song-artist">В. КУЗЬМИН</div></article>
+</div>
+      <div class="column">
+        <article class="song" data-song-id="all-song-079"><div class="song-title">Салют, Вера</div><div class="song-artist">В. МЕЛАДЗЕ</div></article>
+
+        <article class="song" data-song-id="all-song-080"><div class="song-title">Я это ты</div><div class="song-artist">М. НАСЫРОВ</div></article>
+
+        <article class="song" data-song-id="all-song-092"><div class="song-title">Не дай ему уйти</div><div class="song-artist">СЕКРЕТ / М. ЛЕОНИДОВ</div></article>
+
+        <article class="song" data-song-id="all-song-096"><div class="song-title">Седьмой лепесток</div><div class="song-artist">А. ТОКАРЕВ</div></article>
+
+        <article class="song" data-song-id="all-song-098"><div class="song-title">10 капель</div><div class="song-artist">ТАНЦЫ МИНУС</div></article>
+
+        <article class="song" data-song-id="all-song-101"><div class="song-title">Счастье</div><div class="song-artist">А. ЧУМАКОВ</div></article>
+
+        <article class="song" data-song-id="all-song-126"><div class="song-title">Wicked Game</div><div class="song-artist">CHRIS ISAAK</div></article>
+
+        <article class="song" data-song-id="all-song-131"><div class="song-title">Shallow</div><div class="song-artist">LADY GAGA</div></article>
+
+        <article class="song" data-song-id="all-song-135"><div class="song-title">Careless Whisper</div><div class="song-artist">GEORGE MICHAEL</div></article>
+
+        <article class="song" data-song-id="all-song-138"><div class="song-title">I'll Always Love You</div><div class="song-artist">D. PARTON / W. HOUSTON</div></article>
+
+        <article class="song" data-song-id="all-song-139"><div class="song-title">Kiss Me</div><div class="song-artist">SIXPENCE NONE THE RICHER</div></article>
+</div>
+      <div class="column">
+        <article class="song" data-song-id="all-song-140"><div class="song-title">Englishman In New York</div><div class="song-artist">STING</div></article>
+
+        <article class="song" data-song-id="all-song-145"><div class="song-title">Perfect</div><div class="song-artist">ED SHEERAN</div></article>
+
+        <article class="song" data-song-id="all-song-148"><div class="song-title">Mon Mec A Moi</div><div class="song-artist">PATRICIA KAAS</div></article>
+
+        <article class="song" data-song-id="all-song-150"><div class="song-title">I Don't Wanna Miss a Thing (OST «Армагеддон»)</div><div class="song-artist">AEROSMITH</div></article>
+
+        <article class="song" data-song-id="all-song-151"><div class="song-title">Cryin’</div><div class="song-artist">AEROSMITH</div></article>
+
+        <article class="song" data-song-id="all-song-159"><div class="song-title">Hotel California</div><div class="song-artist">EAGLES</div></article>
+
+        <article class="song" data-song-id="all-song-161"><div class="song-title">Don’t Cry</div><div class="song-artist">GUNS’N’ROSES</div></article>
+
+        <article class="song" data-song-id="all-song-165"><div class="song-title">Nothing Else Matters</div><div class="song-artist">METALLICA</div></article>
+
+        <article class="song" data-song-id="all-song-203"><div class="song-title">Just The Two of Us</div><div class="song-artist">GROVER WASHINGTON</div></article>
+
+        <article class="song" data-song-id="all-song-178"><div class="song-title">Change the World</div><div class="song-artist">ERIC CLAPTON</div></article>
+
+        <article class="song" data-song-id="all-song-193"><div class="song-title">Can’t Help Fallin’ In Love</div><div class="song-artist">ELVIS PRESLEY</div></article>
+</div></div>
+</section>
+<section aria-label="Зимняя коллекция, 8 композиций" class="collection" id="section-06"><header class="section-head"><h2>ЗИМНЯЯ КОЛЛЕКЦИЯ</h2><span class="section-index">06 / 06</span></header><div class="hairline"></div><div class="song-columns winter-song-columns">
+      <div class="column">
+        <article class="song" data-song-id="all-song-204"><div class="song-title">Let it Snow</div><div class="song-artist">FRANK SINATRA</div></article>
+
+        <article class="song" data-song-id="all-song-205"><div class="song-title">Jingle Bell Rock</div><div class="song-artist">BOBBY HELMS</div></article>
+
+        <article class="song" data-song-id="all-song-206"><div class="song-title">Last Christmas</div><div class="song-artist">WHAM!</div></article>
+</div>
+      <div class="column">
+        <article class="song" data-song-id="all-song-207"><div class="song-title">Blue Christmas</div><div class="song-artist">ELVIS PRESLEY</div></article>
+
+        <article class="song" data-song-id="all-song-208"><div class="song-title">Последний час декабря</div><div class="song-artist">СЕКРЕТ</div></article>
+
+        <article class="song" data-song-id="all-song-209"><div class="song-title">Расскажи Снегурочка</div><div class="song-artist">НУ, ПОГОДИ!</div></article>
+</div>
+      <div class="column">
+        <article class="song" data-song-id="all-song-210"><div class="song-title">Снег идет</div><div class="song-artist">М. КРИСТАЛЛИНСКАЯ / Ж. АГУЗАРОВА</div></article>
+
+        <article class="song" data-song-id="all-song-032"><div class="song-title">Звенит январская вьюга</div><div class="song-artist">НИНА БРОДСКАЯ / АННА АСТИ</div></article>
+</div></div>
+</section>
+<section class="rep-bottom" aria-label="Собрать свой вечер">
+<span class="cta-preview" aria-disabled="true">СОБРАТЬ СВОЙ ВЕЧЕР</span>
+<p>Управляйте настроением, плейлистом и составом бэнда.</p>
+
+</section>
+
+</main>
 </body>
 </html>

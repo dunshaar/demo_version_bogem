@@ -1,0 +1,1310 @@
+{
+  "project": "BOGEMA",
+  "source": "Approved six-section reference (not a music release database)",
+  "note": "Song identifiers map to existing repertoire/data.json; keep IDs unchanged. Stevie Wonder / Superstition and Танцы минус / Город-сказка are approved display corrections.",
+  "total": 210,
+  "sections": [
+    {
+      "number": "01",
+      "heading": "СИНГЛЫ И ТОП-ЧАРТЫ",
+      "count": 31,
+      "songs": [
+        {
+          "id": "all-song-012",
+          "title": "Царица",
+          "artist": "ANNA ASTI",
+          "position_in_section": 1
+        },
+        {
+          "id": "all-song-120",
+          "title": "Don’t Start Now",
+          "artist": "DUA LIPA",
+          "position_in_section": 2
+        },
+        {
+          "id": "all-song-123",
+          "title": "No Roots",
+          "artist": "ALICE MERTON",
+          "position_in_section": 3
+        },
+        {
+          "id": "all-song-146",
+          "title": "Shape of You",
+          "artist": "ED SHEERAN",
+          "position_in_section": 4
+        },
+        {
+          "id": "all-song-052",
+          "title": "Beverly Hills",
+          "artist": "ZIVERT",
+          "position_in_section": 5
+        },
+        {
+          "id": "all-song-054",
+          "title": "Wake Up",
+          "artist": "ZIVERT",
+          "position_in_section": 6
+        },
+        {
+          "id": "all-song-030",
+          "title": "Молния",
+          "artist": "ДИМА БИЛАН",
+          "position_in_section": 7
+        },
+        {
+          "id": "all-song-040",
+          "title": "Босая",
+          "artist": "ДВЕ МАШИ",
+          "position_in_section": 8
+        },
+        {
+          "id": "all-song-100",
+          "title": "Солнце Монако",
+          "artist": "Л. ЧЕБОТИНА",
+          "position_in_section": 9
+        },
+        {
+          "id": "all-song-110",
+          "title": "Мама",
+          "artist": "IOWA",
+          "position_in_section": 10
+        },
+        {
+          "id": "all-song-133",
+          "title": "Locked Out of Heaven",
+          "artist": "BRUNO MARS",
+          "position_in_section": 11
+        },
+        {
+          "id": "all-song-013",
+          "title": "По барам",
+          "artist": "ANNA ASTI",
+          "position_in_section": 12
+        },
+        {
+          "id": "all-song-121",
+          "title": "Levitating",
+          "artist": "DUA LIPA",
+          "position_in_section": 13
+        },
+        {
+          "id": "all-song-124",
+          "title": "Get Lucky",
+          "artist": "DAFT PUNK",
+          "position_in_section": 14
+        },
+        {
+          "id": "all-song-158",
+          "title": "Enjoy the Silence",
+          "artist": "DEPECHE MODE",
+          "position_in_section": 15
+        },
+        {
+          "id": "all-song-053",
+          "title": "Life",
+          "artist": "ZIVERT",
+          "position_in_section": 16
+        },
+        {
+          "id": "all-song-055",
+          "title": "Паруса",
+          "artist": "ZIVERT",
+          "position_in_section": 17
+        },
+        {
+          "id": "all-song-031",
+          "title": "Держи",
+          "artist": "ДИМА БИЛАН",
+          "position_in_section": 18
+        },
+        {
+          "id": "all-song-041",
+          "title": "Мама, я танцую",
+          "artist": "ДВЕ МАШИ",
+          "position_in_section": 19
+        },
+        {
+          "id": "all-song-108",
+          "title": "Простая песня",
+          "artist": "IOWA",
+          "position_in_section": 20
+        },
+        {
+          "id": "all-song-093",
+          "title": "Между нами любовь",
+          "artist": "СЕРЕБРО",
+          "position_in_section": 21
+        },
+        {
+          "id": "all-song-119",
+          "title": "Cold Heart (feat. Elton John)",
+          "artist": "DUA LIPA",
+          "position_in_section": 22
+        },
+        {
+          "id": "all-song-118",
+          "title": "Flowers",
+          "artist": "MILEY CYRUS",
+          "position_in_section": 23
+        },
+        {
+          "id": "all-song-137",
+          "title": "This Love",
+          "artist": "MAROON 5",
+          "position_in_section": 24
+        },
+        {
+          "id": "all-song-039",
+          "title": "Зима в сердце",
+          "artist": "ГОСТИ ИЗ БУДУЩЕГО / МОЯ МИШЕЛЬ",
+          "position_in_section": 25
+        },
+        {
+          "id": "all-song-011",
+          "title": "Улетаю",
+          "artist": "А-СТУДИО",
+          "position_in_section": 26
+        },
+        {
+          "id": "all-song-109",
+          "title": "Улыбайся",
+          "artist": "IOWA",
+          "position_in_section": 27
+        },
+        {
+          "id": "all-song-117",
+          "title": "Let’s Get It Started",
+          "artist": "BLACK-EYED PEAS",
+          "position_in_section": 28
+        },
+        {
+          "id": "all-song-143",
+          "title": "Whenever, Wherever",
+          "artist": "SHAKIRA",
+          "position_in_section": 29
+        },
+        {
+          "id": "all-song-130",
+          "title": "Let’s Get Loud",
+          "artist": "JENNIFER LOPEZ",
+          "position_in_section": 30
+        },
+        {
+          "id": "all-song-134",
+          "title": "Uptown Funk",
+          "artist": "BRUNO MARS",
+          "position_in_section": 31
+        }
+      ]
+    },
+    {
+      "number": "02",
+      "heading": "ЧИСТЫЙ ДРАЙВ",
+      "count": 67,
+      "songs": [
+        {
+          "id": "all-song-001",
+          "title": "Остров",
+          "artist": "Л. АГУТИН",
+          "position_in_section": 1
+        },
+        {
+          "id": "all-song-002",
+          "title": "Хоп хэй ла-ла-лэй",
+          "artist": "Л. АГУТИН",
+          "position_in_section": 2
+        },
+        {
+          "id": "all-song-005",
+          "title": "Парень чернокожий",
+          "artist": "Л. АГУТИН",
+          "position_in_section": 3
+        },
+        {
+          "id": "all-song-112",
+          "title": "Take On Me",
+          "artist": "A-HA",
+          "position_in_section": 4
+        },
+        {
+          "id": "all-song-008",
+          "title": "Тик-так",
+          "artist": "А-СТУДИО",
+          "position_in_section": 5
+        },
+        {
+          "id": "all-song-010",
+          "title": "Так же как все",
+          "artist": "А-СТУДИО",
+          "position_in_section": 6
+        },
+        {
+          "id": "all-song-016",
+          "title": "Младший Лейтенант",
+          "artist": "И. АЛЛЕГРОВА",
+          "position_in_section": 7
+        },
+        {
+          "id": "all-song-113",
+          "title": "Gimme! Gimme! Gimme!",
+          "artist": "ABBA",
+          "position_in_section": 8
+        },
+        {
+          "id": "all-song-017",
+          "title": "С днём рождения",
+          "artist": "И. АЛЛЕГРОВА",
+          "position_in_section": 9
+        },
+        {
+          "id": "all-song-018",
+          "title": "Угонщица",
+          "artist": "И. АЛЛЕГРОВА",
+          "position_in_section": 10
+        },
+        {
+          "id": "all-song-019",
+          "title": "Мечта сбывается",
+          "artist": "Ю. АНТОНОВ",
+          "position_in_section": 11
+        },
+        {
+          "id": "all-song-114",
+          "title": "Dancing Queen",
+          "artist": "ABBA",
+          "position_in_section": 12
+        },
+        {
+          "id": "all-song-020",
+          "title": "Я вспоминаю (Летящей походкой)",
+          "artist": "Ю. АНТОНОВ",
+          "position_in_section": 13
+        },
+        {
+          "id": "all-song-022",
+          "title": "Дорога в облака",
+          "artist": "БРАВО",
+          "position_in_section": 14
+        },
+        {
+          "id": "all-song-028",
+          "title": "Я то, что надо",
+          "artist": "БРАВО",
+          "position_in_section": 15
+        },
+        {
+          "id": "all-song-115",
+          "title": "All That She Wants",
+          "artist": "ACE OF BACE",
+          "position_in_section": 16
+        },
+        {
+          "id": "all-song-033",
+          "title": "За 4 моря",
+          "artist": "БЛЕСТЯЩИЕ",
+          "position_in_section": 17
+        },
+        {
+          "id": "all-song-034",
+          "title": "Посмотри в глаза",
+          "artist": "Н. ВЕТЛИЦКАЯ / BEARWOLF",
+          "position_in_section": 18
+        },
+        {
+          "id": "all-song-035",
+          "title": "Попытка №5",
+          "artist": "ВИАГРА",
+          "position_in_section": 19
+        },
+        {
+          "id": "all-song-116",
+          "title": "Beautiful Life",
+          "artist": "ACE OF BACE",
+          "position_in_section": 20
+        },
+        {
+          "id": "all-song-038",
+          "title": "Девушки как звезды",
+          "artist": "А. ГУБИН",
+          "position_in_section": 21
+        },
+        {
+          "id": "all-song-042",
+          "title": "Солнышко",
+          "artist": "ДЕМО",
+          "position_in_section": 22
+        },
+        {
+          "id": "all-song-044",
+          "title": "Танкист",
+          "artist": "ЖУКИ",
+          "position_in_section": 23
+        },
+        {
+          "id": "all-song-122",
+          "title": "Sweet Dreams",
+          "artist": "EURYTHMICS",
+          "position_in_section": 24
+        },
+        {
+          "id": "all-song-045",
+          "title": "Районы-кварталы",
+          "artist": "ЗВЕРИ",
+          "position_in_section": 25
+        },
+        {
+          "id": "all-song-046",
+          "title": "До скорой встречи",
+          "artist": "ЗВЕРИ",
+          "position_in_section": 26
+        },
+        {
+          "id": "all-song-047",
+          "title": "Такая сильная любовь",
+          "artist": "ЗВЕРИ",
+          "position_in_section": 27
+        },
+        {
+          "id": "all-song-125",
+          "title": "I Will Survive",
+          "artist": "GLORIA GAYNOR",
+          "position_in_section": 28
+        },
+        {
+          "id": "all-song-048",
+          "title": "Летняя ночь (Девочки-мальчики)",
+          "artist": "ЗВЕРИ",
+          "position_in_section": 29
+        },
+        {
+          "id": "all-song-049",
+          "title": "Трава у дома",
+          "artist": "ЗЕМЛЯНЕ",
+          "position_in_section": 30
+        },
+        {
+          "id": "all-song-056",
+          "title": "Тополиный пух",
+          "artist": "ИВАНУШКИ INT.",
+          "position_in_section": 31
+        },
+        {
+          "id": "all-song-127",
+          "title": "Billy Jean",
+          "artist": "MICHAEL JACKSON",
+          "position_in_section": 32
+        },
+        {
+          "id": "all-song-061",
+          "title": "Матушка",
+          "artist": "Т. КУРТУКОВА",
+          "position_in_section": 33
+        },
+        {
+          "id": "all-song-062",
+          "title": "Плывет веночек",
+          "artist": "Н. КАДЫШЕВА",
+          "position_in_section": 34
+        },
+        {
+          "id": "all-song-063",
+          "title": "Широка Река",
+          "artist": "Н. КАДЫШЕВА",
+          "position_in_section": 35
+        },
+        {
+          "id": "all-song-128",
+          "title": "Black or White",
+          "artist": "MICHAEL JACKSON",
+          "position_in_section": 36
+        },
+        {
+          "id": "all-song-066",
+          "title": "Эй, красотка",
+          "artist": "В. КУЗЬМИН",
+          "position_in_section": 37
+        },
+        {
+          "id": "all-song-068",
+          "title": "Хали-гали паратрупер",
+          "artist": "ЛЕПРИКОНСЫ",
+          "position_in_section": 38
+        },
+        {
+          "id": "all-song-070",
+          "title": "WWW",
+          "artist": "ЛЕНИНГРАД",
+          "position_in_section": 39
+        },
+        {
+          "id": "all-song-129",
+          "title": "La Camisa Negra",
+          "artist": "JUANES",
+          "position_in_section": 40
+        },
+        {
+          "id": "all-song-071",
+          "title": "Рыба моей мечты",
+          "artist": "ЛЕНИНГРАД",
+          "position_in_section": 41
+        },
+        {
+          "id": "all-song-072",
+          "title": "В Питере пить",
+          "artist": "ЛЕНИНГРАД",
+          "position_in_section": 42
+        },
+        {
+          "id": "all-song-073",
+          "title": "Экспонат",
+          "artist": "ЛЕНИНГРАД",
+          "position_in_section": 43
+        },
+        {
+          "id": "all-song-132",
+          "title": "Cancion Del Mariachi (OST Desperado)",
+          "artist": "LOS LOBOS",
+          "position_in_section": 44
+        },
+        {
+          "id": "all-song-074",
+          "title": "Полёт на дельтаплане",
+          "artist": "В. ЛЕОНТЬЕВ",
+          "position_in_section": 45
+        },
+        {
+          "id": "all-song-075",
+          "title": "Белые розы",
+          "artist": "ЛАСКОВЫЙ МАЙ",
+          "position_in_section": 46
+        },
+        {
+          "id": "all-song-076",
+          "title": "Седая ночь",
+          "artist": "ЛАСКОВЫЙ МАЙ",
+          "position_in_section": 47
+        },
+        {
+          "id": "all-song-136",
+          "title": "Livin’ La Vida Loca",
+          "artist": "RICKY MARTIN",
+          "position_in_section": 48
+        },
+        {
+          "id": "all-song-077",
+          "title": "За тех, кто в море",
+          "artist": "МАШИНА ВРЕМЕНИ",
+          "position_in_section": 49
+        },
+        {
+          "id": "all-song-078",
+          "title": "Текила-любовь",
+          "artist": "В. МЕЛАДЗЕ",
+          "position_in_section": 50
+        },
+        {
+          "id": "all-song-083",
+          "title": "Музыка нас связала",
+          "artist": "МИРАЖ",
+          "position_in_section": 51
+        },
+        {
+          "id": "all-song-141",
+          "title": "I'm a Believer",
+          "artist": "SMASH MOUTH",
+          "position_in_section": 52
+        },
+        {
+          "id": "all-song-085",
+          "title": "Что ты имела ввиду",
+          "artist": "НЕСЧАСТНЫЙ СЛУЧАЙ",
+          "position_in_section": 53
+        },
+        {
+          "id": "all-song-086",
+          "title": "Люби меня, люби",
+          "artist": "ОТПЕТЫЕ МОШЕННИКИ",
+          "position_in_section": 54
+        },
+        {
+          "id": "all-song-087",
+          "title": "Крошка моя",
+          "artist": "РУКИ ВВЕРХ",
+          "position_in_section": 55
+        },
+        {
+          "id": "all-song-142",
+          "title": "All Star",
+          "artist": "SMASH MOUTH",
+          "position_in_section": 56
+        },
+        {
+          "id": "all-song-088",
+          "title": "Алёшка",
+          "artist": "РУКИ ВВЕРХ",
+          "position_in_section": 57
+        },
+        {
+          "id": "all-song-089",
+          "title": "Ничего не говори",
+          "artist": "РОК-ОСТРОВА",
+          "position_in_section": 58
+        },
+        {
+          "id": "all-song-090",
+          "title": "Любовь на пятом этаже",
+          "artist": "СЕКРЕТ / М. ЛЕОНИДОВ",
+          "position_in_section": 59
+        },
+        {
+          "id": "all-song-155",
+          "title": "Who'll Stop the Rain",
+          "artist": "CREEDENCE",
+          "position_in_section": 60
+        },
+        {
+          "id": "all-song-091",
+          "title": "Виденье",
+          "artist": "СЕКРЕТ / М. ЛЕОНИДОВ",
+          "position_in_section": 61
+        },
+        {
+          "id": "all-song-102",
+          "title": "Тут и там",
+          "artist": "А. ЧУМАКОВ",
+          "position_in_section": 62
+        },
+        {
+          "id": "all-song-105",
+          "title": "Отшумели летние дожди",
+          "artist": "ШУРА",
+          "position_in_section": 63
+        },
+        {
+          "id": "all-song-156",
+          "title": "Have You Ever Seen The Rain",
+          "artist": "CREEDENCE",
+          "position_in_section": 64
+        },
+        {
+          "id": "all-song-106",
+          "title": "Ты не верь слезам",
+          "artist": "ШУРА",
+          "position_in_section": 65
+        },
+        {
+          "id": "all-song-111",
+          "title": "Ума Турман (Я так ждала тебя, Вова)",
+          "artist": "UMA2RMAN",
+          "position_in_section": 66
+        },
+        {
+          "id": "all-song-201",
+          "title": "Isn’t She Lovely",
+          "artist": "STEVIE WONDER",
+          "position_in_section": 67
+        }
+      ]
+    },
+    {
+      "number": "03",
+      "heading": "СТАДИОННЫЙ РОК",
+      "count": 31,
+      "songs": [
+        {
+          "id": "all-song-014",
+          "title": "На тебе как на войне",
+          "artist": "АГАТА КРИСТИ",
+          "position_in_section": 1
+        },
+        {
+          "id": "all-song-015",
+          "title": "Сказочная тайга",
+          "artist": "АГАТА КРИСТИ",
+          "position_in_section": 2
+        },
+        {
+          "id": "all-song-043",
+          "title": "Батарейка",
+          "artist": "ЖУКИ",
+          "position_in_section": 3
+        },
+        {
+          "id": "all-song-050",
+          "title": "Почему",
+          "artist": "ЗЕМФИРА",
+          "position_in_section": 4
+        },
+        {
+          "id": "all-song-051",
+          "title": "Искала",
+          "artist": "ЗЕМФИРА",
+          "position_in_section": 5
+        },
+        {
+          "id": "all-song-057",
+          "title": "Видели ночь",
+          "artist": "КИНО / ZDOB SI ZDUB",
+          "position_in_section": 6
+        },
+        {
+          "id": "all-song-058",
+          "title": "Лесник",
+          "artist": "КОРОЛЬ И ШУТ",
+          "position_in_section": 7
+        },
+        {
+          "id": "all-song-059",
+          "title": "Кукла колдуна",
+          "artist": "КОРОЛЬ И ШУТ",
+          "position_in_section": 8
+        },
+        {
+          "id": "all-song-060",
+          "title": "Прыгну со скалы",
+          "artist": "КОРОЛЬ И ШУТ",
+          "position_in_section": 9
+        },
+        {
+          "id": "all-song-069",
+          "title": "Ау",
+          "artist": "ЛЯПИС ТРУБЕЦКОЙ",
+          "position_in_section": 10
+        },
+        {
+          "id": "all-song-081",
+          "title": "Владивосток 2000",
+          "artist": "МУМИЙ ТРОЛЛЬ",
+          "position_in_section": 11
+        },
+        {
+          "id": "all-song-082",
+          "title": "Медведица",
+          "artist": "МУМИЙ ТРОЛЛЬ",
+          "position_in_section": 12
+        },
+        {
+          "id": "all-song-094",
+          "title": "Моя бабушка курит трубку",
+          "artist": "Г. СУКАЧЁВ",
+          "position_in_section": 13
+        },
+        {
+          "id": "all-song-095",
+          "title": "Моё сердце",
+          "artist": "СПЛИН",
+          "position_in_section": 14
+        },
+        {
+          "id": "all-song-097",
+          "title": "Город-сказка",
+          "artist": "ТАНЦЫ МИНУС",
+          "position_in_section": 15
+        },
+        {
+          "id": "all-song-099",
+          "title": "Половинка",
+          "artist": "ТАНЦЫ МИНУС",
+          "position_in_section": 16
+        },
+        {
+          "id": "all-song-103",
+          "title": "17 лет",
+          "artist": "ЧАЙФ",
+          "position_in_section": 17
+        },
+        {
+          "id": "all-song-104",
+          "title": "Рок-н-ролл этой ночи",
+          "artist": "ЧАЙФ",
+          "position_in_section": 18
+        },
+        {
+          "id": "all-song-107",
+          "title": "Три полоски",
+          "artist": "ANIMAL JAZZ",
+          "position_in_section": 19
+        },
+        {
+          "id": "all-song-152",
+          "title": "Highway to Hell",
+          "artist": "AC/DC",
+          "position_in_section": 20
+        },
+        {
+          "id": "all-song-153",
+          "title": "It’s My Life",
+          "artist": "BON JOVI",
+          "position_in_section": 21
+        },
+        {
+          "id": "all-song-154",
+          "title": "Zombie",
+          "artist": "CRANBERRIES",
+          "position_in_section": 22
+        },
+        {
+          "id": "all-song-157",
+          "title": "Personal Jesus",
+          "artist": "DEPECHE MODE",
+          "position_in_section": 23
+        },
+        {
+          "id": "all-song-177",
+          "title": "Layla",
+          "artist": "ERIC CLAPTON",
+          "position_in_section": 24
+        },
+        {
+          "id": "all-song-160",
+          "title": "Knockin’ On Heaven’s Door",
+          "artist": "GUNS N’ ROSES",
+          "position_in_section": 25
+        },
+        {
+          "id": "all-song-162",
+          "title": "I Was Born For Lovin' You",
+          "artist": "KISS",
+          "position_in_section": 26
+        },
+        {
+          "id": "all-song-164",
+          "title": "Numb",
+          "artist": "LINKIN PARK",
+          "position_in_section": 27
+        },
+        {
+          "id": "all-song-163",
+          "title": "Sweet Home Alabama",
+          "artist": "LYNYRD SKYNYRD",
+          "position_in_section": 28
+        },
+        {
+          "id": "all-song-166",
+          "title": "Enter Sandman",
+          "artist": "METALLICA",
+          "position_in_section": 29
+        },
+        {
+          "id": "all-song-167",
+          "title": "Smells Like Teen Spirit",
+          "artist": "NIRVANA",
+          "position_in_section": 30
+        },
+        {
+          "id": "all-song-169",
+          "title": "Creep",
+          "artist": "RADIOHEAD",
+          "position_in_section": 31
+        }
+      ]
+    },
+    {
+      "number": "04",
+      "heading": "ВИНТАЖНЫЙ ГЛЯНЕЦ",
+      "count": 40,
+      "songs": [
+        {
+          "id": "all-song-021",
+          "title": "Вася",
+          "artist": "БРАВО",
+          "position_in_section": 1
+        },
+        {
+          "id": "all-song-023",
+          "title": "Любите, девушки",
+          "artist": "БРАВО",
+          "position_in_section": 2
+        },
+        {
+          "id": "all-song-024",
+          "title": "Московский бит",
+          "artist": "БРАВО",
+          "position_in_section": 3
+        },
+        {
+          "id": "all-song-026",
+          "title": "Оранжевый галстук",
+          "artist": "БРАВО",
+          "position_in_section": 4
+        },
+        {
+          "id": "all-song-029",
+          "title": "Ленинградский рок-н-ролл",
+          "artist": "БРАВО",
+          "position_in_section": 5
+        },
+        {
+          "id": "all-song-036",
+          "title": "Люди встречаются",
+          "artist": "ВИА «ВЕСЁЛЫЕ РЕБЯТА»",
+          "position_in_section": 6
+        },
+        {
+          "id": "all-song-084",
+          "title": "У самого синего моря",
+          "artist": "МИСТЕР ТВИСТЕР",
+          "position_in_section": 7
+        },
+        {
+          "id": "all-song-171",
+          "title": "Rock Around the Clock",
+          "artist": "BILL HALEY",
+          "position_in_section": 8
+        },
+        {
+          "id": "all-song-172",
+          "title": "I Saw Her Standing There",
+          "artist": "THE BEATLES",
+          "position_in_section": 9
+        },
+        {
+          "id": "all-song-173",
+          "title": "Can’t Buy Me Love",
+          "artist": "THE BEATLES",
+          "position_in_section": 10
+        },
+        {
+          "id": "all-song-174",
+          "title": "Drive My Car",
+          "artist": "THE BEATLES",
+          "position_in_section": 11
+        },
+        {
+          "id": "all-song-175",
+          "title": "Get Back",
+          "artist": "THE BEATLES",
+          "position_in_section": 12
+        },
+        {
+          "id": "all-song-176",
+          "title": "Back In The USSR",
+          "artist": "THE BEATLES",
+          "position_in_section": 13
+        },
+        {
+          "id": "all-song-179",
+          "title": "Johnny B. Goode",
+          "artist": "CHUCK BERRY",
+          "position_in_section": 14
+        },
+        {
+          "id": "all-song-180",
+          "title": "You Never Can Tell",
+          "artist": "CHUCK BERRY",
+          "position_in_section": 15
+        },
+        {
+          "id": "all-song-181",
+          "title": "I Feel Good",
+          "artist": "JAMES BROWN",
+          "position_in_section": 16
+        },
+        {
+          "id": "all-song-182",
+          "title": "Hit the Road Jack",
+          "artist": "RAY CHARLES",
+          "position_in_section": 17
+        },
+        {
+          "id": "all-song-183",
+          "title": "What I'd Say",
+          "artist": "RAY CHARLES",
+          "position_in_section": 18
+        },
+        {
+          "id": "all-song-184",
+          "title": "I Got a Woman",
+          "artist": "RAY CHARLES",
+          "position_in_section": 19
+        },
+        {
+          "id": "all-song-185",
+          "title": "Hallelujah I Love Her So",
+          "artist": "RAY CHARLES",
+          "position_in_section": 20
+        },
+        {
+          "id": "all-song-186",
+          "title": "Route 66",
+          "artist": "NAT KING COLE",
+          "position_in_section": 21
+        },
+        {
+          "id": "all-song-187",
+          "title": "Let’s Twist Again",
+          "artist": "CHUBBY CHECKER",
+          "position_in_section": 22
+        },
+        {
+          "id": "all-song-188",
+          "title": "Great Balls of Fire",
+          "artist": "JERRY LEE LEWIS",
+          "position_in_section": 23
+        },
+        {
+          "id": "all-song-189",
+          "title": "Sway",
+          "artist": "DEAN MARTIN",
+          "position_in_section": 24
+        },
+        {
+          "id": "all-song-168",
+          "title": "Crazy Little Thing Called Love",
+          "artist": "QUEEN",
+          "position_in_section": 25
+        },
+        {
+          "id": "all-song-190",
+          "title": "Pretty Woman",
+          "artist": "ROY ORBISSON",
+          "position_in_section": 26
+        },
+        {
+          "id": "all-song-191",
+          "title": "Blue Suede Shoes",
+          "artist": "ELVIS PRESLEY",
+          "position_in_section": 27
+        },
+        {
+          "id": "all-song-192",
+          "title": "A Little Less Conversation",
+          "artist": "ELVIS PRESLEY",
+          "position_in_section": 28
+        },
+        {
+          "id": "all-song-194",
+          "title": "Runaway",
+          "artist": "DEL SHANNON",
+          "position_in_section": 29
+        },
+        {
+          "id": "all-song-195",
+          "title": "Wanna Be Americano",
+          "artist": "BRIAN SETZER & THE STRAY CATS",
+          "position_in_section": 30
+        },
+        {
+          "id": "all-song-196",
+          "title": "Stray Cat Strut",
+          "artist": "BRIAN SETZER & THE STRAY CATS",
+          "position_in_section": 31
+        },
+        {
+          "id": "all-song-197",
+          "title": "Rock This Town",
+          "artist": "BRIAN SETZER & THE STRAY CATS",
+          "position_in_section": 32
+        },
+        {
+          "id": "all-song-198",
+          "title": "Rumble in Brighton",
+          "artist": "BRIAN SETZER & THE STRAY CATS",
+          "position_in_section": 33
+        },
+        {
+          "id": "all-song-199",
+          "title": "Ubangi Stomp (OST «Жмурки»)",
+          "artist": "BRIAN SETZER & THE STRAY CATS",
+          "position_in_section": 34
+        },
+        {
+          "id": "all-song-200",
+          "title": "La Bamba",
+          "artist": "RICHIE VALENS",
+          "position_in_section": 35
+        },
+        {
+          "id": "all-song-202",
+          "title": "Superstition",
+          "artist": "STEVIE WONDER",
+          "position_in_section": 36
+        },
+        {
+          "id": "all-song-144",
+          "title": "Venus («Шизгара»)",
+          "artist": "SHOCKING BLUE",
+          "position_in_section": 37
+        },
+        {
+          "id": "all-song-147",
+          "title": "Amore No",
+          "artist": "ADRIANO CELENTANO",
+          "position_in_section": 38
+        },
+        {
+          "id": "all-song-149",
+          "title": "Je Veux",
+          "artist": "ZAZ",
+          "position_in_section": 39
+        },
+        {
+          "id": "all-song-170",
+          "title": "After Dark",
+          "artist": "TITO & TARANTULA",
+          "position_in_section": 40
+        }
+      ]
+    },
+    {
+      "number": "05",
+      "heading": "ЛАУНЖ И ЛИРИКА",
+      "count": 33,
+      "songs": [
+        {
+          "id": "all-song-003",
+          "title": "На сиреневой Луне",
+          "artist": "Л. АГУТИН",
+          "position_in_section": 1
+        },
+        {
+          "id": "all-song-004",
+          "title": "Половина сердца",
+          "artist": "Л. АГУТИН",
+          "position_in_section": 2
+        },
+        {
+          "id": "all-song-006",
+          "title": "Всё в твоих руках",
+          "artist": "Л. АГУТИН",
+          "position_in_section": 3
+        },
+        {
+          "id": "all-song-007",
+          "title": "Лететь",
+          "artist": "А-МЕГА",
+          "position_in_section": 4
+        },
+        {
+          "id": "all-song-009",
+          "title": "Ещё люблю",
+          "artist": "А-СТУДИО",
+          "position_in_section": 5
+        },
+        {
+          "id": "all-song-025",
+          "title": "Ветер знает",
+          "artist": "БРАВО",
+          "position_in_section": 6
+        },
+        {
+          "id": "all-song-027",
+          "title": "Как жаль",
+          "artist": "БРАВО",
+          "position_in_section": 7
+        },
+        {
+          "id": "all-song-037",
+          "title": "Ночь",
+          "artist": "А. ГУБИН",
+          "position_in_section": 8
+        },
+        {
+          "id": "all-song-064",
+          "title": "Город, которого нет",
+          "artist": "И. КОРНЕЛЮК",
+          "position_in_section": 9
+        },
+        {
+          "id": "all-song-065",
+          "title": "Дожди",
+          "artist": "И. КОРНЕЛЮК",
+          "position_in_section": 10
+        },
+        {
+          "id": "all-song-067",
+          "title": "Сказка в моей жизни",
+          "artist": "В. КУЗЬМИН",
+          "position_in_section": 11
+        },
+        {
+          "id": "all-song-079",
+          "title": "Салют, Вера",
+          "artist": "В. МЕЛАДЗЕ",
+          "position_in_section": 12
+        },
+        {
+          "id": "all-song-080",
+          "title": "Я это ты",
+          "artist": "М. НАСЫРОВ",
+          "position_in_section": 13
+        },
+        {
+          "id": "all-song-092",
+          "title": "Не дай ему уйти",
+          "artist": "СЕКРЕТ / М. ЛЕОНИДОВ",
+          "position_in_section": 14
+        },
+        {
+          "id": "all-song-096",
+          "title": "Седьмой лепесток",
+          "artist": "А. ТОКАРЕВ",
+          "position_in_section": 15
+        },
+        {
+          "id": "all-song-098",
+          "title": "10 капель",
+          "artist": "ТАНЦЫ МИНУС",
+          "position_in_section": 16
+        },
+        {
+          "id": "all-song-101",
+          "title": "Счастье",
+          "artist": "А. ЧУМАКОВ",
+          "position_in_section": 17
+        },
+        {
+          "id": "all-song-126",
+          "title": "Wicked Game",
+          "artist": "CHRIS ISAAK",
+          "position_in_section": 18
+        },
+        {
+          "id": "all-song-131",
+          "title": "Shallow",
+          "artist": "LADY GAGA",
+          "position_in_section": 19
+        },
+        {
+          "id": "all-song-135",
+          "title": "Careless Whisper",
+          "artist": "GEORGE MICHAEL",
+          "position_in_section": 20
+        },
+        {
+          "id": "all-song-138",
+          "title": "I'll Always Love You",
+          "artist": "D. PARTON / W. HOUSTON",
+          "position_in_section": 21
+        },
+        {
+          "id": "all-song-139",
+          "title": "Kiss Me",
+          "artist": "SIXPENCE NONE THE RICHER",
+          "position_in_section": 22
+        },
+        {
+          "id": "all-song-140",
+          "title": "Englishman In New York",
+          "artist": "STING",
+          "position_in_section": 23
+        },
+        {
+          "id": "all-song-145",
+          "title": "Perfect",
+          "artist": "ED SHEERAN",
+          "position_in_section": 24
+        },
+        {
+          "id": "all-song-148",
+          "title": "Mon Mec A Moi",
+          "artist": "PATRICIA KAAS",
+          "position_in_section": 25
+        },
+        {
+          "id": "all-song-150",
+          "title": "I Don't Wanna Miss a Thing (OST «Армагеддон»)",
+          "artist": "AEROSMITH",
+          "position_in_section": 26
+        },
+        {
+          "id": "all-song-151",
+          "title": "Cryin’",
+          "artist": "AEROSMITH",
+          "position_in_section": 27
+        },
+        {
+          "id": "all-song-159",
+          "title": "Hotel California",
+          "artist": "EAGLES",
+          "position_in_section": 28
+        },
+        {
+          "id": "all-song-161",
+          "title": "Don’t Cry",
+          "artist": "GUNS’N’ROSES",
+          "position_in_section": 29
+        },
+        {
+          "id": "all-song-165",
+          "title": "Nothing Else Matters",
+          "artist": "METALLICA",
+          "position_in_section": 30
+        },
+        {
+          "id": "all-song-203",
+          "title": "Just The Two of Us",
+          "artist": "GROVER WASHINGTON",
+          "position_in_section": 31
+        },
+        {
+          "id": "all-song-178",
+          "title": "Change the World",
+          "artist": "ERIC CLAPTON",
+          "position_in_section": 32
+        },
+        {
+          "id": "all-song-193",
+          "title": "Can’t Help Fallin’ In Love",
+          "artist": "ELVIS PRESLEY",
+          "position_in_section": 33
+        }
+      ]
+    },
+    {
+      "number": "06",
+      "heading": "ЗИМНЯЯ КОЛЛЕКЦИЯ",
+      "count": 8,
+      "songs": [
+        {
+          "id": "all-song-204",
+          "title": "Let it Snow",
+          "artist": "FRANK SINATRA",
+          "position_in_section": 1
+        },
+        {
+          "id": "all-song-205",
+          "title": "Jingle Bell Rock",
+          "artist": "BOBBY HELMS",
+          "position_in_section": 2
+        },
+        {
+          "id": "all-song-206",
+          "title": "Last Christmas",
+          "artist": "WHAM!",
+          "position_in_section": 3
+        },
+        {
+          "id": "all-song-207",
+          "title": "Blue Christmas",
+          "artist": "ELVIS PRESLEY",
+          "position_in_section": 4
+        },
+        {
+          "id": "all-song-208",
+          "title": "Последний час декабря",
+          "artist": "СЕКРЕТ",
+          "position_in_section": 5
+        },
+        {
+          "id": "all-song-209",
+          "title": "Расскажи Снегурочка",
+          "artist": "НУ, ПОГОДИ!",
+          "position_in_section": 6
+        },
+        {
+          "id": "all-song-210",
+          "title": "Снег идет",
+          "artist": "М. КРИСТАЛЛИНСКАЯ / Ж. АГУЗАРОВА",
+          "position_in_section": 7
+        },
+        {
+          "id": "all-song-032",
+          "title": "Звенит январская вьюга",
+          "artist": "НИНА БРОДСКАЯ / АННА АСТИ",
+          "position_in_section": 8
+        }
+      ]
+    }
+  ]
+}
