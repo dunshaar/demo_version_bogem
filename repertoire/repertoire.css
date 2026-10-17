@@ -1,4 +1,4 @@
-/* Repertoire v8 only; no styles shared with the homepage. */
+/* Repertoire v9 only; no styles shared with the homepage. */
 @font-face {
   font-family: 'Manrope';
   src: url('../assets/fonts/manrope-hero-variable.ttf') format('truetype');
@@ -31,9 +31,7 @@ a{color:inherit}
   margin-bottom:23px;font-size:12px;line-height:1.4;
 }
 .rep-identity{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 9px;min-width:0}
-.rep-identity h1{margin:0;color:var(--rep-brass);font:500 19px/1.15 var(--rep-font);letter-spacing:-.027em}
-.rep-identity .rep-divider{color:var(--rep-muted-dark);font-size:15px}
-.rep-identity p{margin:0;color:var(--rep-muted-dark);font:400 11px/1.35 var(--rep-font);letter-spacing:.035em}
+.rep-identity h1,.rep-identity .rep-divider,.rep-identity p{margin:0;color:var(--rep-brass);font:500 13.5px/1.4 var(--rep-font);letter-spacing:0}
 .rep-navigation a{display:inline-flex;flex:none;align-items:center;min-height:34px;white-space:nowrap;
   text-decoration:none;color:var(--rep-muted-dark);font-size:11px}
 .rep-navigation a:hover{text-decoration:underline;text-underline-offset:4px}
@@ -116,8 +114,6 @@ a:focus-visible{outline:2px solid var(--rep-brass);outline-offset:4px}
   .rep-shell{padding:14px 18px 44px}
   .rep-navigation{margin-bottom:20px;align-items:flex-start}
   .rep-identity{gap:2px 6px}
-  .rep-identity h1{font-size:18.7px}
-  .rep-identity p{font-size:10px}
   .rep-navigation a{font-size:10px}
   .rep-section{margin-bottom:38px}
   .rep-section h2{font-size:clamp(23px,6.3vw,30px)}
