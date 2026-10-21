@@ -1,0 +1,553 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#F2F2F0">
+<title>БОГЕМА — Выбор песен · упрощённый прототип v1</title>
+<style>
+@font-face{font-family:Manrope;src:url('../assets/fonts/manrope-hero-variable.ttf') format('truetype');font-style:normal;font-weight:200 800;font-display:swap}
+:root{--bg:#F2F2F0;--ink:#151613;--brass:#C89A5C;--deep:#9A713D;--accent:#805B2E;--muted:#6B6962;--line:rgba(21,22,19,.22);--strong:rgba(21,22,19,.33);--font:Manrope,Inter,Arial,Helvetica,sans-serif;--choice-bar-height:62px}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:78px}body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:14px;-webkit-font-smoothing:antialiased}button,input,textarea{font:inherit}button{cursor:pointer}a{color:inherit}button{color:inherit}button:disabled{cursor:not-allowed;opacity:.5}[hidden]{display:none!important}.wrap{max-width:1510px;margin-inline:auto;padding-inline:clamp(20px,4vw,60px)}.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:4px}.summary :focus-visible,.mobile-choice-panel :focus-visible{outline-color:var(--brass)}h1:focus,h2:focus{outline:none}.skip-link{position:fixed;top:8px;left:16px;z-index:100;padding:12px 16px;background:var(--ink);color:var(--bg);transform:translateY(-180%)}.skip-link:focus{transform:none}.site-header{display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:1px solid var(--line);min-height:54px;font-size:10px;letter-spacing:.035em}.identity{display:flex;align-items:center;gap:10px;color:var(--accent)}.identity-divider{color:var(--muted)}.demo-state{font-size:9px;color:var(--muted)}.back-link{display:inline-flex;align-items:center;min-height:44px;text-decoration:none;color:var(--muted);white-space:nowrap}.back-link:hover{text-decoration:underline;text-underline-offset:4px}.storage-notice{font-size:12px;line-height:1.5;margin:12px 0 0;padding:8px 12px;background:#eae5dd;border-left:2px solid var(--deep);color:#5b5347}.music{padding-top:26px;padding-bottom:30px;position:relative;overflow-anchor:none}.music-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:18px}.music-heading h1{font-size:clamp(30px,3.55vw,52px);font-weight:400;line-height:1.1;letter-spacing:-.055em;margin:0}.music-desc{font-size:14px;color:var(--muted);margin:9px 0 0;line-height:1.5}.music-meta{margin:0 0 4px;font-size:11px;color:var(--accent);white-space:nowrap;letter-spacing:.025em}.music-tools{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;background:var(--bg);border-bottom:1px solid var(--line);padding:8px 0 10px;margin-bottom:24px}.search-holder{position:relative;flex:1;min-width:0}.search-input{width:100%;height:48px;border:1px solid var(--strong);background:transparent;padding:0 45px;font-size:14px;border-radius:0;appearance:none;color:var(--ink)}.search-input::-webkit-search-cancel-button{display:none}.search-input::placeholder{color:var(--muted)}.search-icon{position:absolute;left:17px;top:14px;width:16px;height:16px;border:1.4px solid var(--muted);border-radius:50%;pointer-events:none}.search-icon:after{content:'';position:absolute;width:7px;border-top:1.4px solid var(--muted);top:14px;left:11px;transform:rotate(47deg)}.clear-search{position:absolute;top:2px;right:2px;min-width:44px;min-height:44px;background:transparent;border:0;font-size:24px;color:var(--muted)}.text-button{background:transparent;border:0;min-height:44px;padding:8px 0;color:var(--accent);font-size:11px;letter-spacing:.035em;text-transform:uppercase}.text-button:hover{text-decoration:underline;text-underline-offset:4px}.tools-summary{padding-inline:4px;white-space:nowrap;min-width:86px}.choice-wrapper{position:relative}.choice-button{display:flex;align-items:center;gap:19px;min-height:48px;padding:0 18px;min-width:209px;border:1px solid var(--deep);background:transparent;color:var(--ink);font-size:11px;letter-spacing:.035em}.choice-button:hover{background:#eae6dd}.choice-count{margin-left:auto;font-size:18px;color:var(--accent)}.choice-drawer{position:absolute;top:calc(100% + 8px);right:0;width:min(500px,calc(100vw - 40px));max-height:min(440px,calc(100dvh - 120px));overflow:auto;overscroll-behavior:contain;background:var(--bg);padding:12px 20px 16px;border:1px solid #c4c1b7;box-shadow:0 10px 26px #0002;z-index:35}.drawer-heading{display:flex;justify-content:space-between;align-items:center;gap:16px;position:sticky;top:-12px;padding-top:2px;background:var(--bg);z-index:1;margin-bottom:6px}.drawer-heading strong{font-size:16px;font-weight:500;letter-spacing:-.025em}.icon-button{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;background:transparent;border:0;color:var(--muted);font-size:25px}.chosen-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 20px}.chosen-item{display:flex;justify-content:space-between;align-items:center;gap:8px;min-width:0;padding:3px 0;border-bottom:1px solid var(--line)}.chosen-item>div{min-width:0}.chosen-item .name{font-size:13px;font-weight:500;line-height:1.3;overflow-wrap:anywhere}.chosen-item .artist{font-size:10px;color:var(--muted);line-height:1.35;margin-top:2px;overflow-wrap:anywhere}.remove-song{flex:none;background:none;border:0;min-width:32px;min-height:36px;color:#726F65;font-size:21px;line-height:1}.remove-song:hover{color:var(--ink)}.chosen-empty{margin:8px 0 12px;color:var(--muted);font-size:13px}.catalog-section{margin:0 0 30px}.catalog-head{display:flex;justify-content:space-between;align-items:baseline;gap:18px;margin-bottom:9px}.catalog-head h2{font-size:clamp(24px,2.2vw,33px);font-weight:400;letter-spacing:-.047em;line-height:1.15;margin:0}.catalog-index{color:var(--accent);font-size:12px;white-space:nowrap;flex:none}.catalog-line{height:1px;background:var(--line);margin:0 0 12px}.song-columns{list-style:none;margin:0;padding:0;column-count:4;column-gap:22px;column-fill:balance}.song-row{display:flex;align-items:center;justify-content:space-between;gap:6px;break-inside:avoid;min-height:37px;margin:0 0 3px;min-width:0}.song-info{flex:1;min-width:0}.song-title{font-size:14.5px;font-weight:500;line-height:1.25;letter-spacing:-.016em;overflow-wrap:anywhere}.song-artist{font-size:10.5px;color:var(--muted);line-height:1.25;margin-top:1px;overflow-wrap:anywhere}.song-note{font-size:10px;color:var(--muted);line-height:1.3;margin-top:1px;overflow-wrap:anywhere}.song-row.is-selected .song-title{color:var(--accent)}.add-song{position:relative;display:grid;place-items:center;flex:none;min-width:32px;width:32px;height:36px;border:0;border-radius:0;background:transparent;color:#626157;line-height:1;padding:0;font-size:20px;isolation:isolate}.add-song:before{position:absolute;content:'';inset:5px 3px;border:1px solid #b6b3a9;border-radius:2px;z-index:-1}.add-song:hover:before{border-color:var(--accent)}.add-song[aria-pressed=true]:before{background:var(--brass);border-color:var(--brass)}.add-song[aria-pressed=true]{color:var(--ink);font-size:17px;font-weight:600}.catalog-result{color:var(--accent);font-size:12px;margin:0 0 16px}.catalog-empty{padding:28px 12px;text-align:center;color:var(--muted);border-top:1px solid var(--line)}#catalog{overflow-anchor:none}.wish{display:grid;grid-template-columns:1fr 1fr;gap:28px;border-top:1px solid var(--strong);padding-top:19px}.wish h2{font-size:23px;line-height:1.2;font-weight:400;letter-spacing:-.04em;margin:0}.wish p{max-width:440px;font-size:12px;line-height:1.5;color:var(--muted);margin:6px 0 0}.wish textarea{width:100%;min-height:84px;border:1px solid var(--strong);background:transparent;padding:12px 15px;font-size:14px;line-height:1.45;resize:vertical;min-width:0;border-radius:0;color:var(--ink)}.wish textarea::placeholder{color:var(--muted)}.summary{background:var(--ink);color:var(--bg);padding-top:28px}.summary-heading{display:flex;align-items:baseline;justify-content:space-between;gap:18px;margin-bottom:15px}.summary-heading h2{font-size:clamp(34px,3.5vw,50px);font-weight:300;letter-spacing:-.055em;line-height:1.05;margin:0}.summary-count{color:var(--brass);font-size:14px;white-space:nowrap}.summary-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,360px);gap:40px}.summary-content{min-width:0}.summary-toggle{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;min-height:46px;padding:10px 14px;font-size:11px;letter-spacing:.025em;color:var(--bg);border:1px solid #64645a;background:transparent}.summary-toggle:hover{border-color:var(--brass)}.summary-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 20px;max-height:330px;overflow:auto;overscroll-behavior:contain;padding-right:6px;margin-top:7px}.summary-list .chosen-item{border-color:#45453d}.summary-list .name{color:#f0efe9}.summary-list .artist{color:#b2b0a6}.summary-list .remove-song{color:#b2b0a6}.summary-list .remove-song:hover{color:#fff}.summary-empty{margin:8px 0;color:#b2b0a6;font-size:13px}.summary-wish{margin-top:10px}.summary-wish-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:38px;border-bottom:1px solid #45453d;color:var(--brass);font-size:10px;letter-spacing:.04em}.summary-wish .text-button{color:var(--brass);min-height:38px}.summary-wish p{margin:7px 0 0;font-size:13px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}.summary-note{color:#b2b0a6;line-height:1.5;margin:0 0 12px;font-size:12px}.action-button{display:flex;align-items:center;justify-content:center;min-height:50px;padding:12px 18px;background:var(--brass);color:var(--ink);border:1px solid var(--brass);border-radius:2px;font-size:11px;font-weight:600;letter-spacing:.045em;line-height:1.35;width:100%}.action-button:hover{background:#d2a66b;border-color:#d2a66b}.prototype-note{font-size:10px;line-height:1.4;color:#b2b0a6;margin:8px 0 0}.selection-error{color:#f0cfad;font-size:12px;line-height:1.4;margin:10px 0 0}.page-footer{display:flex;justify-content:space-between;align-items:center;gap:16px;border-top:1px solid #45453d;margin-top:24px;padding:6px 0 10px;color:#b2b0a6;font-size:10px;letter-spacing:.03em}.page-footer .text-button{color:#d1c9bc;font-size:10px}.mobile-choice-panel{display:none}.mobile-choice-drawer{display:none}dialog{border:1px solid #c9c6bb;border-radius:2px;background:var(--bg);color:var(--ink);padding:0;width:min(480px,calc(100vw - 28px));max-width:calc(100vw - 28px);max-height:calc(100vh - 28px);max-height:calc(100dvh - 28px);overflow:auto;overscroll-behavior:contain;box-shadow:0 20px 80px #0005}dialog::backdrop{background:#0b0c0bd1}.dialog-body{padding:18px 26px 24px}.dialog-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}.eyebrow{font-size:10px;color:var(--accent);letter-spacing:.05em}.dialog-top .icon-button{margin-right:-10px}.dialog-body h2{font-size:28px;font-weight:400;line-height:1.15;letter-spacing:-.04em;overflow-wrap:anywhere;margin:0 0 10px}.dialog-info{font-size:12px;color:var(--muted);line-height:1.5;margin:0 0 8px}.dialog-preview{color:var(--accent);font-size:12px;margin:0 0 10px;line-height:1.45}.demo-notice{border-left:2px solid var(--deep);background:#eae5dd;padding:8px 10px;color:#5b5347;font-size:11px;line-height:1.45;margin:0 0 14px}.dialog-fields{display:grid;gap:9px}.field-group{min-width:0}.field{display:block;position:relative;border:1px solid var(--strong);min-height:54px}.field input{width:100%;min-width:0;border:0;border-radius:0;background:transparent;height:54px;padding:18px 14px 5px;outline:none;font-size:16px;color:var(--ink)}.floating{position:absolute;left:14px;top:17px;font-size:14px;color:var(--muted);pointer-events:none}.field input:focus~.floating,.field input:not(:placeholder-shown)~.floating{top:5px;font-size:10px;color:var(--accent)}.field:focus-within{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}.field.is-invalid{border-color:#99352F}.field-error{display:block;font-size:12px;color:#99352F;line-height:1.4;margin-top:5px}.consent{display:flex;align-items:center;gap:10px;min-height:44px;cursor:pointer;font-size:12px;line-height:1.4;margin:7px 0 0}.consent input{accent-color:var(--deep);width:19px;height:19px;flex:none;margin:0}.dialog-submit{margin-top:12px}.form-feedback{font-size:12px;color:#5d4f3e;line-height:1.55;margin:12px 0 0}.form-feedback:empty{display:none}.no-script{padding:12px;background:#eae5dd}
+@media(max-width:1279px){.song-columns{column-count:3}.music-heading h1{font-size:42px}}
+@media(max-width:950px){.song-columns{column-count:2;column-gap:20px}.music-heading{display:block}.music-meta{margin-top:10px}.summary-layout{gap:26px;grid-template-columns:minmax(0,1fr) 280px}.choice-button{min-width:180px;padding-inline:12px;gap:12px}.tools-summary{min-width:78px}.music-tools{gap:9px}}
+@media(max-width:720px){.wrap{padding-inline:20px}.site-header{min-height:52px;font-size:9px;gap:10px}.demo-state{display:none}.identity{gap:7px}.music{padding-top:22px;padding-bottom:24px}.music-heading{margin-bottom:11px}.music-heading h1{font-size:clamp(29px,7.8vw,45px);max-width:560px;line-height:1.06}.music-desc{font-size:13px;line-height:1.45;margin-top:8px;max-width:340px}.music-meta{margin:9px 0 0;font-size:10px}.music-tools{padding:7px 0 9px;margin-bottom:18px}.choice-wrapper,.tools-summary{display:none}.search-input{height:48px;font-size:16px;padding-left:42px;padding-right:42px}.search-input::placeholder{font-size:13px}.song-columns{column-count:1}.catalog-head h2{font-size:25px;min-width:0;overflow-wrap:anywhere}.catalog-index{font-size:11px}.catalog-section{margin-bottom:24px}.catalog-line{margin-bottom:7px}.catalog-head{margin-bottom:8px;gap:12px}.song-row{min-height:44px;margin-bottom:0}.song-title{font-size:15px}.song-artist{font-size:11px}.song-note{font-size:10px}.add-song{width:44px;min-width:44px;height:44px}.add-song:before{inset:8px}.remove-song{min-width:44px;min-height:44px}.chosen-item{padding:1px 0}.chosen-item .name{font-size:14px}.chosen-item .artist{font-size:11px}.wish{grid-template-columns:1fr;gap:10px;padding-top:15px}.wish h2{font-size:23px}.wish textarea{font-size:16px;min-height:80px}.wish textarea::placeholder{font-size:14px}.wish p{font-size:12px}.summary{padding-top:23px}.summary-heading h2{font-size:38px}.summary-layout{grid-template-columns:1fr;gap:16px}.summary-heading{margin-bottom:12px}.summary-list{grid-template-columns:1fr;max-height:330px}.summary-action{border-top:1px solid #45453d;padding-top:14px}.summary-note{max-width:320px;margin-bottom:10px}.summary-count{font-size:12px}.page-footer{margin-top:17px}.mobile-choice-panel{display:flex;align-items:stretch;position:fixed;bottom:0;left:0;right:0;padding:0 12px env(safe-area-inset-bottom,0px);min-height:62px;background:var(--ink);border-top:1px solid #6c604c;color:var(--bg);z-index:38;visibility:hidden;transform:translateY(105%)}.mobile-choice-panel.is-visible{visibility:visible;transform:none}.mobile-choice-panel button{background:none;border:0;color:inherit}.mobile-choice-panel #mobile-choice{display:flex;flex:1;min-width:0;flex-direction:column;justify-content:center;align-items:flex-start;gap:4px;min-height:61px;padding:10px 8px;text-align:left}.mobile-choice-panel strong{font-size:12px;font-weight:500;letter-spacing:.03em}.mobile-choice-label{font-size:10px;color:#c9ad86}.mobile-choice-panel .mobile-summary-link{border-left:1px solid #53534d;min-height:61px;min-width:92px;color:var(--brass);padding:10px 6px 10px 15px;font-size:11px}.mobile-choice-drawer{display:block;position:fixed;bottom:var(--choice-bar-height);left:0;right:0;max-height:min(55vh,480px);max-height:min(55dvh,480px);overflow:auto;overscroll-behavior:contain;background:var(--bg);border-top:1px solid #c4c1b7;box-shadow:0 -10px 25px #0002;z-index:39;padding:10px 20px 14px}.mobile-choice-drawer .drawer-heading{top:-10px}.mobile-choice-drawer .chosen-grid{grid-template-columns:1fr}html.mobile-choice-active{scroll-padding-bottom:calc(var(--choice-bar-height) + 14px)}html.mobile-choice-active .add-song{scroll-margin-bottom:calc(var(--choice-bar-height) + 14px)}.dialog-body{padding:14px 18px 20px}.dialog-body h2{font-size:26px}}
+@media(max-width:359px){.wrap{padding-inline:16px}.music-heading h1{font-size:29px}.identity{gap:5px}.site-header{font-size:8.5px}.summary-heading h2{font-size:34px}.summary-count{font-size:11px}.catalog-head h2{font-size:24px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#song-search">Перейти к поиску песен</a>
+<div class="sr-only" id="search-announcement" role="status" aria-live="polite" aria-atomic="true"></div>
+<div class="sr-only" id="selection-announcement" role="status" aria-live="polite" aria-atomic="true"></div>
+<div class="wrap">
+  <header class="site-header">
+    <div class="identity"><span>БОГЕМА</span><span class="identity-divider" aria-hidden="true">/</span><span>ВЫБОР ПЕСЕН</span></div>
+    <span class="demo-state">ПРОТОТИП · БЕЗ ОТПРАВКИ</span>
+    <a class="back-link" href="../">← НА ГЛАВНУЮ</a>
+  </header>
+  <p class="storage-notice" id="storage-notice" role="status" hidden></p>
+</div>
+<main>
+  <section id="music" class="music wrap" aria-labelledby="music-title">
+    <div class="music-heading">
+      <div><h1 id="music-title" tabindex="-1">МУЗЫКА ВАШЕГО ВЕЧЕРА</h1><p class="music-desc">Отметьте композиции, которые хотите услышать.</p></div>
+      <p class="music-meta">210 ПЕСЕН · 6 РАЗДЕЛОВ</p>
+    </div>
+    <div id="music-tools-anchor" aria-hidden="true"></div>
+    <div class="music-tools" id="music-tools">
+      <div class="search-holder">
+        <span class="search-icon" aria-hidden="true"></span>
+        <input type="search" class="search-input" id="song-search" placeholder="Название песни или исполнитель" aria-label="Поиск по песне или исполнителю" autocomplete="off" spellcheck="false">
+        <button type="button" class="clear-search" id="clear-search" aria-label="Очистить поиск" hidden>×</button>
+      </div>
+      <div class="choice-wrapper">
+        <button type="button" class="choice-button" id="choice-button" aria-controls="choice-drawer" aria-expanded="false"><span>МОЙ ВЫБОР</span><span class="choice-count" id="choice-count">0</span><span aria-hidden="true">⌄</span></button>
+        <div class="choice-drawer" id="choice-drawer" role="region" aria-label="Выбранные песни" hidden>
+          <div class="drawer-heading"><strong>МОЙ ВЫБОР</strong><button type="button" class="icon-button drawer-close" data-close-choice aria-label="Закрыть список выбранных песен">×</button></div>
+          <div class="chosen-grid" id="chosen-list"></div>
+        </div>
+      </div>
+      <button type="button" class="text-button tools-summary" data-jump="summary">К ИТОГУ ↗</button>
+    </div>
+    <noscript><p class="no-script">Для поиска и выбора песен включите JavaScript в браузере.</p></noscript>
+    <div id="catalog"></div>
+    <div class="wish" id="wish">
+      <div><h2>НЕ НАШЛИ НУЖНУЮ ПЕСНЮ?</h2><p>Укажите любимую песню и исполнителя. Возможность исполнения согласуем отдельно.</p></div>
+      <label class="sr-only" for="wish-text">Музыкальные пожелания вне репертуара</label>
+      <textarea id="wish-text" maxlength="1800" placeholder="Название композиции и исполнитель" rows="3"></textarea>
+    </div>
+  </section>
+  <section class="summary" id="summary" aria-labelledby="summary-title">
+    <div class="wrap">
+      <div class="summary-heading"><h2 id="summary-title" tabindex="-1">МОЙ ВЫБОР</h2><span class="summary-count" id="summary-count">0 песен</span></div>
+      <div class="summary-layout">
+        <div class="summary-content">
+          <p class="summary-empty" id="summary-empty">Пока ничего не выбрано.</p>
+          <div id="summary-song-controls" hidden>
+            <button class="summary-toggle" id="summary-toggle" type="button" aria-expanded="false" aria-controls="summary-list"><span>ПОСМОТРЕТЬ ВЫБРАННЫЕ ПЕСНИ</span><span aria-hidden="true">⌄</span></button>
+            <div class="summary-list" id="summary-list" hidden></div>
+          </div>
+          <div class="summary-wish" id="summary-wish" hidden><div class="summary-wish-heading"><span>ВНЕ РЕПЕРТУАРА</span><button type="button" class="text-button" data-edit-wishes>ИЗМЕНИТЬ ↗</button></div><p id="summary-wish-text"></p></div>
+        </div>
+        <div class="summary-action">
+          <p class="summary-note">Итоговую музыкальную программу согласуем отдельно.</p>
+          <button class="action-button" type="button" id="send-wishes">ОТПРАВИТЬ ПОЖЕЛАНИЯ</button>
+          <p class="selection-error" id="selection-error" role="status" hidden></p>
+          <p class="prototype-note">Прототип: отправка пока не подключена.</p>
+        </div>
+      </div>
+      <footer class="page-footer"><span>БОГЕМА · ВЫБОР ПЕСЕН</span><button type="button" class="text-button" data-jump="music">К РЕПЕРТУАРУ ↑</button></footer>
+    </div>
+  </section>
+</main>
+<div class="mobile-choice-panel" id="mobile-choice-panel" aria-hidden="true" inert>
+  <button type="button" id="mobile-choice" aria-expanded="false" aria-controls="mobile-choice-drawer"><strong>МОЙ ВЫБОР · <span id="mobile-count">0</span></strong><span class="mobile-choice-label" id="mobile-choice-label">ПОСМОТРЕТЬ ↑</span></button>
+  <button type="button" class="mobile-summary-link" data-jump="summary">К ИТОГУ ↗</button>
+</div>
+<div class="mobile-choice-drawer" id="mobile-choice-drawer" role="region" aria-label="Выбранные песни" hidden>
+  <div class="drawer-heading"><strong>МОЙ ВЫБОР</strong><button type="button" class="icon-button drawer-close" data-close-choice aria-label="Закрыть список выбранных песен">×</button></div>
+  <div class="chosen-grid" id="mobile-chosen-list"></div>
+</div>
+<dialog id="request-dialog" aria-labelledby="dialog-title" aria-describedby="dialog-info demo-notice">
+  <div class="dialog-body">
+    <div class="dialog-top"><span class="eyebrow">БОГЕМА / ВЫБОР ПЕСЕН</span><button type="button" class="icon-button" id="dialog-close" aria-label="Закрыть форму">×</button></div>
+    <h2 id="dialog-title">МУЗЫКАЛЬНЫЕ ПОЖЕЛАНИЯ</h2>
+    <p class="dialog-info" id="dialog-info">Выбранные песни и пожелания приложим к обращению.</p>
+    <p class="dialog-preview" id="dialog-preview"></p>
+    <p class="demo-notice" id="demo-notice">Демо-режим. Данные никуда не отправляются. Документы согласия будут подключены перед запуском.</p>
+    <form id="request-form" method="dialog" novalidate>
+      <div class="dialog-fields">
+        <div class="field-group"><label class="field" for="contact-name"><input id="contact-name" name="name" type="text" placeholder=" " autocomplete="name" maxlength="80" required aria-describedby="error-name"><span class="floating">Ваше имя *</span></label><span class="field-error" id="error-name" hidden></span></div>
+        <div class="field-group"><label class="field" for="contact-phone"><input id="contact-phone" name="phone" type="tel" placeholder=" " autocomplete="tel" inputmode="tel" maxlength="45" required aria-describedby="error-phone"><span class="floating">Телефон *</span></label><span class="field-error" id="error-phone" hidden></span></div>
+      </div>
+      <label class="consent"><input id="contact-consent" type="checkbox" required aria-describedby="error-consent"><span>Согласен на обработку персональных данных.</span></label>
+      <span class="field-error" id="error-consent" hidden></span>
+      <button type="submit" class="action-button dialog-submit" id="dialog-submit">ОТПРАВИТЬ ПОЖЕЛАНИЯ</button>
+      <p class="form-feedback" id="form-feedback" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</dialog>
+<script id="catalog-data" type="application/json">[{"number":"01","heading":"СИНГЛЫ И ТОП-ЧАРТЫ","songs":[{"id":"all-song-012","title":"Царица","artist":"ANNA ASTI"},{"id":"all-song-120","title":"Don’t Start Now","artist":"DUA LIPA"},{"id":"all-song-123","title":"No Roots","artist":"ALICE MERTON"},{"id":"all-song-146","title":"Shape of You","artist":"ED SHEERAN"},{"id":"all-song-052","title":"Beverly Hills","artist":"ZIVERT"},{"id":"all-song-054","title":"Wake Up","artist":"ZIVERT"},{"id":"all-song-030","title":"Молния","artist":"ДИМА БИЛАН"},{"id":"all-song-040","title":"Босая","artist":"ДВЕ МАШИ"},{"id":"all-song-100","title":"Солнце Монако","artist":"Л. ЧЕБОТИНА"},{"id":"all-song-110","title":"Мама","artist":"IOWA"},{"id":"all-song-133","title":"Locked Out of Heaven","artist":"BRUNO MARS"},{"id":"all-song-013","title":"По барам","artist":"ANNA ASTI"},{"id":"all-song-121","title":"Levitating","artist":"DUA LIPA"},{"id":"all-song-124","title":"Get Lucky","artist":"DAFT PUNK"},{"id":"all-song-158","title":"Enjoy the Silence","artist":"DEPECHE MODE"},{"id":"all-song-053","title":"Life","artist":"ZIVERT"},{"id":"all-song-055","title":"Паруса","artist":"ZIVERT"},{"id":"all-song-031","title":"Держи","artist":"ДИМА БИЛАН"},{"id":"all-song-041","title":"Мама, я танцую","artist":"ДВЕ МАШИ"},{"id":"all-song-108","title":"Простая песня","artist":"IOWA"},{"id":"all-song-093","title":"Между нами любовь","artist":"СЕРЕБРО"},{"id":"all-song-119","title":"Cold Heart","artist":"DUA LIPA · feat. ELTON JOHN"},{"id":"all-song-118","title":"Flowers","artist":"MILEY CYRUS"},{"id":"all-song-137","title":"This Love","artist":"MAROON 5"},{"id":"all-song-039","title":"Зима в сердце","artist":"ГОСТИ ИЗ БУДУЩЕГО / МОЯ МИШЕЛЬ"},{"id":"all-song-011","title":"Улетаю","artist":"А-СТУДИО"},{"id":"all-song-109","title":"Улыбайся","artist":"IOWA"},{"id":"all-song-117","title":"Let’s Get It Started","artist":"BLACK-EYED PEAS"},{"id":"all-song-143","title":"Whenever, Wherever","artist":"SHAKIRA"},{"id":"all-song-130","title":"Let’s Get Loud","artist":"JENNIFER LOPEZ"},{"id":"all-song-134","title":"Uptown Funk","artist":"BRUNO MARS"}]},{"number":"02","heading":"ЧИСТЫЙ ДРАЙВ","songs":[{"id":"all-song-001","title":"Остров","artist":"Л. АГУТИН"},{"id":"all-song-002","title":"Хоп хэй ла-ла-лэй","artist":"Л. АГУТИН"},{"id":"all-song-005","title":"Парень чернокожий","artist":"Л. АГУТИН"},{"id":"all-song-112","title":"Take On Me","artist":"A-HA"},{"id":"all-song-008","title":"Тик-так","artist":"А-СТУДИО"},{"id":"all-song-010","title":"Так же как все","artist":"А-СТУДИО"},{"id":"all-song-016","title":"Младший Лейтенант","artist":"И. АЛЛЕГРОВА"},{"id":"all-song-113","title":"Gimme! Gimme! Gimme!","artist":"ABBA"},{"id":"all-song-017","title":"С днём рождения","artist":"И. АЛЛЕГРОВА"},{"id":"all-song-018","title":"Угонщица","artist":"И. АЛЛЕГРОВА"},{"id":"all-song-019","title":"Мечта сбывается","artist":"Ю. АНТОНОВ"},{"id":"all-song-114","title":"Dancing Queen","artist":"ABBA"},{"id":"all-song-020","title":"Летящей походкой","artist":"Ю. АНТОНОВ"},{"id":"all-song-022","title":"Дорога в облака","artist":"БРАВО"},{"id":"all-song-028","title":"Я то, что надо","artist":"БРАВО"},{"id":"all-song-115","title":"All That She Wants","artist":"ACE OF BACE"},{"id":"all-song-033","title":"За 4 моря","artist":"БЛЕСТЯЩИЕ"},{"id":"all-song-034","title":"Посмотри в глаза","artist":"Н. ВЕТЛИЦКАЯ / BEARWOLF"},{"id":"all-song-035","title":"Попытка №5","artist":"ВИАГРА"},{"id":"all-song-116","title":"Beautiful Life","artist":"ACE OF BACE"},{"id":"all-song-038","title":"Девушки как звезды","artist":"А. ГУБИН"},{"id":"all-song-042","title":"Солнышко","artist":"ДЕМО"},{"id":"all-song-044","title":"Танкист","artist":"ЖУКИ"},{"id":"all-song-122","title":"Sweet Dreams","artist":"EURYTHMICS"},{"id":"all-song-045","title":"Районы-кварталы","artist":"ЗВЕРИ"},{"id":"all-song-046","title":"До скорой встречи","artist":"ЗВЕРИ"},{"id":"all-song-047","title":"Такая сильная любовь","artist":"ЗВЕРИ"},{"id":"all-song-125","title":"I Will Survive","artist":"GLORIA GAYNOR"},{"id":"all-song-048","title":"Летняя ночь","artist":"ЗВЕРИ","note":"Девочки-мальчики"},{"id":"all-song-049","title":"Трава у дома","artist":"ЗЕМЛЯНЕ"},{"id":"all-song-056","title":"Тополиный пух","artist":"ИВАНУШКИ INT."},{"id":"all-song-127","title":"Billy Jean","artist":"MICHAEL JACKSON"},{"id":"all-song-061","title":"Матушка","artist":"Т. КУРТУКОВА"},{"id":"all-song-062","title":"Плывет веночек","artist":"Н. КАДЫШЕВА"},{"id":"all-song-063","title":"Широка Река","artist":"Н. КАДЫШЕВА"},{"id":"all-song-128","title":"Black or White","artist":"MICHAEL JACKSON"},{"id":"all-song-066","title":"Эй, красотка","artist":"В. КУЗЬМИН"},{"id":"all-song-068","title":"Хали-гали паратрупер","artist":"ЛЕПРИКОНСЫ"},{"id":"all-song-070","title":"WWW","artist":"ЛЕНИНГРАД"},{"id":"all-song-129","title":"La Camisa Negra","artist":"JUANES"},{"id":"all-song-071","title":"Рыба моей мечты","artist":"ЛЕНИНГРАД"},{"id":"all-song-072","title":"В Питере пить","artist":"ЛЕНИНГРАД"},{"id":"all-song-073","title":"Экспонат","artist":"ЛЕНИНГРАД"},{"id":"all-song-132","title":"Cancion Del Mariachi","artist":"LOS LOBOS","note":"OST Desperado"},{"id":"all-song-074","title":"Полёт на дельтаплане","artist":"В. ЛЕОНТЬЕВ"},{"id":"all-song-075","title":"Белые розы","artist":"ЛАСКОВЫЙ МАЙ"},{"id":"all-song-076","title":"Седая ночь","artist":"ЛАСКОВЫЙ МАЙ"},{"id":"all-song-136","title":"Livin’ La Vida Loca","artist":"RICKY MARTIN"},{"id":"all-song-077","title":"За тех, кто в море","artist":"МАШИНА ВРЕМЕНИ"},{"id":"all-song-078","title":"Текила-любовь","artist":"В. МЕЛАДЗЕ"},{"id":"all-song-083","title":"Музыка нас связала","artist":"МИРАЖ"},{"id":"all-song-141","title":"I'm a Believer","artist":"SMASH MOUTH"},{"id":"all-song-085","title":"Что ты имела ввиду","artist":"НЕСЧАСТНЫЙ СЛУЧАЙ"},{"id":"all-song-086","title":"Люби меня, люби","artist":"ОТПЕТЫЕ МОШЕННИКИ"},{"id":"all-song-087","title":"Крошка моя","artist":"РУКИ ВВЕРХ"},{"id":"all-song-142","title":"All Star","artist":"SMASH MOUTH"},{"id":"all-song-088","title":"Алёшка","artist":"РУКИ ВВЕРХ"},{"id":"all-song-089","title":"Ничего не говори","artist":"РОК-ОСТРОВА"},{"id":"all-song-090","title":"Любовь на пятом этаже","artist":"СЕКРЕТ / М. ЛЕОНИДОВ"},{"id":"all-song-155","title":"Who'll Stop the Rain","artist":"CREEDENCE"},{"id":"all-song-091","title":"Виденье","artist":"СЕКРЕТ / М. ЛЕОНИДОВ"},{"id":"all-song-102","title":"Тут и там","artist":"А. ЧУМАКОВ"},{"id":"all-song-105","title":"Отшумели летние дожди","artist":"ШУРА"},{"id":"all-song-156","title":"Have You Ever Seen The Rain","artist":"CREEDENCE"},{"id":"all-song-106","title":"Ты не верь слезам","artist":"ШУРА"},{"id":"all-song-111","title":"Ума Турман","artist":"UMA2RMAN","note":"Я так ждала тебя, Вова"},{"id":"all-song-201","title":"Isn’t She Lovely","artist":"STEVIE WONDER"}]},{"number":"03","heading":"СТАДИОННЫЙ РОК","songs":[{"id":"all-song-014","title":"На тебе как на войне","artist":"АГАТА КРИСТИ"},{"id":"all-song-015","title":"Сказочная тайга","artist":"АГАТА КРИСТИ"},{"id":"all-song-043","title":"Батарейка","artist":"ЖУКИ"},{"id":"all-song-050","title":"Почему","artist":"ЗЕМФИРА"},{"id":"all-song-051","title":"Искала","artist":"ЗЕМФИРА"},{"id":"all-song-057","title":"Видели ночь","artist":"КИНО / ZDOB SI ZDUB"},{"id":"all-song-058","title":"Лесник","artist":"КОРОЛЬ И ШУТ"},{"id":"all-song-059","title":"Кукла колдуна","artist":"КОРОЛЬ И ШУТ"},{"id":"all-song-060","title":"Прыгну со скалы","artist":"КОРОЛЬ И ШУТ"},{"id":"all-song-069","title":"Ау","artist":"ЛЯПИС ТРУБЕЦКОЙ"},{"id":"all-song-081","title":"Владивосток 2000","artist":"МУМИЙ ТРОЛЛЬ"},{"id":"all-song-082","title":"Медведица","artist":"МУМИЙ ТРОЛЛЬ"},{"id":"all-song-094","title":"Моя бабушка курит трубку","artist":"Г. СУКАЧЁВ"},{"id":"all-song-095","title":"Моё сердце","artist":"СПЛИН"},{"id":"all-song-097","title":"Город-сказка","artist":"ТАНЦЫ МИНУС"},{"id":"all-song-099","title":"Половинка","artist":"ТАНЦЫ МИНУС"},{"id":"all-song-103","title":"17 лет","artist":"ЧАЙФ"},{"id":"all-song-104","title":"Рок-н-ролл этой ночи","artist":"ЧАЙФ"},{"id":"all-song-107","title":"Три полоски","artist":"ANIMAL JAZZ"},{"id":"all-song-152","title":"Highway to Hell","artist":"AC/DC"},{"id":"all-song-153","title":"It’s My Life","artist":"BON JOVI"},{"id":"all-song-154","title":"Zombie","artist":"CRANBERRIES"},{"id":"all-song-157","title":"Personal Jesus","artist":"DEPECHE MODE"},{"id":"all-song-177","title":"Layla","artist":"ERIC CLAPTON"},{"id":"all-song-160","title":"Knockin’ On Heaven’s Door","artist":"GUNS N’ ROSES"},{"id":"all-song-162","title":"I Was Born For Lovin' You","artist":"KISS"},{"id":"all-song-164","title":"Numb","artist":"LINKIN PARK"},{"id":"all-song-163","title":"Sweet Home Alabama","artist":"LYNYRD SKYNYRD"},{"id":"all-song-166","title":"Enter Sandman","artist":"METALLICA"},{"id":"all-song-167","title":"Smells Like Teen Spirit","artist":"NIRVANA"},{"id":"all-song-169","title":"Creep","artist":"RADIOHEAD"}]},{"number":"04","heading":"ВИНТАЖНЫЙ ГЛЯНЕЦ","songs":[{"id":"all-song-021","title":"Вася","artist":"БРАВО"},{"id":"all-song-023","title":"Любите, девушки","artist":"БРАВО"},{"id":"all-song-024","title":"Московский бит","artist":"БРАВО"},{"id":"all-song-026","title":"Оранжевый галстук","artist":"БРАВО"},{"id":"all-song-029","title":"Ленинградский рок-н-ролл","artist":"БРАВО"},{"id":"all-song-036","title":"Люди встречаются","artist":"ВИА «ВЕСЁЛЫЕ РЕБЯТА»"},{"id":"all-song-084","title":"У самого синего моря","artist":"МИСТЕР ТВИСТЕР"},{"id":"all-song-171","title":"Rock Around the Clock","artist":"BILL HALEY"},{"id":"all-song-172","title":"I Saw Her Standing There","artist":"THE BEATLES"},{"id":"all-song-173","title":"Can’t Buy Me Love","artist":"THE BEATLES"},{"id":"all-song-174","title":"Drive My Car","artist":"THE BEATLES"},{"id":"all-song-175","title":"Get Back","artist":"THE BEATLES"},{"id":"all-song-176","title":"Back In The USSR","artist":"THE BEATLES"},{"id":"all-song-179","title":"Johnny B. Goode","artist":"CHUCK BERRY"},{"id":"all-song-180","title":"You Never Can Tell","artist":"CHUCK BERRY"},{"id":"all-song-181","title":"I Feel Good","artist":"JAMES BROWN"},{"id":"all-song-182","title":"Hit the Road Jack","artist":"RAY CHARLES"},{"id":"all-song-183","title":"What I'd Say","artist":"RAY CHARLES"},{"id":"all-song-184","title":"I Got a Woman","artist":"RAY CHARLES"},{"id":"all-song-185","title":"Hallelujah I Love Her So","artist":"RAY CHARLES"},{"id":"all-song-186","title":"Route 66","artist":"NAT KING COLE"},{"id":"all-song-187","title":"Let’s Twist Again","artist":"CHUBBY CHECKER"},{"id":"all-song-188","title":"Great Balls of Fire","artist":"JERRY LEE LEWIS"},{"id":"all-song-189","title":"Sway","artist":"DEAN MARTIN"},{"id":"all-song-168","title":"Crazy Little Thing Called Love","artist":"QUEEN"},{"id":"all-song-190","title":"Pretty Woman","artist":"ROY ORBISSON"},{"id":"all-song-191","title":"Blue Suede Shoes","artist":"ELVIS PRESLEY"},{"id":"all-song-192","title":"A Little Less Conversation","artist":"ELVIS PRESLEY"},{"id":"all-song-194","title":"Runaway","artist":"DEL SHANNON"},{"id":"all-song-195","title":"Wanna Be Americano","artist":"BRIAN SETZER & THE STRAY CATS"},{"id":"all-song-196","title":"Stray Cat Strut","artist":"BRIAN SETZER & THE STRAY CATS"},{"id":"all-song-197","title":"Rock This Town","artist":"BRIAN SETZER & THE STRAY CATS"},{"id":"all-song-198","title":"Rumble in Brighton","artist":"BRIAN SETZER & THE STRAY CATS"},{"id":"all-song-199","title":"Ubangi Stomp","artist":"BRIAN SETZER & THE STRAY CATS","note":"OST «Жмурки»"},{"id":"all-song-200","title":"La Bamba","artist":"RICHIE VALENS"},{"id":"all-song-202","title":"Superstition","artist":"STEVIE WONDER"},{"id":"all-song-144","title":"Venus («Шизгара»)","artist":"SHOCKING BLUE"},{"id":"all-song-147","title":"Amore No","artist":"ADRIANO CELENTANO"},{"id":"all-song-149","title":"Je Veux","artist":"ZAZ"},{"id":"all-song-170","title":"After Dark","artist":"TITO & TARANTULA"}]},{"number":"05","heading":"ЛАУНЖ И ЛИРИКА","songs":[{"id":"all-song-003","title":"На сиреневой Луне","artist":"Л. АГУТИН"},{"id":"all-song-004","title":"Половина сердца","artist":"Л. АГУТИН"},{"id":"all-song-006","title":"Всё в твоих руках","artist":"Л. АГУТИН"},{"id":"all-song-007","title":"Лететь","artist":"А-МЕГА"},{"id":"all-song-009","title":"Ещё люблю","artist":"А-СТУДИО"},{"id":"all-song-025","title":"Ветер знает","artist":"БРАВО"},{"id":"all-song-027","title":"Как жаль","artist":"БРАВО"},{"id":"all-song-037","title":"Ночь","artist":"А. ГУБИН"},{"id":"all-song-064","title":"Город, которого нет","artist":"И. КОРНЕЛЮК"},{"id":"all-song-065","title":"Дожди","artist":"И. КОРНЕЛЮК"},{"id":"all-song-067","title":"Сказка в моей жизни","artist":"В. КУЗЬМИН"},{"id":"all-song-079","title":"Салют, Вера","artist":"В. МЕЛАДЗЕ"},{"id":"all-song-080","title":"Я это ты","artist":"М. НАСЫРОВ"},{"id":"all-song-092","title":"Не дай ему уйти","artist":"СЕКРЕТ / М. ЛЕОНИДОВ"},{"id":"all-song-096","title":"Седьмой лепесток","artist":"А. ТОКАРЕВ"},{"id":"all-song-098","title":"10 капель","artist":"ТАНЦЫ МИНУС"},{"id":"all-song-101","title":"Счастье","artist":"А. ЧУМАКОВ"},{"id":"all-song-126","title":"Wicked Game","artist":"CHRIS ISAAK"},{"id":"all-song-131","title":"Shallow","artist":"LADY GAGA"},{"id":"all-song-135","title":"Careless Whisper","artist":"GEORGE MICHAEL"},{"id":"all-song-138","title":"I'll Always Love You","artist":"D. PARTON / W. HOUSTON"},{"id":"all-song-139","title":"Kiss Me","artist":"SIXPENCE NONE THE RICHER"},{"id":"all-song-140","title":"Englishman In New York","artist":"STING"},{"id":"all-song-145","title":"Perfect","artist":"ED SHEERAN"},{"id":"all-song-148","title":"Mon Mec A Moi","artist":"PATRICIA KAAS"},{"id":"all-song-150","title":"I Don't Wanna Miss a Thing","artist":"AEROSMITH (OST ARMAGEDDON)"},{"id":"all-song-151","title":"Cryin’","artist":"AEROSMITH"},{"id":"all-song-159","title":"Hotel California","artist":"EAGLES"},{"id":"all-song-161","title":"Don’t Cry","artist":"GUNS’N’ROSES"},{"id":"all-song-165","title":"Nothing Else Matters","artist":"METALLICA"},{"id":"all-song-203","title":"Just The Two of Us","artist":"GROVER WASHINGTON"},{"id":"all-song-178","title":"Change the World","artist":"ERIC CLAPTON"},{"id":"all-song-193","title":"Can’t Help Fallin’ In Love","artist":"ELVIS PRESLEY"}]},{"number":"06","heading":"ЗИМНЯЯ КОЛЛЕКЦИЯ","songs":[{"id":"all-song-204","title":"Let it Snow","artist":"FRANK SINATRA"},{"id":"all-song-205","title":"Jingle Bell Rock","artist":"BOBBY HELMS"},{"id":"all-song-206","title":"Last Christmas","artist":"WHAM!"},{"id":"all-song-207","title":"Blue Christmas","artist":"ELVIS PRESLEY"},{"id":"all-song-208","title":"Последний час декабря","artist":"СЕКРЕТ"},{"id":"all-song-209","title":"Расскажи Снегурочка","artist":"НУ, ПОГОДИ!"},{"id":"all-song-210","title":"Снег идет","artist":"М. КРИСТАЛЛИНСКАЯ / Ж. АГУЗАРОВА"},{"id":"all-song-032","title":"Звенит январская вьюга","artist":"НИНА БРОДСКАЯ / АННА АСТИ"}]}]</script>
+<script>(() => {
+  'use strict';
+  // Music-only branch of the approved v4 prototype. No backend or network submission.
+  const $ = selector => document.querySelector(selector);
+  const $$ = selector => [...document.querySelectorAll(selector)];
+  const catalog = JSON.parse($('#catalog-data').textContent);
+  const all = catalog.flatMap(section => section.songs);
+  const lookup = new Map(all.map(song => [song.id, song]));
+  const storageKey = 'bogema:music-only:preview:v1';
+  const schemaVersion = 1;
+  const catalogFingerprint = '244255528f4b51c3b874ee66f0f0cdf7514062fae2dbfc1bf9c86a655917d9df';
+  const wishesLimit = 1800;
+  const trimmed = value => typeof value === 'string' ? value.trim() : '';
+  const isObject = value => value !== null && typeof value === 'object' && !Array.isArray(value);
+  const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[char]));
+    const originalTitles = {
+    'all-song-119': 'Cold Heart (feat. Elton John)',
+    'all-song-020': 'Я вспоминаю (Летящей походкой)',
+    'all-song-150': "I Don't Wanna Miss a Thing (OST «Армагеддон»)",
+    'all-song-132': 'Cancion Del Mariachi (OST Desperado)',
+    'all-song-199': 'Ubangi Stomp (OST «Жмурки»)',
+    'all-song-111': 'Ума Турман (Я так ждала тебя, Вова)',
+    'all-song-048': 'Летняя ночь (Девочки-мальчики)'
+  };
+  const normalizeSearch = value => String(value ?? '').normalize('NFKC')
+    .toLocaleLowerCase('ru').replace(/ё/g, 'е').replace(/['’‘ʼ`´]/g, '')
+    .replace(/[\-\u2010-\u2015]/g, ' ').replace(/\s+/g, ' ').trim();
+  const searchIndex = new Map(all.map(song => [song.id, normalizeSearch([
+    song.title, song.artist, song.note || '', originalTitles[song.id] || ''
+  ].join(' '))]));
+  const plural = (n, words) => n % 100 >= 11 && n % 100 <= 14 ? words[2]
+    : n % 10 === 1 ? words[0] : n % 10 >= 2 && n % 10 <= 4 ? words[1] : words[2];
+  const songCount = n => `${n} ${plural(n, ['песня', 'песни', 'песен'])}`;
+
+  // Never read, migrate or overwrite the full constructor's storage keys.
+  const storageMessages = {restore: '', access: '', write: ''};
+  let storageAvailable = true;
+  let protectUnknownDraft = false;
+  function storageNotice(message, kind = 'restore') {
+    storageMessages[kind] = message;
+    const notice = $('#storage-notice');
+    notice.textContent = Object.values(storageMessages).filter(Boolean).join(' ');
+    notice.hidden = !notice.textContent;
+  }
+  function loadDraft() {
+    const empty = {songs: [], wishes: ''};
+    try {
+      const text = localStorage.getItem(storageKey);
+      if (text === null) return empty;
+      const value = JSON.parse(text);
+      if (!isObject(value) || value.schemaVersion !== schemaVersion) {
+        protectUnknownDraft = true;
+        storageNotice('Черновик другой версии не изменён. Новые отметки доступны только в этой вкладке.');
+        return empty;
+      }
+      const raw = isObject(value.draft) ? value.draft : {};
+      const songs = Array.isArray(raw.songs)
+        ? [...new Set(raw.songs.filter(id => typeof id === 'string' && lookup.has(id)))] : [];
+      const wishes = typeof raw.wishes === 'string' ? raw.wishes.slice(0, wishesLimit) : '';
+      const partial = !isObject(value.draft) || !Array.isArray(raw.songs)
+        || songs.length !== raw.songs.length || typeof raw.wishes !== 'string'
+        || raw.wishes.length > wishesLimit;
+      if (partial) storageNotice('Часть сохранённого выбора не удалось восстановить. Проверьте песни и пожелания.');
+      return {songs, wishes};
+    } catch (error) {
+      if (error instanceof SyntaxError) storageNotice('Сохранённый выбор повреждён. Песни можно отметить заново.');
+      else {
+        storageAvailable = false;
+        storageNotice('Браузер не разрешил сохранение. Выбор работает в этой вкладке и может потеряться после её закрытия.', 'access');
+      }
+      return empty;
+    }
+  }
+  const draft = loadDraft();
+  const state = {chosen: new Set(draft.songs), wishes: draft.wishes, search: '',
+    choiceOpen: false, summaryOpen: false, mobileVisible: false};
+  // Contact fields live only in this page's memory, never in the saved music draft.
+  const contact = {name: '', phone: ''};
+  let preparedRequest = null;
+  let requestOpener = null;
+  let previousOverflow = '';
+  function store() {
+    preparedRequest = null;
+    if (protectUnknownDraft) return;
+    try {
+      localStorage.setItem(storageKey, JSON.stringify({schemaVersion,
+        updatedAt: new Date().toISOString(), catalogFingerprint,
+        draft: {songs: [...state.chosen], wishes: state.wishes}}));
+      storageAvailable = true;
+      storageNotice('', 'access'); storageNotice('', 'write');
+    } catch {
+      storageAvailable = false;
+      storageNotice('', 'access');
+      storageNotice('Браузер не сохранил последние изменения. Выбор пока доступен только в этой вкладке.', 'write');
+    }
+  }
+
+  // Catalog rendering, search aliases and stable song IDs are retained from v4.
+  function renderCatalog() {
+    const query = normalizeSearch(state.search);
+    const words = query.split(' ').filter(Boolean);
+    let count = 0, html = '';
+    for (const section of catalog) {
+      const songs = section.songs.filter(song => !query || words.every(word => searchIndex.get(song.id).includes(word)));
+      if (!songs.length) continue;
+      count += songs.length;
+      html += `<section class="catalog-section" aria-labelledby="catalog-h-${section.number}"><header class="catalog-head"><h2 id="catalog-h-${section.number}">${esc(section.heading)}</h2><span class="catalog-index">${section.number} / 06</span></header><div class="catalog-line"></div><ul class="song-columns">${songs.map(song => {
+        const selected = state.chosen.has(song.id);
+        return `<li class="song-row ${selected ? 'is-selected' : ''}" data-song-row="${song.id}"><div class="song-info"><div class="song-title">${esc(song.title)}</div><div class="song-artist">${esc(song.artist)}</div>${song.note ? `<div class="song-note">${esc(song.note)}</div>` : ''}</div><button type="button" class="add-song" aria-pressed="${selected}" data-song="${song.id}" aria-label="${selected ? 'Убрать' : 'Добавить'}: ${esc(song.title)} — ${esc(song.artist)}"><span class="song-glyph" aria-hidden="true">${selected ? '✓' : '+'}</span></button></li>`;
+      }).join('')}</ul></section>`;
+    }
+    $('#catalog').innerHTML = (query ? `<p class="catalog-result">НАЙДЕНО: ${count}</p>` : '')
+      + (count ? html : '<div class="catalog-empty">По вашему запросу песни не найдены.</div>');
+    $('#clear-search').hidden = !state.search;
+    $('#search-announcement').textContent = query ? `Найдено: ${songCount(count)}.` : '';
+  }
+  function applySearch(value) {
+    const anchor = $('#music-tools-anchor');
+    const targetY = Math.max(0, anchor.getBoundingClientRect().top + window.scrollY);
+    const wasDeep = window.scrollY > targetY + 2;
+    state.search = value;
+    renderCatalog();
+    if (wasDeep) window.scrollTo({top: targetY, behavior: 'instant'});
+    onScroll();
+  }
+  function updateSongButton(id) {
+    const row = $(`[data-song-row="${id}"]`);
+    if (!row) return;
+    const song = lookup.get(id), selected = state.chosen.has(id);
+    const button = row.querySelector('[data-song]');
+    row.classList.toggle('is-selected', selected);
+    button.setAttribute('aria-pressed', String(selected));
+    button.setAttribute('aria-label', `${selected ? 'Убрать' : 'Добавить'}: ${song.title} — ${song.artist}`);
+    button.querySelector('.song-glyph').textContent = selected ? '✓' : '+';
+  }
+  function renderChosenItems() {
+    return all.filter(song => state.chosen.has(song.id)).map(song =>
+      `<div class="chosen-item"><div><div class="name">${esc(song.title)}</div><div class="artist">${esc(song.artist)}</div></div><button class="remove-song" type="button" data-remove="${song.id}" aria-label="Убрать ${esc(song.title)} из выбора" title="Убрать из выбора">×</button></div>`).join('');
+  }
+  function syncSummary() {
+    const n = state.chosen.size;
+    if (!n) state.summaryOpen = false;
+    $('#summary-count').textContent = songCount(n);
+    $('#summary-song-controls').hidden = !n;
+    $('#summary-empty').hidden = Boolean(n || trimmed(state.wishes));
+    $('#summary-toggle').setAttribute('aria-expanded', String(state.summaryOpen));
+    $('#summary-toggle').innerHTML = `<span>${state.summaryOpen ? 'СВЕРНУТЬ' : 'ПОСМОТРЕТЬ'} ВЫБРАННЫЕ ПЕСНИ</span><span aria-hidden="true">${state.summaryOpen ? '⌃' : '⌄'}</span>`;
+    $('#summary-list').hidden = !state.summaryOpen;
+    $('#summary-wish').hidden = !trimmed(state.wishes);
+    $('#summary-wish-text').textContent = trimmed(state.wishes);
+    if (hasWishes()) {$('#selection-error').hidden = true; $('#selection-error').textContent = '';}
+  }
+  function syncChoicePanels() {
+    const mobile = window.innerWidth <= 720;
+    $('#choice-button').setAttribute('aria-expanded', String(!mobile && state.choiceOpen));
+    $('#mobile-choice').setAttribute('aria-expanded', String(mobile && state.choiceOpen && state.mobileVisible));
+    $('#mobile-choice-label').textContent = mobile && state.choiceOpen ? 'СВЕРНУТЬ ↓' : 'ПОСМОТРЕТЬ ↑';
+    $('#choice-drawer').hidden = mobile || !state.choiceOpen;
+    $('#mobile-choice-drawer').hidden = !mobile || !state.choiceOpen || !state.mobileVisible;
+  }
+  function updateChosen() {
+    const n = state.chosen.size;
+    $('#choice-count').textContent = n;
+    $('#mobile-count').textContent = n;
+    const html = n ? renderChosenItems() : '<p class="chosen-empty">Пока ничего не выбрано.</p>';
+    for (const id of ['chosen-list', 'mobile-chosen-list', 'summary-list']) {
+      const node = $('#' + id);
+      const scroller = id === 'chosen-list' ? $('#choice-drawer') : id === 'mobile-chosen-list' ? $('#mobile-choice-drawer') : node;
+      const top = scroller.scrollTop;
+      node.innerHTML = id === 'summary-list' && !n ? '' : html;
+      scroller.scrollTop = top;
+    }
+    syncSummary(); syncChoicePanels();
+    $('#selection-announcement').textContent = `Выбрано: ${songCount(n)}.`;
+  }
+  function toggleSong(id, source = null) {
+    if (!lookup.has(id)) return;
+    const list = source?.closest('#chosen-list, #mobile-chosen-list, #summary-list');
+    const index = list ? [...list.querySelectorAll('[data-remove]')].indexOf(source) : -1;
+    const wasFocused = source === document.activeElement;
+    if (state.chosen.has(id)) state.chosen.delete(id); else state.chosen.add(id);
+    store(); updateSongButton(id); updateChosen();
+    if (list && wasFocused) {
+      const buttons = [...list.querySelectorAll('[data-remove]')];
+      const target = buttons[Math.min(Math.max(index, 0), buttons.length - 1)]
+        || (list.id === 'summary-list' ? $('#summary-title')
+          : list.closest('.choice-drawer, .mobile-choice-drawer').querySelector('[data-close-choice]'));
+      target?.focus({preventScroll: true});
+      if (buttons.length) target?.scrollIntoView({block: 'nearest', behavior: 'instant'});
+    }
+  }
+  function hideChoices(restoreFocus = false) {
+    const activeInside = document.activeElement?.closest('#choice-drawer, #mobile-choice-drawer');
+    state.choiceOpen = false; syncChoicePanels();
+    if (restoreFocus || activeInside) {
+      const trigger = window.innerWidth <= 720 ? $('#mobile-choice') : $('#choice-button');
+      if (window.innerWidth > 720 || state.mobileVisible) trigger.focus({preventScroll: true});
+      else $('#music-title').focus({preventScroll: true});
+    }
+  }
+  function openChoices(source) {
+    state.choiceOpen = !state.choiceOpen; syncChoicePanels();
+    if (state.choiceOpen) {
+      const drawer = window.innerWidth <= 720 ? $('#mobile-choice-drawer') : $('#choice-drawer');
+      drawer.querySelector('[data-close-choice]').focus({preventScroll: true});
+    } else source.focus({preventScroll: true});
+  }
+  const scrollBehavior = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth';
+  function jumpTo(id, target = null) {
+    hideChoices(false);
+    const section = document.getElementById(id);
+    if (!section) return;
+    const element = target || section.querySelector('h1,h2');
+    // Heading targets are already focusable. Do not change native buttons' tabindex.
+    element?.focus({preventScroll: true});
+    section.scrollIntoView({behavior: scrollBehavior(), block: 'start'});
+  }
+  function hasWishes() {return state.chosen.size > 0 || Boolean(trimmed(state.wishes));}
+
+    function normalizePhone(value) {
+    const raw = trimmed(value);
+    if (!raw || /[^\d+\s()\-.]/.test(raw)) return null;
+    const compact = raw.replace(/[\s()\-.]/g, '');
+    if (compact.startsWith('+')) {
+      if (!/^\+[1-9]\d{6,14}$/.test(compact)) return null;
+      if (compact.startsWith('+7') && compact.length !== 12) return null;
+      return compact;
+    }
+    if (/^\d{10}$/.test(compact) && !/^0+$/.test(compact)) return '+7' + compact;
+    if (/^[78]\d{10}$/.test(compact)) return '+7' + compact.slice(1);
+    return null;
+  }
+  function setContactError(key, message = '') {
+    const input = $('#contact-' + key), label = $('#error-' + key);
+    input.setAttribute('aria-invalid', String(Boolean(message)));
+    input.closest('.field')?.classList.toggle('is-invalid', Boolean(message));
+    label.hidden = !message; label.textContent = message;
+  }
+  function contactIssue(key) {
+    if (key === 'name') return !trimmed(contact.name) ? 'Укажите имя.'
+      : trimmed(contact.name).length > 80 ? 'Имя: не больше 80 символов.' : '';
+    if (key === 'phone') return !normalizePhone(contact.phone) || contact.phone.length > 45
+      ? 'Проверьте телефон. Для международного номера укажите + и код страны.' : '';
+    if (key === 'consent') return !$('#contact-consent').checked ? 'Подтвердите согласие на обработку персональных данных.' : '';
+    return '';
+  }
+  function clearContactErrors() {
+    for (const key of ['name', 'phone', 'consent']) setContactError(key);
+    $('#form-feedback').textContent = '';
+  }
+  function openRequest(source) {
+    if ($('#request-dialog').open) return;
+    if (!hasWishes()) {
+      const error = $('#selection-error');
+      error.textContent = 'Отметьте хотя бы одну песню или добавьте пожелание вне репертуара.';
+      error.hidden = false;
+      return;
+    }
+    requestOpener = source || document.activeElement;
+    preparedRequest = null;
+    $('#contact-name').value = contact.name;
+    $('#contact-phone').value = contact.phone;
+    $('#contact-consent').checked = false;
+    clearContactErrors();
+    $('#dialog-preview').textContent = [state.chosen.size ? songCount(state.chosen.size) : '',
+      trimmed(state.wishes) ? 'Пожелание вне репертуара' : ''].filter(Boolean).join(' · ');
+    hideChoices(false);
+    previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    $('#request-dialog').showModal(); onScroll();
+    $('#contact-name').focus({preventScroll: true});
+  }
+  function rememberContact() {
+    contact.name = $('#contact-name').value;
+    contact.phone = $('#contact-phone').value;
+  }
+  function closeRequest() {rememberContact(); $('#request-dialog').close();}
+  function requestClosed() {
+    rememberContact();
+    document.body.style.overflow = previousOverflow;
+    onScroll();
+    if (requestOpener?.isConnected && !requestOpener.closest('[hidden], [inert]')) requestOpener.focus({preventScroll: true});
+  }
+  function buildRequest() {
+    // Review-only object. Not a server contract and not evidence of legal consent/delivery.
+    return {schemaVersion: 'music-preview-1', prototype: true, type: 'music-preferences',
+      preparedAt: new Date().toISOString(), catalogFingerprint,
+      contact: {name: trimmed(contact.name), phone: normalizePhone(contact.phone)},
+      music: {selections: all.filter(song => state.chosen.has(song.id)).map(song => ({
+        id: song.id, displayTitle: song.title, displayArtist: song.artist})),
+        wishes: trimmed(state.wishes) || null},
+      consent: {checked: true, mode: 'prototype-only', documentVersion: null}};
+  }
+  function validateRequest(event) {
+    event.preventDefault();
+    preparedRequest = null; rememberContact();
+    $('#form-feedback').textContent = '';
+    const errors = ['name', 'phone', 'consent'].map(key => ({key, message: contactIssue(key)}));
+    for (const issue of errors) setContactError(issue.key, issue.message);
+    const first = errors.find(issue => issue.message);
+    if (first) {$('#contact-' + first.key).focus(); return;}
+    if (!hasWishes()) {
+      $('#form-feedback').textContent = 'Нет выбранных песен или пожеланий. Закройте форму и добавьте свой выбор.';
+      return;
+    }
+    preparedRequest = buildRequest();
+    $('#form-feedback').textContent = 'Пожелания подготовлены, но НЕ отправлены. Это прототип; передача группе ещё не подключена.';
+    $('#form-feedback').scrollIntoView({block: 'nearest', behavior: 'instant'});
+  }
+
+  function onScroll() {
+    const mobile = window.innerWidth <= 720;
+    const rect = $('#music').getBoundingClientRect();
+    const summaryRect = $('#summary').getBoundingClientRect();
+    const viewport = window.visualViewport;
+    const keyboard = Boolean(viewport && window.innerHeight - viewport.height > 140 && document.activeElement?.matches('input,textarea'));
+    const visible = mobile && rect.top < window.innerHeight * .78 && summaryRect.top > window.innerHeight * .72
+      && !$('#request-dialog').open && !keyboard;
+    const panel = $('#mobile-choice-panel');
+    const focusedDrawer = document.activeElement?.closest('#choice-drawer, #mobile-choice-drawer');
+    state.mobileVisible = visible;
+    panel.classList.toggle('is-visible', visible);
+    document.documentElement.classList.toggle('mobile-choice-active', visible);
+    panel.inert = !visible; panel.setAttribute('aria-hidden', String(!visible));
+    document.documentElement.style.setProperty('--choice-bar-height', `${panel.offsetHeight || 62}px`);
+    if ((mobile && !visible) || rect.bottom <= 95 || rect.top >= window.innerHeight) state.choiceOpen = false;
+    syncChoicePanels();
+    if (focusedDrawer?.hidden && !$('#request-dialog').open) {
+      const activeDrawer = mobile ? $('#mobile-choice-drawer') : $('#choice-drawer');
+      const target = !activeDrawer.hidden ? activeDrawer.querySelector('[data-close-choice]')
+        : summaryRect.top < window.innerHeight * .72 ? $('#summary-title') : $('#music-title');
+      target.focus({preventScroll: true});
+    }
+    if (!visible && panel.contains(document.activeElement) && !$('#request-dialog').open) {
+      (summaryRect.top < window.innerHeight * .72 ? $('#summary-title') : $('#music-title')).focus({preventScroll: true});
+    }
+  }
+  let viewportPending = false;
+  function scheduleViewportUpdate() {
+    if (viewportPending) return;
+    viewportPending = true;
+    requestAnimationFrame(() => {viewportPending = false; onScroll();});
+  }
+  function ensureFocusedSongVisible(button) {
+    if (document.activeElement !== button || !button.isConnected || $('#request-dialog').open) return;
+    const rect = button.getBoundingClientRect();
+    const tools = $('#music-tools').getBoundingClientRect();
+    const top = tools.top <= 2 && tools.bottom > 0 ? tools.bottom + 10 : 10;
+    const panel = $('#mobile-choice-panel');
+    const bottom = window.innerWidth <= 720 && panel.classList.contains('is-visible')
+      ? panel.getBoundingClientRect().top - 12 : window.innerHeight - 12;
+    if (rect.bottom > bottom) window.scrollBy({top: Math.ceil(rect.bottom - bottom), behavior: 'instant'});
+    else if (rect.top < top) window.scrollBy({top: -Math.ceil(top - rect.top), behavior: 'instant'});
+  }
+  document.addEventListener('click', event => {
+    const button = event.target.closest('button');
+    if (!button) return;
+    if (button.matches('[data-song]')) {toggleSong(button.dataset.song, button); return;}
+    if (button.matches('[data-remove]')) {toggleSong(button.dataset.remove, button); return;}
+    if (button.matches('[data-close-choice]')) {hideChoices(true); return;}
+    if (button.matches('[data-jump]')) {jumpTo(button.dataset.jump); return;}
+    if (button.matches('[data-edit-wishes]')) {jumpTo('wish', $('#wish-text')); return;}
+  });
+  $('#song-search').addEventListener('input', event => {if (!event.isComposing) applySearch(event.target.value);});
+  $('#song-search').addEventListener('compositionend', event => applySearch(event.target.value));
+  $('#clear-search').addEventListener('click', () => {$('#song-search').value = ''; applySearch(''); $('#song-search').focus({preventScroll: true});});
+  $('#wish-text').value = state.wishes;
+  $('#wish-text').addEventListener('input', event => {state.wishes = event.target.value.slice(0, wishesLimit); store(); syncSummary();});
+  $('#choice-button').addEventListener('click', event => openChoices(event.currentTarget));
+  $('#mobile-choice').addEventListener('click', event => openChoices(event.currentTarget));
+  $('#summary-toggle').addEventListener('click', () => {state.summaryOpen = !state.summaryOpen; syncSummary();});
+  $('#send-wishes').addEventListener('click', event => openRequest(event.currentTarget));
+  $('#dialog-close').addEventListener('click', closeRequest);
+  $('#request-form').addEventListener('submit', validateRequest);
+  $('#request-form').addEventListener('input', event => {
+    preparedRequest = null;
+    if (event.target.id === 'contact-name') contact.name = event.target.value;
+    if (event.target.id === 'contact-phone') contact.phone = event.target.value;
+    const key = event.target.id.replace('contact-', '');
+    if (['name', 'phone', 'consent'].includes(key) && event.target.getAttribute('aria-invalid') === 'true') {
+      setContactError(key, contactIssue(key));
+    }
+    $('#form-feedback').textContent = '';
+  });
+  $('#request-dialog').addEventListener('close', requestClosed);
+  $('#request-dialog').addEventListener('cancel', rememberContact);
+  let backdropPress = false;
+  function outsideDialog(event) {
+    const rect = $('#request-dialog').getBoundingClientRect();
+    return event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom;
+  }
+  $('#request-dialog').addEventListener('pointerdown', event => {backdropPress = event.target === $('#request-dialog') && outsideDialog(event);});
+  $('#request-dialog').addEventListener('click', event => {
+    if (backdropPress && event.target === $('#request-dialog') && outsideDialog(event)) closeRequest();
+    backdropPress = false;
+  });
+  document.addEventListener('keydown', event => {
+    const dialog = $('#request-dialog');
+    // Keep both forward and reverse tab order inside the open contact window.
+    if (event.key === 'Tab' && dialog.open) {
+      const controls = [...dialog.querySelectorAll('button,input,textarea,select,a[href],[tabindex]:not([tabindex="-1"])')]
+        .filter(node => !node.disabled && !node.closest('[hidden],[inert]') && node.getClientRects().length > 0);
+      const first = controls[0], last = controls[controls.length - 1];
+      if (controls.length && !controls.includes(document.activeElement)) {
+        event.preventDefault(); (event.shiftKey ? last : first).focus();
+      } else if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault(); last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault(); first.focus();
+      }
+    }
+    if (event.key === 'Escape' && state.choiceOpen && !dialog.open) {event.preventDefault(); hideChoices(true);}
+  });
+  document.addEventListener('pointerdown', event => {
+    if (state.choiceOpen && !event.target.closest('.choice-wrapper,#mobile-choice-panel,#mobile-choice-drawer')) hideChoices(false);
+  });
+  document.addEventListener('focusin', event => {
+    if (state.choiceOpen && !event.target.closest('.choice-wrapper,#mobile-choice-panel,#mobile-choice-drawer')) hideChoices(false);
+    if (event.target.matches?.('.add-song')) {
+      const button = event.target;
+      requestAnimationFrame(() => requestAnimationFrame(() => ensureFocusedSongVisible(button)));
+    }
+  });
+  window.addEventListener('scroll', scheduleViewportUpdate, {passive: true});
+  window.addEventListener('resize', scheduleViewportUpdate, {passive: true});
+  window.visualViewport?.addEventListener('resize', scheduleViewportUpdate, {passive: true});
+  renderCatalog(); updateChosen(); onScroll();
+  window.BOGEMA_MUSIC_PREVIEW = Object.freeze({
+    version: 'music-1', storageKey,
+    getSnapshot: () => ({selected: [...state.chosen], wishes: state.wishes, search: state.search,
+      choiceOpen: state.choiceOpen, totalSongs: all.length, storageAvailable, protectUnknownDraft,
+      sections: catalog.map(section => ({heading: section.heading, count: section.songs.length}))}),
+    getPreparedRequest: () => preparedRequest ? JSON.parse(JSON.stringify(preparedRequest)) : null
+  });
+})();
+</script>
+</body>
+</html>
