@@ -81,10 +81,11 @@
 .booking-contact-value { color: #f2eee7; }
 .booking-addresses address a:hover .booking-contact-value { text-decoration: underline; text-underline-offset: 4px; }
 .booking-addresses { min-width: 0; }
-.booking-actions { display: flex; flex-direction: column; align-items: flex-start; justify-self: end; width: max-content; max-width: 100%; gap: 12px; min-width: 0; padding-top: 4px; }
-.booking-action-meta { margin: 0; color: #a8a39a; font: 400 14px/1.3 var(--font-sans); letter-spacing: 0; }
-.booking-actions .booking-action { width: max-content; max-width: 100%; }
-.booking-action-copy { display: grid; gap: 0; color: #a8a39a; font: 400 15px/1.3 var(--font-sans); }
+/* Equal flexible rows keep the button centered against the full contact block.
+   The caption sets the shared intrinsic width and occupies the lower row. */
+.booking-actions { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto minmax(0, 1fr); align-items: start; justify-self: end; width: max-content; max-width: 100%; min-width: 0; }
+.booking-actions .booking-action { grid-row: 2; width: 100%; max-width: 100%; }
+.booking-action-copy { grid-row: 3; margin-top: 12px; display: grid; gap: 0; color: #a8a39a; font: 400 15px/1.3 var(--font-sans); white-space: nowrap; }
 .booking-action-copy p { margin: 0; }
 .booking-action {
   display: flex;
@@ -159,7 +160,9 @@
   .performance-summary-item h3 { font-size: 17px; }
   .home-page .booking-footer #contact { grid-template-columns: minmax(0, 1fr); max-width: none; padding-block: 24px; row-gap: 28px; }
   .booking-addresses address a { min-height: 24px; }
-  .booking-actions { justify-self: start; width: 100%; max-width: 440px; padding-top: 0; }
+  .booking-actions { justify-self: start; align-self: start; grid-template-rows: auto auto; row-gap: 12px; }
+  .booking-actions .booking-action { grid-row: 1; }
+  .booking-action-copy { grid-row: 2; margin-top: 0; white-space: normal; }
   .callback-form { scroll-margin-top: 84px; }
   .booking-legal { gap: 12px; grid-template-columns: minmax(0, 1fr); }
   .booking-documents { text-align: right; }
