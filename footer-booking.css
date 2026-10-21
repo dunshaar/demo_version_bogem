@@ -84,9 +84,8 @@
 .booking-actions { display: flex; flex-direction: column; align-items: flex-start; justify-self: end; width: max-content; max-width: 100%; gap: 12px; min-width: 0; padding-top: 4px; }
 .booking-action-meta { margin: 0; color: #a8a39a; font: 400 14px/1.3 var(--font-sans); letter-spacing: 0; }
 .booking-actions .booking-action { width: max-content; max-width: 100%; }
-.booking-action-copy { display: grid; gap: 0; color: #a8a39a; font: 400 16px/1.3 var(--font-sans); }
+.booking-action-copy { display: grid; gap: 0; color: #a8a39a; font: 400 15px/1.3 var(--font-sans); }
 .booking-action-copy p { margin: 0; }
-.booking-action-copy-strong { font-weight: 500; }
 .booking-action {
   display: flex;
   width: 100%;
