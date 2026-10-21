@@ -38,13 +38,19 @@
 #formats .lineup-choice input:checked + span {color: #24211e; border-color: var(--lineups-brass)}
 #formats .lineup-choice input:focus-visible + span {outline: 2px solid var(--lineups-brass); outline-offset: 4px}
 @media (hover: hover) {#formats .lineup-choice:hover span {color: #24211e}}
-#formats .lineups-description {margin-top: 22px; min-height: 4.65em; max-width: 520px; font-size: clamp(14px, 1.1vw, 16px); font-weight: var(--weight-regular); line-height: 1.55; letter-spacing: .025em; color: #665f57}
-#formats .lineups-description p {display: none}
-#formats .lineups-selector:has(input[value="01"]:checked) [data-lineup-description="01"] {display: block}
-#formats .lineups-selector:has(input[value="03"]:checked) [data-lineup-description="03"] {display: block}
-#formats .lineups-selector:has(input[value="04"]:checked) [data-lineup-description="04"] {display: block}
-#formats .lineups-selector:has(input[value="05"]:checked) [data-lineup-description="05"] {display: block}
-#formats .lineups-selector:has(input[value="06"]:checked) [data-lineup-description="06"] {display: block}
+#formats .lineups-description {display: grid; margin-top: 22px; max-width: 520px; font: 400 14px/1.5 var(--font-sans); letter-spacing: 0; color: #665f57}
+/* Shared automatic sizing keeps the controls and photo steady when switching.
+   Invisible variants do not paint or participate in the accessibility tree. */
+#formats .lineups-variant {grid-area: 1 / 1; min-width: 0; visibility: hidden}
+#formats .lineups-format-name {margin: 0 0 8px; font: 500 20px/1.25 var(--font-sans); color: #24211e}
+#formats .lineups-instruments {margin: 0 0 10px; font: 400 13px/1.5 var(--font-sans)}
+#formats .lineups-format-copy {margin: 0}
+#formats .lineups-format-copy strong {font-weight: 600}
+#formats .lineups-selector:has(input[value="01"]:checked) [data-lineup-description="01"] {visibility: visible}
+#formats .lineups-selector:has(input[value="03"]:checked) [data-lineup-description="03"] {visibility: visible}
+#formats .lineups-selector:has(input[value="04"]:checked) [data-lineup-description="04"] {visibility: visible}
+#formats .lineups-selector:has(input[value="05"]:checked) [data-lineup-description="05"] {visibility: visible}
+#formats .lineups-selector:has(input[value="06"]:checked) [data-lineup-description="06"] {visibility: visible}
 #formats .lineups-photo {width: 100%; margin: 0}
 /* Native transparency blends the original WebP into the shared light surface.
    Fade only the already-cropped bottom edge; all faces remain fully opaque. */
@@ -73,6 +79,7 @@
   #formats h2 {font-size: clamp(28px, 7.8vw, 54px)}
   #formats .lineups-selector {margin-top: 36px; max-width: 520px}
   #formats .lineup-choice span {min-height: 52px; font-size: clamp(22px, 5.7vw, 28px)}
-  #formats .lineups-description {margin-top: 20px; font-size: 14px; min-height: 4.65em}
+  #formats .lineups-description {margin-top: 20px}
+  #formats .lineups-format-name {font-size: 18px}
   #formats .lineups-photo {width: calc(100% + 2 * var(--pad)); max-width: none; margin-inline: calc(-1 * var(--pad))}
 }
