@@ -139,18 +139,21 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--booking-gap);
-  align-items: end;
+  align-items: start;
   padding-top: 16px;
   border-top: 1px solid var(--line);
   color: #a8a39a;
   font: 400 12px/1.6 var(--font-sans);
 }
 .booking-socials { display: flex; align-items: center; gap: 8px; }
-.booking-socials a { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; color: #f2eee7; transition: color .18s; }
+.booking-socials a { display: inline-flex; flex: none; align-items: center; justify-content: center; width: 44px; height: 44px; color: #f2eee7; transition: color .18s; }
 .booking-socials svg { width: 26px; height: 26px; }
 .booking-socials a:hover { color: var(--accent-brass); }
 .booking-socials a:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 2px; }
 .booking-copyright { margin-top: 4px; }
+.booking-copyright a { color: inherit; transition: color .2s; }
+.booking-copyright a:hover { color: #d8d5cf; }
+.booking-copyright a:focus-visible { outline: 2px solid #d8d5cf; outline-offset: 3px; }
 .booking-documents { display: grid; gap: 0; text-align: right; }
 .booking-documents > * { font: inherit; color: inherit; }
 @media(max-width: 809px) {
@@ -177,4 +180,4 @@
   .performance-summary-line { display: inline; }
 }
 
-@media(prefers-reduced-motion: reduce) { .booking-socials a { transition: none; } }
+@media(prefers-reduced-motion: reduce) { .booking-socials a, .booking-copyright a { transition: none; } }
