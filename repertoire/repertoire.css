@@ -96,6 +96,7 @@ a{color:inherit}
   color:var(--rep-ink);font-size:14px;font-weight:500;
   line-height:1.25;letter-spacing:.01em;border-radius:4px;
   border:1px solid var(--rep-brass-button);
+  text-decoration:none;
 }
 .rep-cta p{margin:0;font-size:14px;color:var(--rep-muted-dark);line-height:1.4}
 a:focus-visible{outline:2px solid var(--rep-brass);outline-offset:4px}
