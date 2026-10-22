@@ -1,0 +1,216 @@
+@font-face {
+  font-family: "NY Manrope";
+  src: url("../assets/fonts/manrope-hero-variable.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "NY Cormorant Garamond";
+  src: url("assets/fonts/cormorant-garamond-light.woff") format("woff");
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+}
+
+.ny-page {
+  --ny-bg: #151613;
+  --ny-ink: #f2eee7;
+  --ny-brass: #c89a5c;
+  --ny-champagne: #d9be96;
+  margin: 0;
+  min-height: 100svh;
+  background: var(--ny-bg);
+  color: var(--ny-ink);
+  font-family: "NY Manrope", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.ny-page *,
+.ny-page *::before,
+.ny-page *::after {
+  box-sizing: border-box;
+}
+
+.ny-page a {
+  color: inherit;
+}
+
+.ny-page a:focus-visible {
+  outline: 2px solid var(--ny-ink);
+  outline-offset: 6px;
+}
+
+.ny-page .ny-home {
+  position: absolute;
+  top: 18px;
+  right: clamp(20px, 3vw, 48px);
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: #b6b3aa;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: .08em;
+  text-decoration: none;
+  text-underline-offset: 5px;
+}
+
+.ny-page .ny-home:hover {
+  color: var(--ny-ink);
+  text-decoration: underline;
+}
+
+.ny-page .ny-stage {
+  width: min(100%, 720px);
+  margin-inline: auto;
+  container-type: inline-size;
+  padding-bottom: 28px;
+}
+
+.ny-page .ny-scene {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  isolation: isolate;
+}
+
+.ny-page .ny-heading {
+  z-index: 2;
+  padding: clamp(58px, 8.2cqi, 66px) 24px 0;
+  text-align: center;
+}
+
+.ny-page .ny-season {
+  margin: 0;
+  padding-left: .38em;
+  color: var(--ny-champagne);
+  font-size: clamp(11px, 1.85cqi, 14px);
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: .38em;
+}
+
+.ny-page .ny-brand {
+  width: 62%;
+  max-width: 490px;
+  margin: clamp(16px, 2.8cqi, 23px) auto 0;
+  color: var(--ny-ink);
+}
+
+.ny-page .ny-brand svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 5776 / 1104;
+  fill: currentColor;
+}
+
+.ny-page .ny-photo {
+  position: relative;
+  z-index: 0;
+  margin: clamp(16px, 3cqi, 22px) 0 0;
+  pointer-events: none;
+  /* The approved image already contains its lighting and dark edges. */
+}
+
+.ny-page .ny-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.ny-page .ny-program {
+  position: relative;
+  z-index: 1;
+  margin-top: clamp(16px, 3cqi, 22px);
+  padding-inline: 24px;
+  text-align: center;
+}
+
+.ny-page .ny-program h1 {
+  margin: 0;
+  color: var(--ny-champagne);
+  font-family: "NY Cormorant Garamond", Georgia, serif;
+  font-size: clamp(36px, 10.8cqi, 78px);
+  font-style: normal;
+  font-weight: 300;
+  line-height: .92;
+  letter-spacing: -.035em;
+}
+
+.ny-page .ny-program h1 span {
+  display: block;
+}
+
+.ny-page .ny-date {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: min(100%, 410px);
+  min-height: 52px;
+  margin-top: clamp(28px, 5cqi, 37px);
+  border: 1px solid #c89a5cba;
+  padding: 14px 16px;
+  color: var(--ny-ink);
+  background: transparent;
+  font-size: 11.5px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: .14em;
+  text-align: center;
+  text-decoration: none;
+  transition: border-color .2s, background-color .2s;
+}
+
+.ny-page .ny-date:hover {
+  border-color: var(--ny-champagne);
+  background: #c89a5c0a;
+}
+
+.ny-page .ny-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (min-width: 900px) {
+  .ny-page .ny-stage {
+    width: clamp(480px, 60svh, 720px);
+  }
+}
+
+@media (max-width: 599px) {
+  .ny-page .ny-home {
+    top: 4px;
+    right: 20px;
+    font-size: 9px;
+  }
+
+  .ny-page .ny-brand {
+    width: 68%;
+  }
+
+  .ny-page .ny-heading {
+    padding-top: 48px;
+  }
+
+  .ny-page .ny-date {
+    font-size: 11px;
+    letter-spacing: .1em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ny-page .ny-date {
+    transition: none;
+  }
+}
