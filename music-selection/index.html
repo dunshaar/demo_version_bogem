@@ -15,6 +15,21 @@
 @media(max-width:950px){.song-columns{column-count:2;column-gap:20px}.music-heading{display:block}.music-meta{margin-top:10px}.summary-layout{gap:26px;grid-template-columns:minmax(0,1fr) 280px}.choice-button{min-width:180px;padding-inline:12px;gap:12px}.tools-summary{min-width:78px}.music-tools{gap:9px}}
 @media(max-width:720px){.wrap{padding-inline:20px}.site-header{min-height:52px;font-size:9px;gap:10px}.demo-state{display:none}.identity{gap:7px}.music{padding-top:22px;padding-bottom:24px}.music-heading{margin-bottom:11px}.music-heading h1{font-size:clamp(29px,7.8vw,45px);max-width:560px;line-height:1.06}.music-desc{font-size:13px;line-height:1.45;margin-top:8px;max-width:340px}.music-meta{margin:9px 0 0;font-size:10px}.music-tools{padding:7px 0 9px;margin-bottom:18px}.choice-wrapper,.tools-summary{display:none}.search-input{height:48px;font-size:16px;padding-left:42px;padding-right:42px}.search-input::placeholder{font-size:13px}.song-columns{column-count:1}.catalog-head h2{font-size:25px;min-width:0;overflow-wrap:anywhere}.catalog-index{font-size:11px}.catalog-section{margin-bottom:24px}.catalog-line{margin-bottom:7px}.catalog-head{margin-bottom:8px;gap:12px}.song-row{min-height:44px;margin-bottom:0}.song-title{font-size:15px}.song-artist{font-size:11px}.song-note{font-size:10px}.add-song{width:44px;min-width:44px;height:44px}.add-song:before{inset:8px}.remove-song{min-width:44px;min-height:44px}.chosen-item{padding:1px 0}.chosen-item .name{font-size:14px}.chosen-item .artist{font-size:11px}.wish{grid-template-columns:1fr;gap:10px;padding-top:15px}.wish h2{font-size:23px}.wish textarea{font-size:16px;min-height:80px}.wish textarea::placeholder{font-size:14px}.wish p{font-size:12px}.summary{padding-top:23px}.summary-heading h2{font-size:38px}.summary-layout{grid-template-columns:1fr;gap:16px}.summary-heading{margin-bottom:12px}.summary-list{grid-template-columns:1fr;max-height:330px}.summary-action{border-top:1px solid #45453d;padding-top:14px}.summary-note{max-width:320px;margin-bottom:10px}.summary-count{font-size:12px}.page-footer{margin-top:17px}.mobile-choice-panel{display:flex;align-items:stretch;position:fixed;bottom:0;left:0;right:0;padding:0 12px env(safe-area-inset-bottom,0px);min-height:62px;background:var(--ink);border-top:1px solid #6c604c;color:var(--bg);z-index:38;visibility:hidden;transform:translateY(105%)}.mobile-choice-panel.is-visible{visibility:visible;transform:none}.mobile-choice-panel button{background:none;border:0;color:inherit}.mobile-choice-panel #mobile-choice{display:flex;flex:1;min-width:0;flex-direction:column;justify-content:center;align-items:flex-start;gap:4px;min-height:61px;padding:10px 8px;text-align:left}.mobile-choice-panel strong{font-size:12px;font-weight:500;letter-spacing:.03em}.mobile-choice-label{font-size:10px;color:#c9ad86}.mobile-choice-panel .mobile-summary-link{border-left:1px solid #53534d;min-height:61px;min-width:92px;color:var(--brass);padding:10px 6px 10px 15px;font-size:11px}.mobile-choice-drawer{display:block;position:fixed;bottom:var(--choice-bar-height);left:0;right:0;max-height:min(55vh,480px);max-height:min(55dvh,480px);overflow:auto;overscroll-behavior:contain;background:var(--bg);border-top:1px solid #c4c1b7;box-shadow:0 -10px 25px #0002;z-index:39;padding:10px 20px 14px}.mobile-choice-drawer .drawer-heading{top:-10px}.mobile-choice-drawer .chosen-grid{grid-template-columns:1fr}html.mobile-choice-active{scroll-padding-bottom:calc(var(--choice-bar-height) + 14px)}html.mobile-choice-active .add-song{scroll-margin-bottom:calc(var(--choice-bar-height) + 14px)}.dialog-body{padding:14px 18px 20px}.dialog-body h2{font-size:26px}}
 @media(max-width:359px){.wrap{padding-inline:16px}.music-heading h1{font-size:29px}.identity{gap:5px}.site-header{font-size:8.5px}.summary-heading h2{font-size:34px}.summary-count{font-size:11px}.catalog-head h2{font-size:24px}}
+/* Keep these changes scoped to the lower music summary. */
+.summary-heading{align-items:flex-start}
+.summary-count{color:#b2b0a6}
+.summary-count-number{color:var(--brass)}
+.summary-action .action-button{min-height:46px;padding:10px 16px;background:transparent;color:#f2eee7;border-color:#77776f;border-radius:4px;font:500 14px/1.5 var(--font);letter-spacing:.02em;transition:background-color .18s,border-color .18s,-webkit-text-stroke-width .18s}
+/* Deepen the lettering on hover without changing the glyph widths. */
+.summary-action .action-button:hover{background:#f2eee708;border-color:#f2eee7;-webkit-text-stroke:.15px currentColor}
+.summary-action .action-button:focus-visible{outline:2px solid #f2eee7;outline-offset:3px}
+.summary-consent label{display:flex;align-items:flex-start;gap:10px;color:#c6c2b9;font-size:12px;line-height:1.3;cursor:pointer}
+.summary-consent input{flex:none;width:18px;height:18px;margin:1px 0 0;accent-color:var(--brass);color-scheme:dark}
+.summary-consent input[aria-invalid=true]{outline:1px solid #ecaaa0;outline-offset:2px}
+.summary-consent input:focus-visible{outline:2px solid var(--brass);outline-offset:3px}
+.summary-consent .selection-error{margin-top:6px;color:#ecaaa0;line-height:1.5}
+.consent-document-unavailable{text-decoration:underline;text-underline-offset:3px;text-decoration-color:#a8a39a88}
+@media(min-width:721px){.wish textarea{max-width:440px;min-height:0;height:100%}.summary-layout{grid-template-columns:minmax(0,1fr) 380px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -57,12 +72,12 @@
     <div class="wish" id="wish">
       <div><h2>НЕ НАШЛИ НУЖНУЮ ПЕСНЮ?</h2><p>Укажите любимую песню и исполнителя. Возможность исполнения согласуем отдельно.</p></div>
       <label class="sr-only" for="wish-text">Музыкальные пожелания вне репертуара</label>
-      <textarea id="wish-text" maxlength="1800" placeholder="Название композиции и исполнитель" rows="3"></textarea>
+      <textarea id="wish-text" maxlength="1800" placeholder="Название композиции и исполнитель" rows="1"></textarea>
     </div>
   </section>
   <section class="summary" id="summary" aria-labelledby="summary-title">
     <div class="wrap">
-      <div class="summary-heading"><h2 id="summary-title" tabindex="-1">МОЙ ВЫБОР</h2><span class="summary-count" id="summary-count">0 песен</span></div>
+      <div class="summary-heading"><h2 id="summary-title" tabindex="-1">МОЙ ВЫБОР</h2><span class="summary-count" id="summary-count"><span class="summary-count-number" id="summary-count-number">0</span> <span id="summary-count-label">песен</span></span></div>
       <div class="summary-layout">
         <div class="summary-content">
           <p class="summary-empty" id="summary-empty">Пока ничего не выбрано.</p>
@@ -73,10 +88,12 @@
           <div class="summary-wish" id="summary-wish" hidden><div class="summary-wish-heading"><span>ВНЕ РЕПЕРТУАРА</span><button type="button" class="text-button" data-edit-wishes>ИЗМЕНИТЬ ↗</button></div><p id="summary-wish-text"></p></div>
         </div>
         <div class="summary-action">
-          <p class="summary-note">Итоговую музыкальную программу согласуем отдельно.</p>
           <button class="action-button" type="button" id="send-wishes">ОТПРАВИТЬ ПОЖЕЛАНИЯ</button>
           <p class="selection-error" id="selection-error" role="status" hidden></p>
-          <p class="prototype-note">Прототип: отправка пока не подключена.</p>
+          <div class="summary-consent">
+            <label for="contact-consent"><input id="contact-consent" type="checkbox" required aria-describedby="error-consent"><span>Я даю <span class="consent-document-unavailable" aria-disabled="true">согласие на обработку персональных данных</span>.</span></label>
+            <p class="selection-error" id="error-consent" role="status" hidden></p>
+          </div>
         </div>
       </div>
       <footer class="page-footer"><span>БОГЕМА · ВЫБОР ПЕСЕН</span><button type="button" class="text-button" data-jump="music">К РЕПЕРТУАРУ ↑</button></footer>
@@ -103,8 +120,6 @@
         <div class="field-group"><label class="field" for="contact-name"><input id="contact-name" name="name" type="text" placeholder=" " autocomplete="name" maxlength="80" required aria-describedby="error-name"><span class="floating">Ваше имя *</span></label><span class="field-error" id="error-name" hidden></span></div>
         <div class="field-group"><label class="field" for="contact-phone"><input id="contact-phone" name="phone" type="tel" placeholder=" " autocomplete="tel" inputmode="tel" maxlength="45" required aria-describedby="error-phone"><span class="floating">Телефон *</span></label><span class="field-error" id="error-phone" hidden></span></div>
       </div>
-      <label class="consent"><input id="contact-consent" type="checkbox" required aria-describedby="error-consent"><span>Согласен на обработку персональных данных.</span></label>
-      <span class="field-error" id="error-consent" hidden></span>
       <button type="submit" class="action-button dialog-submit" id="dialog-submit">ОТПРАВИТЬ ПОЖЕЛАНИЯ</button>
       <p class="form-feedback" id="form-feedback" role="status" aria-live="polite"></p>
     </form>
@@ -255,7 +270,8 @@
   function syncSummary() {
     const n = state.chosen.size;
     if (!n) state.summaryOpen = false;
-    $('#summary-count').textContent = songCount(n);
+    $('#summary-count-number').textContent = n;
+    $('#summary-count-label').textContent = plural(n, ['песня', 'песни', 'песен']);
     $('#summary-song-controls').hidden = !n;
     $('#summary-empty').hidden = Boolean(n || trimmed(state.wishes));
     $('#summary-toggle').setAttribute('aria-expanded', String(state.summaryOpen));
@@ -366,16 +382,19 @@
   function openRequest(source) {
     if ($('#request-dialog').open) return;
     if (!hasWishes()) {
+      setContactError('consent');
       const error = $('#selection-error');
       error.textContent = 'Отметьте хотя бы одну песню или добавьте пожелание вне репертуара.';
       error.hidden = false;
       return;
     }
+    const consentError = contactIssue('consent');
+    setContactError('consent', consentError);
+    if (consentError) {$('#contact-consent').focus(); return;}
     requestOpener = source || document.activeElement;
     preparedRequest = null;
     $('#contact-name').value = contact.name;
     $('#contact-phone').value = contact.phone;
-    $('#contact-consent').checked = false;
     clearContactErrors();
     $('#dialog-preview').textContent = [state.chosen.size ? songCount(state.chosen.size) : '',
       trimmed(state.wishes) ? 'Пожелание вне репертуара' : ''].filter(Boolean).join(' · ');
@@ -394,7 +413,7 @@
     rememberContact();
     document.body.style.overflow = previousOverflow;
     onScroll();
-    if (requestOpener?.isConnected && !requestOpener.closest('[hidden], [inert]')) requestOpener.focus({preventScroll: true});
+    if (requestOpener?.isConnected && !requestOpener.closest('[hidden], [inert]')) requestOpener.focus({preventScroll: requestOpener.id !== 'contact-consent'});
   }
   function buildRequest() {
     // Review-only object. Not a server contract and not evidence of legal consent/delivery.
@@ -413,7 +432,11 @@
     const errors = ['name', 'phone', 'consent'].map(key => ({key, message: contactIssue(key)}));
     for (const issue of errors) setContactError(issue.key, issue.message);
     const first = errors.find(issue => issue.message);
-    if (first) {$('#contact-' + first.key).focus(); return;}
+    if (first) {
+      if (first.key === 'consent') {requestOpener = $('#contact-consent'); closeRequest();}
+      else $('#contact-' + first.key).focus();
+      return;
+    }
     if (!hasWishes()) {
       $('#form-feedback').textContent = 'Нет выбранных песен или пожеланий. Закройте форму и добавьте свой выбор.';
       return;
@@ -485,6 +508,11 @@
   $('#mobile-choice').addEventListener('click', event => openChoices(event.currentTarget));
   $('#summary-toggle').addEventListener('click', () => {state.summaryOpen = !state.summaryOpen; syncSummary();});
   $('#send-wishes').addEventListener('click', event => openRequest(event.currentTarget));
+  $('#contact-consent').addEventListener('change', () => {
+    preparedRequest = null;
+    setContactError('consent');
+    $('#form-feedback').textContent = '';
+  });
   $('#dialog-close').addEventListener('click', closeRequest);
   $('#request-form').addEventListener('submit', validateRequest);
   $('#request-form').addEventListener('input', event => {
@@ -492,7 +520,7 @@
     if (event.target.id === 'contact-name') contact.name = event.target.value;
     if (event.target.id === 'contact-phone') contact.phone = event.target.value;
     const key = event.target.id.replace('contact-', '');
-    if (['name', 'phone', 'consent'].includes(key) && event.target.getAttribute('aria-invalid') === 'true') {
+    if (['name', 'phone'].includes(key) && event.target.getAttribute('aria-invalid') === 'true') {
       setContactError(key, contactIssue(key));
     }
     $('#form-feedback').textContent = '';
