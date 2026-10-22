@@ -150,7 +150,8 @@
 .booking-socials svg { width: 26px; height: 26px; }
 .booking-socials a:hover { color: var(--accent-brass); }
 .booking-socials a:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 2px; }
-.booking-copyright { margin-top: 4px; }
+/* Align the credit with the visible graphics inside the 44px link targets. */
+.booking-copyright { margin: 4px 0 0 9px; font-size: 12.35px; white-space: nowrap; }
 .booking-copyright a { color: inherit; transition: color .2s; }
 .booking-copyright a:hover { color: #d8d5cf; }
 .booking-copyright a:focus-visible { outline: 2px solid #d8d5cf; outline-offset: 3px; }
