@@ -35,7 +35,7 @@
 <script src="promo-video.js?v=20261015-manual-v4" defer></script>
 <link rel="stylesheet" href="repertoire-teaser.css?v=20261017-finishing-v7">
 <link rel="stylesheet" href="lineups.css?v=20261022-content-v15">
-<link rel="stylesheet" href="footer-booking.css?v=20261022-v19">
+<link rel="stylesheet" href="footer-booking.css?v=20261022-legal-review">
 </head>
 <body class="home-page">
 <a class="skip" href="#main">К содержанию</a>
@@ -229,7 +229,7 @@
         <address>
           <a href="tel:+79006363727"><span class="booking-contact-label">Алексей ·</span> <span class="booking-contact-value">+7 (900) 636-37-27</span></a>
         </address>
-        <!-- No delivery endpoint or approved legal documents are configured.
+        <!-- Delivery is disabled; legal documents are published for review.
              method=dialog and type=button prevent accidental native transmission. -->
         <form id="request-form" class="callback-form" method="dialog" novalidate aria-label="Заявка на обратный звонок">
           <div class="callback-field">
@@ -238,9 +238,10 @@
           </div>
           <button class="booking-action booking-action-secondary" type="button" data-callback-submit>ОБСУДИТЬ ВЫСТУПЛЕНИЕ</button>
           <div class="callback-consent">
-            <label for="callback-consent"><input id="callback-consent" name="consent" type="checkbox" required aria-describedby="callback-consent-error"><span>Я даю <span class="booking-document-unavailable" aria-disabled="true">согласие на обработку персональных данных</span>.</span></label>
+            <label for="callback-consent"><input id="callback-consent" name="consent" type="checkbox" required data-consent-version="callback-consent-1.0-2026-10-22" aria-describedby="callback-consent-error"><span>Я <a class="booking-document-link" href="legal/consent-callback/" target="_blank" rel="noopener noreferrer">даю согласие</a> на обработку моего номера телефона для обратного звонка</span></label>
             <p class="callback-error" id="callback-consent-error" hidden></p>
           </div>
+          <p class="callback-policy"><a class="booking-document-link" href="legal/privacy/" target="_blank" rel="noopener noreferrer">Политика обработки персональных данных</a></p>
           <p class="callback-status" id="callback-status" role="status" aria-live="polite" tabindex="-1" hidden></p>
         </form>
       </div>
@@ -262,10 +263,10 @@
       </nav>
         <p class="booking-copyright">© 2026 БОГЕМА <span aria-hidden="true">|</span> <a href="https://t.me/daniilwebdev" target="_blank" rel="noopener noreferrer">ДИЗАЙН И КОД: D.SIGN</a></p>
       </div>
-      <div class="booking-documents" aria-label="Документы ещё не опубликованы">
-        <span aria-disabled="true">Политика обработки персональных данных</span>
-        <span aria-disabled="true">Информация об использовании cookie</span>
-        <span aria-disabled="true">Согласия на обработку персональных данных</span>
+      <div class="booking-documents" aria-label="Правовая информация">
+        <a href="legal/privacy/" target="_blank" rel="noopener noreferrer">Политика обработки персональных данных</a>
+        <a href="legal/cookies/" target="_blank" rel="noopener noreferrer">Информация об использовании cookie</a>
+        <a href="legal/consents/" target="_blank" rel="noopener noreferrer">Согласия на обработку персональных данных</a>
       </div>
     </div>
   </div>

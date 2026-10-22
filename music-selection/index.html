@@ -30,7 +30,8 @@
 .summary-consent input[aria-invalid=true]{outline:1px solid #ecaaa0;outline-offset:2px}
 .summary-consent input:focus-visible{outline:2px solid var(--brass);outline-offset:3px}
 .summary-consent .selection-error{margin-top:6px;color:#ecaaa0;line-height:1.5}
-.consent-document-unavailable{text-decoration:underline;text-underline-offset:3px;text-decoration-color:#a8a39a88}
+.consent-document-link{text-decoration:underline;text-underline-offset:3px;text-decoration-color:#a8a39a88;color:inherit}
+.summary-policy{margin:6px 0 0;color:#a8a39a;font-size:12px;line-height:1.5}
 @media(min-width:721px){.wish textarea{max-width:350px;min-height:64px;height:100%;align-self:end}.summary-layout{grid-template-columns:minmax(0,1fr) 380px}}
 /* Keep the heading and count together when the two columns stack. */
 @media(max-width:720px){
@@ -106,9 +107,10 @@
             <button class="action-button" type="button" id="send-wishes">ОТПРАВИТЬ ПОЖЕЛАНИЯ</button>
             <p class="selection-error" id="selection-error" role="status" hidden></p>
             <div class="summary-consent">
-              <label for="contact-consent"><input id="contact-consent" type="checkbox" required aria-describedby="error-consent"><span>Я даю <span class="consent-document-unavailable" aria-disabled="true">согласие на обработку персональных данных</span>.</span></label>
+              <label for="contact-consent"><input id="contact-consent" type="checkbox" required data-consent-version="music-consent-1.0-2026-10-22" aria-describedby="error-consent"><span>Я <a class="consent-document-link" href="../legal/consent-music/" target="_blank" rel="noopener noreferrer">даю согласие</a> на обработку моих данных для передачи и согласования музыкальных пожеланий</span></label>
               <p class="selection-error" id="error-consent" role="status" hidden></p>
             </div>
+            <p class="summary-policy"><a class="consent-document-link" href="../legal/privacy/" target="_blank" rel="noopener noreferrer">Политика обработки персональных данных</a></p>
           </div>
         </div>
       </div>
@@ -130,7 +132,7 @@
     <h2 id="dialog-title">МУЗЫКАЛЬНЫЕ ПОЖЕЛАНИЯ</h2>
     <p class="dialog-info" id="dialog-info">Выбранные песни и пожелания приложим к обращению.</p>
     <p class="dialog-preview" id="dialog-preview"></p>
-    <p class="demo-notice" id="demo-notice">Демо-режим. Данные никуда не отправляются. Документы согласия будут подключены перед запуском.</p>
+    <p class="demo-notice" id="demo-notice">Демо-режим. Данные никуда не отправляются.</p>
     <form id="request-form" method="dialog" novalidate>
       <div class="dialog-fields">
         <div class="field-group"><label class="field" for="contact-name"><input id="contact-name" name="name" type="text" placeholder=" " autocomplete="name" maxlength="80" required aria-describedby="error-name"><span class="floating">Ваше имя *</span></label><span class="field-error" id="error-name" hidden></span></div>
